@@ -3,12 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ../dist/bin/www",
-    "build": "tsc",
+    "start": "webpack-dev-server --inline --hot",
+    "build": "webpack",
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "typescript": "^2.4.2"
+    "ts-loader": "^3.2.0",
+    "typescript": "^2.4.2",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^1.16.2"
   },
   "dependencies": {
     "body-parser": "~1.18.2",

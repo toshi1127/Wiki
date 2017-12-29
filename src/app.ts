@@ -6,12 +6,6 @@ const favicon = require('serve-favicon')
 const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
-const login = require('./routes/login')
-const sendmail = require('./routes/sendmail')
-const sendcompletely = require('./routes/sendcompletely')
-const resetpassword = require('./routes/reset-password')
-const updatecomplete = require('./routes/updatecomplete')
-const expired = require('./routes/expired')
 
 let app = express()
 
@@ -26,13 +20,6 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-
-app.use('/', login)
-app.use('/sendmail', sendmail)
-app.use('/sendmail/sendcompletely', sendcompletely)
-app.use('/resetpassword', resetpassword)
-app.use('/resetpassword/updatecomplete', updatecomplete)
-app.use('/resetpassword/expired', expired)
 
 // error handler
 app.use(function (err, req, res, next) {
