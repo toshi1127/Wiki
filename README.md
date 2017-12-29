@@ -1,0 +1,1 @@
+TypescriptでWikiを作る
