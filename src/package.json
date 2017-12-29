@@ -1,0 +1,23 @@
+{
+  "name": "wiki-typescript",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ../dist/bin/www",
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^2.4.2"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.15.5",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.0",
+    "serve-favicon": "~2.4.5",
+    "@types/node": "^8.0.20"
+  }
+}
