@@ -1,6 +1,6 @@
 import * as express from 'express'
 import * as path from 'path'
-const debug= require('debug')('wiki-typescript:server');
+const debug = require('debug')('wiki-typescript:server');
 import * as http from 'http'
 import * as favicon from 'serve-favicon'
 import * as logger from 'morgan'
@@ -9,14 +9,16 @@ import * as bodyParser from 'body-parser'
 import * as index from './routes/index'
 import * as users from './routes/users'
 import * as Nedb from 'nedb'
+
+const db = new Nedb({
+  filename: path.join(__dirname, 'wiki.db'),
+  autoload: true
+})
+
 let app = express()
 
-// view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -24,13 +26,9 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', index);
 app.use('/users', users);
-// error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
-
-  // render the error page
   res.status(err.status || 500)
   res.render('error')
 })
@@ -38,43 +36,41 @@ app.use(function (err, req, res, next) {
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
-
 var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
 
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-/**
- * Normalize a port into a number, string, or false.
- */
+// APIの定義
+// Wikiデータを返すAPI 
+app.get('/api/get/:wikiname', (req, res) => {
+  const wikiname = req.params.wikiname
+  db.find({name:wikiname},(err,docs)=>{
+    if (err) {
+      res.json({status: false, msg: err})
+      return
+    }
+    if (docs.length === 0) {
+      docs = [{name: wikiname, body: ''}]
+    }
+    res.json({status: true, data: docs[0]})
+  })
+})
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
   if (isNaN(port)) {
-    // named pipe
     return val;
   }
 
   if (port >= 0) {
-    // port number
     return port;
   }
 
   return false;
 }
-
-/**
- * Event listener for HTTP server "error" event.
- */
 
 function onError(error) {
   if (error.syscall !== 'listen') {
@@ -84,8 +80,6 @@ function onError(error) {
   var bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
-
-  // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
@@ -100,10 +94,6 @@ function onError(error) {
   }
 }
 
-/**
- * Event listener for HTTP server "listening" event.
- */
-
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
@@ -113,5 +103,3 @@ function onListening() {
 }
 
 export = app
-//exports.app = functions.https.onRequest(app)
-//ここでfunctions.https.onRequest(app);を呼ぶのもありかも
