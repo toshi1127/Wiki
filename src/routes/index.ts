@@ -1,4 +1,4 @@
-var express = require('express');
+import * as express from 'express'
 var router = express.Router();
 
 /* GET home page. */
@@ -6,4 +6,4 @@ router.get('/', function(req, res, next) {
   res.send('Well come to express');
 });
 
-module.exports = router;
+export = router;

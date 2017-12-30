@@ -1,13 +1,14 @@
 import * as express from 'express'
 import * as path from 'path'
-const debug = require('debug')('wiki-typescript:server');
-const http = require('http');
-const favicon = require('serve-favicon')
-const logger = require('morgan')
-const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser')
-const index = require('./routes/index');
-const users = require('./routes/users');
+const debug= require('debug')('wiki-typescript:server');
+import * as http from 'http'
+import * as favicon from 'serve-favicon'
+import * as logger from 'morgan'
+import * as cookieParser from 'cookie-parser'
+import * as bodyParser from 'body-parser'
+import * as index from './routes/index'
+import * as users from './routes/users'
+import * as Nedb from 'nedb'
 let app = express()
 
 // view engine setup
