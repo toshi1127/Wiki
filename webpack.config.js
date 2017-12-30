@@ -1,3 +1,24 @@
+const path = require('path')
+module.exports = {
+  entry: path.join(__dirname, 'dist/public/component/index.js'),
+  output: {
+    path: path.join(__dirname, 'dist/dist'),
+    filename: 'bundle.js'
+  },
+  devtool: 'inline-source-map',
+  module: {
+    rules: [
+      {
+        test: /.js$/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['es2015', 'react']
+        }
+      }
+    ]
+  }
+}
+/*
 var path = require('path');
 module.exports = {
   // webpack処理の起点となるファイルの指定と出力アイテムの指定
@@ -20,4 +41,4 @@ module.exports = {
         loader: 'ts-loader' }
     ]
   },
-}
+}*/
