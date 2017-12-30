@@ -6,6 +6,9 @@ import {
 } from 'react-router-dom'
 const WikiApp = () => (
     <BrowserRouter>
+    <div>
+        Wellcome to React
+    </div>
     </BrowserRouter>
 )
 
