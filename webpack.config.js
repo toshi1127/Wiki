@@ -2,7 +2,7 @@ const path = require('path')
 module.exports = {
   entry: path.join(__dirname, 'dist/public/component/index.js'),
   output: {
-    path: path.join(__dirname, 'dist/dist'),
+    path: path.join(__dirname, 'dist/public'),
     filename: 'bundle.js'
   },
   devtool: 'inline-source-map',

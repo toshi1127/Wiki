@@ -26,7 +26,7 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', index);
 app.use('/users', users);
-app.use(function (err, req, res, next) {
+app.use(function (err:any, req:any, res:any, next:any) {
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
   res.status(err.status || 500)
@@ -46,7 +46,7 @@ server.on('listening', onListening);
 // Wikiデータを返すAPI 
 app.get('/api/get/:wikiname', (req, res) => {
   const wikiname = req.params.wikiname
-  db.find({name:wikiname},(err,docs)=>{
+  db.find({name:wikiname},(err:any,docs:any)=>{
     if (err) {
       res.json({status: false, msg: err})
       return
@@ -58,7 +58,7 @@ app.get('/api/get/:wikiname', (req, res) => {
   })
 })
 
-function normalizePort(val) {
+function normalizePort(val:any) {
   var port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -72,7 +72,7 @@ function normalizePort(val) {
   return false;
 }
 
-function onError(error) {
+function onError(error:any) {
   if (error.syscall !== 'listen') {
     throw error;
   }
