@@ -8,6 +8,8 @@ import * as cookieParser from 'cookie-parser'
 import * as bodyParser from 'body-parser'
 import * as index from './routes/index'
 import * as users from './routes/users'
+import * as edit from './public/component/wiki_edit'
+import * as show from './public/component/wiki_show'
 import * as Nedb from 'nedb'
 
 const db = new Nedb({
@@ -24,8 +26,13 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-app.use('/', index);
-app.use('/users', users);
+//app.use('/', index);
+//app.use('/users', users);
+app.use('/wiki/:wikiname', express.static('./public'))
+app.use('/edit/:wikiname', express.static('./public'))
+app.get('/', (req, res) => {
+  res.redirect(302, '/wiki/FrontPage')
+})
 app.use(function (err:any, req:any, res:any, next:any) {
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}

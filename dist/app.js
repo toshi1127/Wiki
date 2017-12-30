@@ -6,8 +6,6 @@ const http = require("http");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const index = require("./routes/index");
-const users = require("./routes/users");
 const Nedb = require("nedb");
 const db = new Nedb({
     filename: path.join(__dirname, 'wiki.db'),
@@ -21,8 +19,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', index);
-app.use('/users', users);
+//app.use('/', index);
+//app.use('/users', users);
+app.use('/wiki/:wikiname', express.static('./public'));
+app.use('/edit/:wikiname', express.static('./public'));
+app.get('/', (req, res) => {
+    res.redirect(302, '/wiki/FrontPage');
+});
 app.use(function (err, req, res, next) {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
