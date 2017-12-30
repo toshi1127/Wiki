@@ -24,10 +24,22 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
             jump: ''
         }
     }
+    save(){
+        
+    }
+    bodyChanged (e:any) {
+        this.setState({body: e.target.value})
+    }
     render(){
         return (
             <div>
-                
+                <h1><a href={`/wiki/${name}`}>{name}</a></h1>
+                <textarea rows={12} cols={60}
+                onChange={e=>this.bodyChanged(e)}
+                value={this.state.body}
+                />
+                <br/>
+                <button onClick={e=>this.save()}>保存</button>
             </div>
         )
     }
