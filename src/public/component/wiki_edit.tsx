@@ -62,6 +62,12 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
         this.setState({body: e.target.value})
     }
     render(){
+        if(!this.state.loaded){
+            return (<p>読み込み中</p>)
+        }
+        if(this.state.jump !==''){
+            //メイン画面にリダイレクト
+        }
         return (
             <div>
                 <h1><a href={`/wiki/${name}`}>{name}</a></h1>
