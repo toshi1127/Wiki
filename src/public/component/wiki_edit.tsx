@@ -67,6 +67,7 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
         }
         if(this.state.jump !==''){
             //メイン画面にリダイレクト
+            //保存したんだから、編集画面から閲覧する画面に推移させる。
         }
         return (
             <div>
