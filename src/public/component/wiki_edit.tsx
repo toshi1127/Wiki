@@ -40,7 +40,23 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
         })
     }
     save(){
-        
+        const wikiname = this.state.name
+        request
+        .post('/api/put/' + wikiname)
+        .type('form')
+        .send({
+            name:wikiname,
+            body:this.state.body
+        })
+        .end((err,data)=>{
+            if(err){
+                console.error(err)
+                return
+            }
+            this.setState({
+                jump:'/wiki/'+wikiname
+            })
+        })
     }
     bodyChanged (e:any) {
         this.setState({body: e.target.value})
