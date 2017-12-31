@@ -24,6 +24,21 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
             jump: ''
         }
     }
+    componentWillMount(){
+        request
+        .get(`api/get/${this.state.name}`)
+        .end((err,res)=>{
+            if(err){
+                return 
+            }
+            this.setState({
+                //res.bodyで連想配列全体。data=docsの中のbodyにアクセスしている。
+                body:res.body.data.body,
+                //読み込みが終わったのでtrueにしている。
+                loaded:true
+            })
+        })
+    }
     save(){
         
     }
