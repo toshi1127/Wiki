@@ -3,16 +3,16 @@ import * as request from 'superagent'
 import { Redirect } from 'react-router-dom'
 
 interface IndexProps {
-    name:any
+    name: any
 }
 interface IndexState {
-    name:string,
-    body:string,
-    loaded:boolean
+    name: string,
+    body: string,
+    loaded: boolean
 }
 
 export default class WikiShow extends React.Component<IndexProps, IndexState>  {
-    constructor(props:any) {
+    constructor(props: any) {
         super(props);
         this.state = {
             name: this.props.name,
@@ -20,10 +20,17 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
             loaded: false
         }
     }
-    render(){
-        return (
-            <div>
-            </div>
-        )
+    render() {
+        if (!this.state.loaded) {
+            return (
+                <p>読み込み中</p>
+            )
+        }
+        const name = this.state.name
+        const body = this.state.body
+        const html = this.convertText(body)
+    }
+    convertText(body:any){
+
     }
 }
