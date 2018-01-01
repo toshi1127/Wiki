@@ -29,8 +29,15 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         const name = this.state.name
         const body = this.state.body
         const html = this.convertText(body)
+        return (
+            <div>
+                <p>
+                    <a href={`/edit/${name}`}>→このページを編集</a>
+                </p>
+            </div>
+        )
     }
-    convertText(body:any){
+    convertText(body: any) {
 
     }
 }
