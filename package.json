@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./dist/app.js",
     "build": "webpack",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "build:parser": "pegjs -o dist/public/javascript/wiki_parser.js src/public/javascript/wiki_parser.pegjs"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^3.4.1",
