@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as request from 'superagent'
 import { Redirect } from 'react-router-dom'
+import * as WikiParser from '../javascript/wiki_parser'
 
 interface IndexProps {
     name: any
@@ -38,6 +39,6 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         )
     }
     convertText(body: any) {
-
+        const nodes = 
     }
 }
