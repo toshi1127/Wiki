@@ -22,6 +22,10 @@ list_item
  = "-" label:$([^\n]*) "\n"
  { return label }
 
+blockquote
+ = ">" label:$(!EOL .)+ EOL
+ { return {tag:"blockquote", label} }
+
 link
  = "@" label:$([^\n]+) "\n"
  { return {tag: "a", label} }
