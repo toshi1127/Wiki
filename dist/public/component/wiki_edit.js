@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
+const request = require("superagent");
 class WikiEdit extends React.Component {
     constructor(props) {
         super(props);
@@ -13,12 +14,51 @@ class WikiEdit extends React.Component {
             jump: ''
         };
     }
+    componentWillMount() {
+        request
+            .get(`api/get/${this.state.name}`)
+            .end((err, res) => {
+            if (err) {
+                return;
+            }
+            this.setState({
+                //res.bodyで連想配列全体。data=docsの中のbodyにアクセスしている。
+                body: res.body.data.body,
+                //読み込みが終わったのでtrueにしている。
+                loaded: true
+            });
+        });
+    }
     save() {
+        const wikiname = this.state.name;
+        request
+            .post('/api/put/' + wikiname)
+            .type('form')
+            .send({
+            name: wikiname,
+            body: this.state.body
+        })
+            .end((err, data) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            this.setState({
+                jump: '/wiki/' + wikiname
+            });
+        });
     }
     bodyChanged(e) {
         this.setState({ body: e.target.value });
     }
     render() {
+        if (!this.state.loaded) {
+            return (React.createElement("p", null, "\u8AAD\u307F\u8FBC\u307F\u4E2D"));
+        }
+        if (this.state.jump !== '') {
+            //メイン画面にリダイレクト
+            //保存したんだから、編集画面から閲覧する画面に推移させる。
+        }
         return (React.createElement("div", null,
             React.createElement("h1", null,
                 React.createElement("a", { href: `/wiki/${name}` }, name)),
