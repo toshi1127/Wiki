@@ -1,13 +1,7 @@
 import * as express from 'express'
 import * as path from 'path'
-const debug = require('debug')('wiki-typescript:server');
-import * as http from 'http'
 import * as favicon from 'serve-favicon'
-import * as logger from 'morgan'
-import * as cookieParser from 'cookie-parser'
 import * as bodyParser from 'body-parser'
-import * as index from './routes/index'
-import * as users from './routes/users'
 import * as edit from './public/component/wiki_edit'
 import * as show from './public/component/wiki_show'
 import * as Nedb from 'nedb'
@@ -19,36 +13,22 @@ const db = new Nedb({
 
 let app = express()
 
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'ejs')
-app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-//app.use('/', index);
-//app.use('/users', users);
+
+var port = '3000';
+app.set('port', port);
+app.listen(port, () => {
+  console.log('起動しました', `http://localhost:${port}`)
+})
+
 app.use('/wiki/:wikiname', express.static('./public'))
 app.use('/edit/:wikiname', express.static('./public'))
 app.get('/', (req, res) => {
+  console.log("接続されました。")
   res.redirect(302, '/wiki/FrontPage')
 })
-app.use(function (err:any, req:any, res:any, next:any) {
-  res.locals.message = err.message
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
-  res.status(err.status || 500)
-  res.render('error')
-})
-
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
-var server = http.createServer(app);
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
 // APIの定義
 // Wikiデータを返すAPI 
 app.get('/api/get/:wikiname', (req, res) => {
@@ -65,48 +45,23 @@ app.get('/api/get/:wikiname', (req, res) => {
   })
 })
 
-function normalizePort(val:any) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    return val;
-  }
-
-  if (port >= 0) {
-    return port;
-  }
-
-  return false;
-}
-
-function onError(error:any) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-}
-
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-}
+app.post('/api/put/:wikiname', (req, res) => {
+  const wikiname = req.params.wikiname
+  console.log('/api/put/' + wikiname, req.body)
+  // 既存のエントリがあるか確認
+  db.find({'name': wikiname}, (err:any,docs:any) => {
+    if (err) {
+      res.json({status: false, msg: err})
+      return
+    }
+    const body = req.body.body
+    if (docs.length === 0) { // エントリがなければ挿入
+      db.insert({name: wikiname, body})
+    } else { // 既存のエントリを更新
+      db.update({name: wikiname}, {name: wikiname, body})
+    }
+    res.json({status: true})
+  })
+})
 
 export = app
