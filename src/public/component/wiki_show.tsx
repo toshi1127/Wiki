@@ -21,8 +21,16 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
             loaded: false
         }
     }
-    componentWillMount(){
-        
+    componentWillMount() {
+        request
+            .get(`/api/get/${this.state.name}`)
+            .end((err, res) => {
+                if (err) return
+                this.setState({
+                    body: res.body.data.body,
+                    loaded: true
+                })
+            })
     }
     render() {
         if (!this.state.loaded) {
@@ -43,23 +51,23 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
     }
     convertText(body: any) {
         const nodes = WikiParser.parse(body)
-        const lines = nodes.map((e:any,i:any)=>{
-            if(e.tag === 'ul'){
+        const lines = nodes.map((e: any, i: any) => {
+            if (e.tag === 'ul') {
                 const lis = e.items.map(
-                    (s:any, j:any) => {
-                    <li key={`node${i}_${j}`}>{s}</li>
-                })
+                    (s: any, j: any) => {
+                        <li key={`node${i}_${j}`}>{s}</li>
+                    })
                 return (<ul key={`node${i}`}>{lis}</ul>)
             }
             if (e.tag === 'a') {
                 return (
-                <div key={`node${i}`}>
-                  <a href={`/wiki/${e.label}`}>→{e.label}</a>
-                </div>
+                    <div key={`node${i}`}>
+                        <a href={`/wiki/${e.label}`}>→{e.label}</a>
+                    </div>
                 )
             }
             return React.createElement(
-                e.tag, {key: 'node' + i}, e.label)
+                e.tag, { key: 'node' + i }, e.label)
         })
         return lines
     }
