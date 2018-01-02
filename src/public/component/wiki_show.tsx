@@ -21,6 +21,9 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
             loaded: false
         }
     }
+    componentWillMount(){
+        
+    }
     render() {
         if (!this.state.loaded) {
             return (
@@ -39,6 +42,25 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         )
     }
     convertText(body: any) {
-        const nodes = 
+        const nodes = WikiParser.parse(body)
+        const lines = nodes.map((e:any,i:any)=>{
+            if(e.tag === 'ul'){
+                const lis = e.items.map(
+                    (s:any, j:any) => {
+                    <li key={`node${i}_${j}`}>{s}</li>
+                })
+                return (<ul key={`node${i}`}>{lis}</ul>)
+            }
+            if (e.tag === 'a') {
+                return (
+                <div key={`node${i}`}>
+                  <a href={`/wiki/${e.label}`}>→{e.label}</a>
+                </div>
+                )
+            }
+            return React.createElement(
+                e.tag, {key: 'node' + i}, e.label)
+        })
+        return lines
     }
 }
