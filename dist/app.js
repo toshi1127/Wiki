@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 // Wikiデータを返すAPI 
 app.get('/api/get/:wikiname', (req, res) => {
     const wikiname = req.params.wikiname;
+    console.log('/api/get/' + wikiname);
     db.find({ name: wikiname }, (err, docs) => {
         if (err) {
             res.json({ status: false, msg: err });
