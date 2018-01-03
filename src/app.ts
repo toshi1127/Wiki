@@ -13,12 +13,10 @@ const db = new Nedb({
 
 let app = express()
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.static(path.join(__dirname, 'public')))
+
+app.use(bodyParser.urlencoded({ extended: true }))
 
 var port = '3000';
-app.set('port', port);
 app.listen(port, () => {
   console.log('起動しました', `http://localhost:${port}`)
 })
