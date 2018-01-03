@@ -5,22 +5,16 @@ module.exports = {
     path: path.join(__dirname, 'dist/public'),
     filename: 'bundle.js'
   },
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   resolve: {
-    extensions: ['', '.tsx', '.ts', '.js']
+    extensions: ['.tsx', '.ts', '.js']
   },
   module: {
     rules: [
-      {
-        test: /.js$/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['es2015', 'react']
-        }
-      },
+      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
       {
         test: /\.ts(x?)$/,
-        loader: 'ts-loader',
+        loader: "awesome-typescript-loader",
         exclude: /node_modules/
       }
     ]
