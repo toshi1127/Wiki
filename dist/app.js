@@ -13,8 +13,8 @@ var port = '3000';
 app.listen(port, () => {
     console.log('起動しました', `http://localhost:${port}`);
 });
-app.use('/wiki/:wikiname', express.static('./public'));
-app.use('/edit/:wikiname', express.static('./public'));
+app.use('/wiki/:wikiname', express.static(__dirname + '/public'));
+app.use('/edit/:wikiname', express.static(__dirname + '/public'));
 app.get('/', (req, res) => {
     console.log("接続されました。");
     res.redirect(302, '/wiki/FrontPage');
