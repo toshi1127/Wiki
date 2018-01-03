@@ -6,6 +6,9 @@ module.exports = {
     filename: 'bundle.js'
   },
   devtool: 'inline-source-map',
+  resolve: {
+    extensions: ['', '.tsx', '.ts', '.js']
+  },
   module: {
     rules: [
       {
@@ -14,6 +17,11 @@ module.exports = {
         options: {
           presets: ['es2015', 'react']
         }
+      },
+      {
+        test: /\.ts(x?)$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/
       }
     ]
   }

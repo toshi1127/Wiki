@@ -27,6 +27,7 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
             .end((err, res) => {
                 if (err) return
                 this.setState({
+                    name:this.state.name,
                     body: res.body.data.body,
                     loaded: true
                 })

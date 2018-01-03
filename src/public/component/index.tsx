@@ -7,7 +7,7 @@ import {
 import WikiEdit from './wiki_edit'
 import WikiShow from './wiki_show'
 
-const WikiApp = () => (
+const WikiApp=() => (
     <BrowserRouter>
     <div>
     <Route path='/wiki/:name' component={WikiShow} />

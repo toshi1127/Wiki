@@ -32,15 +32,17 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
                 return 
             }
             this.setState({
+                name:this.state.name,
                 //res.bodyで連想配列全体。data=docsの中のbodyにアクセスしている。
                 body:res.body.data.body,
                 //読み込みが終わったのでtrueにしている。
-                loaded:true
+                loaded:true,
+                jump:this.state.jump,
             })
         })
     }
     save(){
-        const wikiname = this.state.name
+        const wikiname:string = this.state.name
         request
         .post('/api/put/' + wikiname)
         .type('form')
@@ -54,12 +56,22 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
                 return
             }
             this.setState({
+                name:this.state.name,
+                //res.bodyで連想配列全体。data=docsの中のbodyにアクセスしている。
+                body:this.state.body,
+                //読み込みが終わったのでtrueにしている。
+                loaded:this.state.loaded,
                 jump:'/wiki/'+wikiname
             })
         })
     }
     bodyChanged (e:any) {
-        this.setState({body: e.target.value})
+        this.setState({
+            name:this.state.name,
+            body: e.target.value,
+            loaded:this.state.loaded,
+            jump:this.state.jump
+        })
     }
     render(){
         if(!this.state.loaded){
