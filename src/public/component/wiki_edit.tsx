@@ -3,7 +3,11 @@ import * as request from 'superagent'
 import { Redirect } from 'react-router-dom'
 
 interface IndexProps {
-    name:string
+    match: {
+        params: {
+            name: string;
+        }
+    }
 }
 interface IndexState {
     name:any,
@@ -15,8 +19,9 @@ interface IndexState {
 export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
     constructor(props: any) {
         super(props);
+        const { match } = this.props
         //URLのパラメーターを受け取っている。
-        const name = this.props.name
+        const name = match.params.name
         this.state = {
             name, 
             body: '',
