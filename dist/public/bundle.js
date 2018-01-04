@@ -28757,8 +28757,9 @@ const WikiParser = __webpack_require__(240);
 class WikiShow extends React.Component {
     constructor(props) {
         super(props);
+        const { match } = this.props;
         this.state = {
-            name: this.props.name,
+            name: match.params.name,
             body: '',
             loaded: false
         };

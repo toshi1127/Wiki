@@ -6,8 +6,9 @@ const WikiParser = require("../javascript/wiki_parser");
 class WikiShow extends React.Component {
     constructor(props) {
         super(props);
+        const { match } = this.props;
         this.state = {
-            name: this.props.name,
+            name: match.params.name,
             body: '',
             loaded: false
         };

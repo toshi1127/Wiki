@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 // Wikiデータを返すAPI 
 app.get('/api/get/:wikiname', (req, res) => {
     const wikiname = req.params.wikiname;
+    //この時点でundifindなので、componentWillMountの時点でstate.nameに値が入っていない。
     console.log('/api/get/' + wikiname);
     db.find({ name: wikiname }, (err, docs) => {
         if (err) {

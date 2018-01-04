@@ -4,7 +4,11 @@ import { Redirect } from 'react-router-dom'
 import * as WikiParser from '../javascript/wiki_parser'
 
 interface IndexProps {
-    name: any
+    match: {
+        params: {
+            name: string;
+        }
+    }
 }
 interface IndexState {
     name: string,
@@ -13,10 +17,11 @@ interface IndexState {
 }
 
 export default class WikiShow extends React.Component<IndexProps, IndexState>  {
-    constructor(props: any) {
+    constructor(props: IndexProps) {
         super(props);
+        const { match } = this.props
         this.state = {
-            name: this.props.name,
+            name: match.params.name,
             body: '',
             loaded: false
         }
