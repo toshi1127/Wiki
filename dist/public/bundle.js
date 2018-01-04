@@ -27564,7 +27564,7 @@ class WikiEdit extends React.Component {
     }
     componentWillMount() {
         request
-            .get(`api/get/${this.state.name}`)
+            .get(`/api/get/${this.state.name}`)
             .end((err, res) => {
             if (err) {
                 return;
