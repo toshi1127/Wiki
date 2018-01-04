@@ -27552,10 +27552,11 @@ const request = __webpack_require__(102);
 class WikiEdit extends React.Component {
     constructor(props) {
         super(props);
+        const { match } = this.props;
         //URLのパラメーターを受け取っている。
-        const name = this.props.name;
+        const name = match.params.name;
         this.state = {
-            name,
+            name: name,
             body: '',
             loaded: false,
             jump: ''

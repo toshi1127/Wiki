@@ -17,13 +17,13 @@ interface IndexState {
 }
 
 export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
-    constructor(props: any) {
+    constructor(props: IndexProps) {
         super(props);
         const { match } = this.props
         //URLのパラメーターを受け取っている。
         const name = match.params.name
         this.state = {
-            name, 
+            name:name, 
             body: '',
             loaded: false,
             jump: ''
@@ -31,7 +31,7 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
     }
     componentWillMount(){
         request
-        .get(`api/get/${this.state.name}`)
+        .get(`/api/get/${this.state.name}`)
         .end((err,res)=>{
             if(err){
                 return 
