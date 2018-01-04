@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const request = require("superagent");
+const react_router_dom_1 = require("react-router-dom");
 class WikiEdit extends React.Component {
     constructor(props) {
         super(props);
@@ -71,8 +72,9 @@ class WikiEdit extends React.Component {
         if (this.state.jump !== '') {
             //メイン画面にリダイレクト
             //保存したんだから、編集画面から閲覧する画面に推移させる。
+            return React.createElement(react_router_dom_1.Redirect, { to: this.state.jump });
         }
-        return (React.createElement("div", null,
+        return (React.createElement("div", { style: styles.edit },
             React.createElement("h1", null,
                 React.createElement("a", { href: `/wiki/${name}` }, name)),
             React.createElement("textarea", { rows: 12, cols: 60, onChange: e => this.bodyChanged(e), value: this.state.body }),
@@ -81,4 +83,17 @@ class WikiEdit extends React.Component {
     }
 }
 exports.default = WikiEdit;
+const styles = {
+    show: {
+        border: '1px solid gray',
+        padding: 12
+    },
+    edit: {
+        padding: 12,
+        backgroundColor: 'silver'
+    },
+    right: {
+        textAlign: 'right'
+    }
+};
 //# sourceMappingURL=wiki_edit.js.map

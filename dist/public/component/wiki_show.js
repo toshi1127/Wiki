@@ -34,6 +34,8 @@ class WikiShow extends React.Component {
         const body = this.state.body;
         const html = this.convertText(body);
         return (React.createElement("div", null,
+            React.createElement("h1", null, this.state.name),
+            React.createElement("div", { style: styles.show }, html),
             React.createElement("p", null,
                 React.createElement("a", { href: `/edit/${name}` }, "\u2192\u3053\u306E\u30DA\u30FC\u30B8\u3092\u7DE8\u96C6"))));
     }
@@ -58,4 +60,17 @@ class WikiShow extends React.Component {
     }
 }
 exports.default = WikiShow;
+const styles = {
+    show: {
+        border: '1px solid gray',
+        padding: 12
+    },
+    edit: {
+        padding: 12,
+        backgroundColor: 'silver'
+    },
+    right: {
+        textAlign: 'right'
+    }
+};
 //# sourceMappingURL=wiki_show.js.map
