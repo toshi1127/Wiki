@@ -87,7 +87,7 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
             //保存したんだから、編集画面から閲覧する画面に推移させる。
         }
         return (
-            <div>
+            <div style={styles.edit}>
                 <h1><a href={`/wiki/${name}`}>{name}</a></h1>
                 <textarea rows={12} cols={60}
                 onChange={e=>this.bodyChanged(e)}
@@ -99,3 +99,16 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
         )
     }
 }
+const styles = {
+    show: {
+      border: '1px solid gray',
+      padding: 12
+    },
+    edit: {
+      padding: 12,
+      backgroundColor: 'silver'
+    },
+    right: {
+      textAlign: 'right'
+    }
+  }

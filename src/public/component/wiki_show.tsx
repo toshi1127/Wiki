@@ -49,6 +49,8 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         const html = this.convertText(body)
         return (
             <div>
+                <h1>{this.state.name}</h1>
+                <div style={styles.show}>{html}</div>
                 <p>
                     <a href={`/edit/${name}`}>→このページを編集</a>
                 </p>
@@ -78,3 +80,17 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         return lines
     }
 }
+
+const styles = {
+    show: {
+      border: '1px solid gray',
+      padding: 12
+    },
+    edit: {
+      padding: 12,
+      backgroundColor: 'silver'
+    },
+    right: {
+      textAlign: 'right'
+    }
+  }
