@@ -31,4 +31,10 @@ export default class main extends React.Component<IndexProps, IndexState>{
                 })
             })
     }
+    create(e:string){//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
+        //取得後、bodyを上書きして、画面を再表示する。
+    }
+    delete(e:string){
+        //createの削除版
+    }
 }
