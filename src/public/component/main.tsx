@@ -45,9 +45,10 @@ export default class main extends React.Component<IndexProps, IndexState>{
         }
         else {
             console.log(this.state.body)
+            /*
             const list = this.state.body.map((e:any,i:any)=>{
 
-            })
+            })*/
             return (
                 <div></div>
             )

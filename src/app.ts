@@ -50,6 +50,8 @@ app.get('/api/getlist', (req, res)=> {
       return 
     }
     else{
+      console.log(docs)
+      console.log(docs[0])
       res.json({status:true,body:docs[0]})
     }
   })
