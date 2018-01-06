@@ -14,7 +14,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
     constructor(props: IndexProps) {
         super(props);
         this.state = {
-            body:null,
+            body: null,
             loaded: false
         }
     }
@@ -26,20 +26,31 @@ export default class main extends React.Component<IndexProps, IndexState>{
                     return
                 }
                 this.setState({
-                    body:res.body.data,
+                    body: res.body.data,
                     loaded: true
                 })
             })
     }
-    create(e:string){//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
+    create(e: string) {//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
         //取得後、bodyを上書きして、画面を再表示する。
     }
-    delete(e:string){
+    delete(e: string) {
         //createの削除版
     }
-    render(){
-        return (
-            <div></div>
-        )
+    render() {
+        if (!this.state.loaded) {
+            return (
+                <p>読み込み中</p>
+            )
+        }
+        else {
+            console.log(this.state.body)
+            const list = this.state.body.map((e:any,i:any)=>{
+
+            })
+            return (
+                <div></div>
+            )
+        }
     }
 }
