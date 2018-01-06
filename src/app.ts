@@ -23,7 +23,10 @@ app.listen(port, () => {
 
 app.use('/wiki/:wikiname', express.static(__dirname + '/public'))
 app.use('/edit/:wikiname', express.static(__dirname + '/public'))
-app.use('/', express.static(__dirname + '/public'))
+app.use('/main', express.static(__dirname + '/public'))
+app.get('/', (req, res) => {
+  res.redirect(302, '/main')
+})
 // APIの定義
 // Wikiデータを返すAPI 
 app.get('/api/get/:wikiname', (req, res) => {
@@ -38,11 +41,12 @@ app.get('/api/get/:wikiname', (req, res) => {
     if (docs.length === 0) {
       docs = [{ name: wikiname, body: '' }]
     }
+    console.log(docs[0])
     res.json({ status: true, data: docs[0] })
   })
 })
 
-app.get('/api/getlist', (req, res)=> {
+app.get('/api/getting_list', (req, res)=> {
   console.log("掲示板の一覧を返します")
   db.find({},(err:Error,docs:any)=>{
     if(err){
@@ -51,8 +55,12 @@ app.get('/api/getlist', (req, res)=> {
     }
     else{
       console.log(docs)
-      console.log(docs[0])
-      res.json({status:true,body:docs[0]})
+      //ここで名前の配列を作ってクライアントに返す。
+      docs.map((value:any,index:any,array:string[])=>{
+        array[index] = value.name
+      })
+      console.log(docs)
+      res.json({status:true,data:docs})
     }
   })
 })

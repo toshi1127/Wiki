@@ -20,7 +20,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
     }
     componentWillMount() {
         request
-            .get('/api/getlist')
+            .get(`/api/getting_list`)
             .end((err, res) => {
                 if (err) {
                     return
