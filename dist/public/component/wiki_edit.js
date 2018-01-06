@@ -74,6 +74,7 @@ class WikiEdit extends React.Component {
             //保存したんだから、編集画面から閲覧する画面に推移させる。
             return React.createElement(react_router_dom_1.Redirect, { to: this.state.jump });
         }
+        const name = this.state.name;
         return (React.createElement("div", { style: styles.edit },
             React.createElement("h1", null,
                 React.createElement("a", { href: `/wiki/${name}` }, name)),

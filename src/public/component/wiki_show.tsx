@@ -32,7 +32,7 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
             .end((err, res) => {
                 if (err) return
                 this.setState({
-                    name:this.state.name,
+                    name: this.state.name,
                     body: res.body.data.body,
                     loaded: true
                 })
@@ -51,7 +51,7 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
             <div>
                 <h1>{this.state.name}</h1>
                 <div style={styles.show}>{html}</div>
-                <p>
+                <p style={styles.right}>
                     <a href={`/edit/${name}`}>→このページを編集</a>
                 </p>
             </div>
@@ -60,17 +60,16 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
     convertText(body: any) {
         const nodes = WikiParser.parse(body)
         const lines = nodes.map((e: any, i: any) => {
-            if (e.tag === 'ul') {
+            if (e.tag === 'ul') { // リスト
                 const lis = e.items.map(
-                    (s: any, j: any) => {
-                        <li key={`node${i}_${j}`}>{s}</li>
-                    })
-                return (<ul key={`node${i}`}>{lis}</ul>)
-            }
+                  (s:any, j:any) => <li key={`node${i}_${j}`}>{s}</li>
+                )
+                return <ul key={`node${i}`}>{lis}</ul>
+              }
             if (e.tag === 'a') {
                 return (
                     <div key={`node${i}`}>
-                        <a href={`/wiki/${e.label}`}>→{e.label}</a>
+                        <a href={`/wiki/${e.label}`}>{e.label}</a>
                     </div>
                 )
             }
@@ -83,14 +82,14 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
 
 const styles = {
     show: {
-      border: '1px solid gray',
-      padding: 12
+        border: '1px solid gray',
+        padding: 12
     },
     edit: {
-      padding: 12,
-      backgroundColor: 'silver'
+        padding: 12,
+        backgroundColor: 'silver'
     },
     right: {
-      textAlign: 'right'
+        textAlign: 'right'
     }
-  }
+}

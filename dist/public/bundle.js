@@ -27621,6 +27621,7 @@ class WikiEdit extends React.Component {
             //保存したんだから、編集画面から閲覧する画面に推移させる。
             return React.createElement(react_router_dom_1.Redirect, { to: this.state.jump });
         }
+        const name = this.state.name;
         return (React.createElement("div", { style: styles.edit },
             React.createElement("h1", null,
                 React.createElement("a", { href: `/wiki/${name}` }, name)),
@@ -28810,16 +28811,12 @@ class WikiShow extends React.Component {
         const nodes = WikiParser.parse(body);
         const lines = nodes.map((e, i) => {
             if (e.tag === 'ul') {
-                const lis = e.items.map((s, j) => {
-                    React.createElement("li", { key: `node${i}_${j}` }, s);
-                });
-                return (React.createElement("ul", { key: `node${i}` }, lis));
+                const lis = e.items.map((s, j) => React.createElement("li", { key: `node${i}_${j}` }, s));
+                return React.createElement("ul", { key: `node${i}` }, lis);
             }
             if (e.tag === 'a') {
                 return (React.createElement("div", { key: `node${i}` },
-                    React.createElement("a", { href: `/wiki/${e.label}` },
-                        "\u2192",
-                        e.label)));
+                    React.createElement("a", { href: `/wiki/${e.label}` }, e.label)));
             }
             return React.createElement(e.tag, { key: 'node' + i }, e.label);
         });
