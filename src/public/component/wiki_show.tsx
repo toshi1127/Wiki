@@ -62,10 +62,10 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         const lines = nodes.map((e: any, i: any) => {
             if (e.tag === 'ul') { // リスト
                 const lis = e.items.map(
-                  (s:any, j:any) => <li key={`node${i}_${j}`}>{s}</li>
+                    (s: any, j: any) => <li key={`node${i}_${j}`}>{s}</li>
                 )
                 return <ul key={`node${i}`}>{lis}</ul>
-              }
+            }
             if (e.tag === 'a') {
                 return (
                     <div key={`node${i}`}>
@@ -74,7 +74,7 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                 )
             }
             return React.createElement(
-                e.tag, { key: 'node' + i }, e.label)
+                e.tag, { key: `node${i}` }, e.label)
         })
         return lines
     }

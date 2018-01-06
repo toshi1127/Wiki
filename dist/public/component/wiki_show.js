@@ -36,7 +36,7 @@ class WikiShow extends React.Component {
         return (React.createElement("div", null,
             React.createElement("h1", null, this.state.name),
             React.createElement("div", { style: styles.show }, html),
-            React.createElement("p", null,
+            React.createElement("p", { style: styles.right },
                 React.createElement("a", { href: `/edit/${name}` }, "\u2192\u3053\u306E\u30DA\u30FC\u30B8\u3092\u7DE8\u96C6"))));
     }
     convertText(body) {
@@ -50,7 +50,7 @@ class WikiShow extends React.Component {
                 return (React.createElement("div", { key: `node${i}` },
                     React.createElement("a", { href: `/wiki/${e.label}` }, e.label)));
             }
-            return React.createElement(e.tag, { key: 'node' + i }, e.label);
+            return React.createElement(e.tag, { key: `node${i}` }, e.label);
         });
         return lines;
     }

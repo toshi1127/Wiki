@@ -28,7 +28,7 @@ blockquote
 
 link
   = "@" label:$([^\n]+) "\n"
-  { return {tag: "a", label} }
+  { return {tag:"a", label} }
 
 text
   = label:$(!EOL .)+ EOL

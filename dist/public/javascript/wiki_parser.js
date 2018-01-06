@@ -158,7 +158,7 @@ function peg$parse(input, options) {
       peg$c14 = function(label) { return {tag:"blockquote", label} },
       peg$c15 = "@",
       peg$c16 = peg$literalExpectation("@", false),
-      peg$c17 = function(label) { return {tag: "a", label} },
+      peg$c17 = function(label) { return {tag:"a", label} },
       peg$c18 = function(label) { return {tag: "p", label} },
       peg$c19 = function() { return {tag: "p", label:''} },
 
