@@ -32,7 +32,6 @@ app.get('/', (req, res) => {
 app.get('/api/get/:wikiname', (req, res) => {
   const wikiname = req.params.wikiname
   //この時点でundifindなので、componentWillMountの時点でstate.nameに値が入っていない。
-  console.log('/api/get/' + wikiname)
   db.find({ name: wikiname }, (err: any, docs: any) => {
     if (err) {
       res.json({ status: false, msg: err })
@@ -41,25 +40,21 @@ app.get('/api/get/:wikiname', (req, res) => {
     if (docs.length === 0) {
       docs = [{ name: wikiname, body: '' }]
     }
-    console.log(docs[0])
     res.json({ status: true, data: docs[0] })
   })
 })
 
 app.get('/api/getting_list', (req, res)=> {
-  console.log("掲示板の一覧を返します")
   db.find({},(err:Error,docs:any)=>{
     if(err){
       res.json({status:false,msg:err})
       return 
     }
     else{
-      console.log(docs)
       //ここで名前の配列を作ってクライアントに返す。
       docs.map((value:any,index:any,array:string[])=>{
         array[index] = value.name
       })
-      console.log(docs)
       res.json({status:true,data:docs})
     }
   })
@@ -67,7 +62,6 @@ app.get('/api/getting_list', (req, res)=> {
 
 app.post('/api/put/:wikiname', (req, res) => {
   const wikiname = req.params.wikiname
-  console.log('/api/put/' + wikiname, req.body)
   // 既存のエントリがあるか確認
   db.find({ 'name': wikiname }, (err: any, docs: any) => {
     if (err) {
