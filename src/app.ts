@@ -42,14 +42,14 @@ app.get('/api/get/:wikiname', (req, res) => {
   })
 })
 
-app.get('/api/get/list', (req, res)=> {
+app.get('/api/getlist', (req, res)=> {
   console.log("掲示板の一覧を返します")
   db.find({},(err:Error,docs:any)=>{
     if(err){
       res.json({status:false,msg:err})
       return 
     }
-    if(name){
+    else{
       res.json({status:true,body:docs[0]})
     }
   })
