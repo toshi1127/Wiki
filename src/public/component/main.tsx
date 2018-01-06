@@ -37,6 +37,13 @@ export default class main extends React.Component<IndexProps, IndexState>{
     delete(e: string) {
         //createの削除版
     }
+    printlist() {
+        console.log(this.state.body)
+        const lines = this.state.body.map((value: any, index: any, array: any[]) => {
+            return <div><a href={`/wiki/${value}`}>{value}</a></div>
+        })
+        return lines
+    }
     render() {
         if (!this.state.loaded) {
             return (
@@ -45,13 +52,9 @@ export default class main extends React.Component<IndexProps, IndexState>{
         }
         else {
             console.log(this.state.body)
-            /*
-            const list = this.state.body.map((e:any,i:any)=>{
-
-            })*/
-            return (
-                <div></div>
-            )
+            const html: any = this.printlist()
+            console.log(html)
+            return (<div>{html}</div>)
         }
     }
 }
