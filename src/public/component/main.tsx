@@ -37,4 +37,9 @@ export default class main extends React.Component<IndexProps, IndexState>{
     delete(e:string){
         //createの削除版
     }
+    render(){
+        return (
+            <div></div>
+        )
+    }
 }
