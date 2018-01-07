@@ -6,7 +6,7 @@ interface IndexProps {
 }
 
 interface IndexState {
-    body: string[]
+    body: string[],
     loaded: boolean
 }
 
