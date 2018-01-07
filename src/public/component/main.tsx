@@ -8,7 +8,9 @@ interface IndexProps {
 
 interface IndexState {
     body: string[],
-    loaded: boolean
+    loaded: boolean,
+    create: boolean,
+    delete: boolean
 }
 
 export default class main extends React.Component<IndexProps, IndexState>{
@@ -16,7 +18,9 @@ export default class main extends React.Component<IndexProps, IndexState>{
         super(props);
         this.state = {
             body: null,
-            loaded: false
+            loaded: false,
+            create: false,
+            delete: false
         }
     }
     componentWillMount() {
@@ -31,6 +35,11 @@ export default class main extends React.Component<IndexProps, IndexState>{
                     loaded: true
                 })
             })
+    }
+    handleChange(e: any) {
+        this.setState({
+            [e.name]:e.isOK,
+        })
     }
     create_wiki(e: Element) {//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
         //取得後、bodyを上書きして、画面を再表示する。
@@ -51,20 +60,21 @@ export default class main extends React.Component<IndexProps, IndexState>{
             )
         }
         else {
+            const doChange = (e: any) => this.handleChange(e)
             const filtering = /^\d{4}\/\d{2}\/\d{2}.*/g
-            const pattern =/^\d{4}\/\d{2}\/\d{2}.*$/
-            const create_wiki = (e:any) => this.create_wiki(e)
-            const delete_wiki = (e:any) => this.delete_wiki(e)
+            const pattern = /^\d{4}\/\d{2}\/\d{2}.*$/
+            const create_wiki = (e: any) => this.create_wiki(e)
+            const delete_wiki = (e: any) => this.delete_wiki(e)
             const html: any = this.printlist()
             return (
                 <div>
                     {html}
                     <form onSubmit={create_wiki}>
-                        <Form filer={filtering} pattern={pattern}/>
+                        <Form name='create' filer={filtering} pattern={pattern} onChange={doChange} />
                         <input type='submit' value='create' />
                     </form>
                     <form onSubmit={delete_wiki}>
-                        <Form filer={filtering} pattern={pattern}/>
+                        <Form name='delete' filer={filtering} pattern={pattern} onChange={doChange} />
                         <input type='submit' value='delete' />
                     </form>
                 </div>
