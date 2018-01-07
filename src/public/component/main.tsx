@@ -31,10 +31,10 @@ export default class main extends React.Component<IndexProps, IndexState>{
                 })
             })
     }
-    create(e: string) {//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
+    create(e: Element) {//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
         //取得後、bodyを上書きして、画面を再表示する。
     }
-    delete(e: string) {
+    delete(e: Element) {
         //createの削除版
     }
     printlist() {
@@ -43,6 +43,9 @@ export default class main extends React.Component<IndexProps, IndexState>{
         })
         return lines
     }
+    doChange(e:any) {
+
+    }
     render() {
         if (!this.state.loaded) {
             return (
@@ -50,8 +53,18 @@ export default class main extends React.Component<IndexProps, IndexState>{
             )
         }
         else {
+            const create = (e:any) => this.create(e)
+            const doChange = (e:any)=> this.doChange(e)
             const html: any = this.printlist()
-            return (<div>{html}</div>)
+            return (
+                <div>
+                    {html}
+                    <form onSubmit={create}>
+                        <input type='text' onChange={doChange} />
+                        <input type='submit' value='create' />
+                    </form>
+                </div>
+            )
         }
     }
 }
