@@ -2,39 +2,62 @@ import * as React from 'react'
 import * as request from 'superagent'
 
 interface IndexProps {
-    filer:any,
-    pattern:any
+    filer: any,
+    pattern: any
 }
 interface IndexState {
     value: string,
-    isOK:boolean
+    isOK: boolean
 }
 
-export  default class Form extends React.Component<IndexProps, IndexState> {
+export default class Form extends React.Component<IndexProps, IndexState> {
     constructor(props: IndexProps) {
         super(props)
         this.state = {
             value: '',
-            isOK:this.checkValue(this.state.value)
+            isOK: false
         }
     }
-    checkValue(s:string){
+    checkValue(s: string) {
         return this.props.pattern.test(s)
     }
-    doChange(e:any) {
+    doChange(e: any) {
         const newValue = e.target.value
         const newIsOK = this.checkValue(newValue)
         this.setState({
             value: newValue,
-            isOK:newIsOK
+            isOK: newIsOK
         })
     }
     render() {
-        const doChange = (e:any)=> this.doChange(e)
+        const msg = this.renderStatusMessage()
+        const doChange = (e: any) => this.doChange(e)
         return (
             <div>
-                <input type='text' onChange={doChange} />
+                <input type='text' value={this.state.value} onChange={doChange} />
+                {msg}
             </div>
         )
+    }
+    renderStatusMessage() {
+        const so = {
+            margin: '8px',
+            padding: '8px',
+            color: 'white',
+            backgroundColor: ''
+        }
+        let msg = null
+        if (this.state.isOK) {
+            // OKのとき
+            so.backgroundColor = 'green'
+            msg = <span style={so}>OK</span>
+        } else {
+            // NGのとき (ただし空白の時は非表示)
+            if (this.state.value !== '') {
+                so.backgroundColor = 'red'
+                msg = <span style={so}>NG</span>
+            }
+        }
+        return msg
     }
 }
