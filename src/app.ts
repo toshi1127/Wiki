@@ -44,20 +44,36 @@ app.get('/api/get/:wikiname', (req, res) => {
   })
 })
 
-app.get('/api/getting_list', (req, res)=> {
-  db.find({},(err:Error,docs:any)=>{
-    if(err){
-      res.json({status:false,msg:err})
-      return 
+app.get('/api/getting_list', (req, res) => {
+  db.find({}, (err: Error, docs: any) => {
+    if (err) {
+      res.json({ status: false, msg: err })
+      return
     }
-    else{
+    else {
       //ここで名前の配列を作ってクライアントに返す。
-      docs.map((value:any,index:any,array:string[])=>{
+      docs.map((value: any, index: any, array: string[]) => {
         array[index] = value.name
       })
-      res.json({status:true,data:docs})
+      res.json({ status: true, data: docs })
     }
   })
+})
+
+app.get('/create/:wikiname', (req, res) => {
+  const wikiname: string = req.params.wikiname
+  db.insert([
+    { name: wikiname }
+  ], function (err, newDoc) {
+    console.log(newDoc);
+  });
+})
+
+app.get('/delete/:wikiname', (req, res) => {
+  const wikiname: string = req.params.wikiname
+  db.remove({ name: wikiname }, function (err, deleteDoc) {
+      console.log(deleteDoc);
+    });
 })
 
 app.post('/api/put/:wikiname', (req, res) => {

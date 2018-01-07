@@ -3,7 +3,9 @@ import * as request from 'superagent'
 
 interface IndexProps {
     filer: any,
-    pattern: any
+    pattern: any,
+    name: string,
+    onChange: any
 }
 interface IndexState {
     value: string,
@@ -28,13 +30,20 @@ export default class Form extends React.Component<IndexProps, IndexState> {
             value: newValue,
             isOK: newIsOK
         })
+        if (this.props.onChange) {
+            this.props.onChange({
+                value: newValue,
+                isOK: newIsOK,
+                name: this.props.name
+            })
+        }
     }
     render() {
         const msg = this.renderStatusMessage()
         const doChange = (e: any) => this.doChange(e)
         return (
             <div>
-                <input type='text' value={this.state.value} onChange={doChange} />
+                <input type='text' name={this.props.name} value={this.state.value} onChange={doChange} />
                 {msg}
             </div>
         )
