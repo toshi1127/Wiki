@@ -8,16 +8,21 @@ interface IndexState {
     value: string
 }
 
-export class CreateForm extends React.Component<IndexProps, IndexState> {
+export class Form extends React.Component<IndexProps, IndexState> {
     constructor(props: IndexProps) {
         super(props)
         this.state = {
             value: ''
         }
     }
+    doChange(e:any) {
+        
+    }
     render() {
+        const doChange = (e:any)=> this.doChange(e)
         return (
             <div>
+                <input type='text' onChange={doChange} />
             </div>
         )
     }
