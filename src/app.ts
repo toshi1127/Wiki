@@ -60,6 +60,24 @@ app.get('/api/getting_list', (req, res)=> {
   })
 })
 
+app.get('/create/:wikiname',(req,res)=>{
+  const wikiname = req.params.wikiname
+  db.insert([
+    {name: wikiname}
+    ], function(err, newDoc){
+      console.log(newDoc);
+  });
+})
+
+app.get('/delete/:wikiname',(req,res)=>{
+  const wikiname = req.params.wikiname
+  db.remove([
+    {name: wikiname}
+    ], function(err, deleteDoc){
+      console.log(deleteDoc);
+  });
+})
+
 app.post('/api/put/:wikiname', (req, res) => {
   const wikiname = req.params.wikiname
   // 既存のエントリがあるか確認

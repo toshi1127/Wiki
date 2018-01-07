@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as request from 'superagent'
+import * as nedb from 'nedb'
 import { Redirect } from 'react-router-dom'
 import Form from './form';
 
@@ -41,11 +42,36 @@ export default class main extends React.Component<IndexProps, IndexState>{
             [e.name]:e.isOK,
         })
     }
-    create_wiki(e: Element) {//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
+    create_wiki(e: any) {//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
         //取得後、bodyを上書きして、画面を再表示する。
+        request
+        .get('/create/'+e.value)
+        request
+        .get(`/api/getting_list`)
+        .end((err, res) => {
+            if (err) {
+                return
+            }
+            this.setState({
+                body: res.body.data,
+                loaded: true
+            })
+        })
     }
-    delete_wiki(e: Element) {
-        //createの削除版
+    delete_wiki(e: any) {
+        request
+        .get('/delete/'+e.value)
+        request
+        .get(`/api/getting_list`)
+        .end((err, res) => {
+            if (err) {
+                return
+            }
+            this.setState({
+                body: res.body.data,
+                loaded: true
+            })
+        })
     }
     printlist() {
         const lines = this.state.body.map((value: any, index: any, array: any[]) => {
