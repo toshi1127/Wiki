@@ -11,7 +11,9 @@ interface IndexState {
     body: string[],
     loaded: boolean,
     create: boolean,
-    delete: boolean
+    delete: boolean,
+    create_value: any,
+    delete_value: any
 }
 
 export default class main extends React.Component<IndexProps, IndexState>{
@@ -21,7 +23,9 @@ export default class main extends React.Component<IndexProps, IndexState>{
             body: null,
             loaded: false,
             create: false,
-            delete: false
+            delete: false,
+            create_value: '',
+            delete_value: ''
         }
     }
     componentWillMount() {
@@ -38,44 +42,37 @@ export default class main extends React.Component<IndexProps, IndexState>{
             })
     }
     handleChange(e: any) {
-        this.setState({
-            [e.name]:e.isOK,
-        })
+        if (e.name === 'create') {
+            this.setState({
+                [e.name]: e.isOK,
+                create_value: e.value
+            })
+        }
+        else {
+            this.setState({
+                [e.name]: e.isOK,
+                delete_value: e.value
+            })
+        }
     }
     create_wiki(e: any) {//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
         //取得後、bodyを上書きして、画面を再表示する。
-        console.log(e.value)
-        /*
         request
-        .get('/create/'+e.value)
-        request
-        .get(`/api/getting_list`)
-        .end((err, res) => {
-            if (err) {
-                return
-            }
-            this.setState({
-                body: res.body.data,
-                loaded: true
+            .get(`/create/` + this.state.create_value)
+            .end((err, res) => {
+                if (err) {
+                    return
+                }
             })
-        })*/
     }
     delete_wiki(e: any) {
-        console.log(e.value)
-        /*
         request
-        .get('/delete/'+e.value)
-        request
-        .get(`/api/getting_list`)
-        .end((err, res) => {
-            if (err) {
-                return
-            }
-            this.setState({
-                body: res.body.data,
-                loaded: true
+            .get(`/delete/` + this.state.delete_value)
+            .end((err, res) => {
+                if (err) {
+                    return
+                }
             })
-        })*/
     }
     printlist() {
         const lines = this.state.body.map((value: any, index: any, array: any[]) => {
@@ -91,8 +88,8 @@ export default class main extends React.Component<IndexProps, IndexState>{
         }
         else {
             const doChange = (e: any) => this.handleChange(e)
-            const filtering = /^\d{4}\/\d{2}\/\d{2}.*/g
-            const pattern = /^\d{4}\/\d{2}\/\d{2}.*$/
+            const filtering = /^\d{8}.*/g
+            const pattern = /^\d{8}.*$/
             const create_wiki = (e: any) => this.create_wiki(e)
             const delete_wiki = (e: any) => this.delete_wiki(e)
             const html: any = this.printlist()

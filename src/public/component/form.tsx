@@ -5,7 +5,7 @@ interface IndexProps {
     filer: any,
     pattern: any,
     name: string,
-    onChange: Function
+    onChange: any
 }
 interface IndexState {
     value: string,
@@ -24,6 +24,7 @@ export default class Form extends React.Component<IndexProps, IndexState> {
         return this.props.pattern.test(s)
     }
     doChange(e: any) {
+        console.log(e.target.value)
         const newValue = e.target.value
         const newIsOK = this.checkValue(newValue)
         this.setState({
