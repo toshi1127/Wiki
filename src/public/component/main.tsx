@@ -57,22 +57,26 @@ export default class main extends React.Component<IndexProps, IndexState>{
     }
     create_wiki(e: any) {//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
         //取得後、bodyを上書きして、画面を再表示する。
-        request
-            .get(`/create/` + this.state.create_value)
-            .end((err, res) => {
-                if (err) {
-                    return
-                }
-            })
+        if (this.state.create) {
+            request
+                .get(`/create/` + this.state.create_value)
+                .end((err, res) => {
+                    if (err) {
+                        return
+                    }
+                })
+        }
     }
     delete_wiki(e: any) {
-        request
-            .get(`/delete/` + this.state.delete_value)
-            .end((err, res) => {
-                if (err) {
-                    return
-                }
-            })
+        if (this.state.delete) {
+            request
+                .get(`/delete/` + this.state.delete_value)
+                .end((err, res) => {
+                    if (err) {
+                        return
+                    }
+                })
+        }
     }
     printlist() {
         const lines = this.state.body.map((value: any, index: any, array: any[]) => {

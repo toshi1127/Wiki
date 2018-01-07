@@ -24,7 +24,6 @@ export default class Form extends React.Component<IndexProps, IndexState> {
         return this.props.pattern.test(s)
     }
     doChange(e: any) {
-        console.log(e.target.value)
         const newValue = e.target.value
         const newIsOK = this.checkValue(newValue)
         this.setState({
