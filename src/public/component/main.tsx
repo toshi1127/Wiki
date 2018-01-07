@@ -44,6 +44,8 @@ export default class main extends React.Component<IndexProps, IndexState>{
     }
     create_wiki(e: any) {//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
         //取得後、bodyを上書きして、画面を再表示する。
+        console.log(e.value)
+        /*
         request
         .get('/create/'+e.value)
         request
@@ -56,9 +58,11 @@ export default class main extends React.Component<IndexProps, IndexState>{
                 body: res.body.data,
                 loaded: true
             })
-        })
+        })*/
     }
     delete_wiki(e: any) {
+        console.log(e.value)
+        /*
         request
         .get('/delete/'+e.value)
         request
@@ -71,7 +75,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
                 body: res.body.data,
                 loaded: true
             })
-        })
+        })*/
     }
     printlist() {
         const lines = this.state.body.map((value: any, index: any, array: any[]) => {
