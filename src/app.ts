@@ -61,8 +61,7 @@ app.get('/api/getting_list', (req, res) => {
 })
 
 app.get('/create/:wikiname', (req, res) => {
-  console.log(req.params.wikiname)
-  const wikiname = req.params.wikiname
+  const wikiname: string = req.params.wikiname
   db.insert([
     { name: wikiname }
   ], function (err, newDoc) {
@@ -71,13 +70,10 @@ app.get('/create/:wikiname', (req, res) => {
 })
 
 app.get('/delete/:wikiname', (req, res) => {
-  console.log(req.params.wikiname)
-  const wikiname = req.params.wikiname
-  db.remove([
-    { name: wikiname }
-  ], function (err, deleteDoc) {
-    console.log(deleteDoc);
-  });
+  const wikiname: string = req.params.wikiname
+  db.remove({ name: wikiname }, function (err, deleteDoc) {
+      console.log(deleteDoc);
+    });
 })
 
 app.post('/api/put/:wikiname', (req, res) => {
