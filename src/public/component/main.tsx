@@ -51,8 +51,8 @@ export default class main extends React.Component<IndexProps, IndexState>{
             )
         }
         else {
-            const filtering = /^\d{4}\/\d{2}\/\d{2}/g
-            const pattern =/^\d{4}\/\d{2}\/\d{2}$/
+            const filtering = /^\d{4}\/\d{2}\/\d{2}.*/g
+            const pattern =/^\d{4}\/\d{2}\/\d{2}.*$/
             const create_wiki = (e:any) => this.create_wiki(e)
             const delete_wiki = (e:any) => this.delete_wiki(e)
             const html: any = this.printlist()
