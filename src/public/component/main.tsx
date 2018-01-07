@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as request from 'superagent'
 import { Redirect } from 'react-router-dom'
+import Form from './form';
 
 interface IndexProps {
 }
@@ -31,10 +32,10 @@ export default class main extends React.Component<IndexProps, IndexState>{
                 })
             })
     }
-    create(e: Element) {//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
+    create_wiki(e: Element) {//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
         //取得後、bodyを上書きして、画面を再表示する。
     }
-    delete(e: Element) {
+    delete_wiki(e: Element) {
         //createの削除版
     }
     printlist() {
@@ -43,9 +44,6 @@ export default class main extends React.Component<IndexProps, IndexState>{
         })
         return lines
     }
-    doChange(e:any) {
-
-    }
     render() {
         if (!this.state.loaded) {
             return (
@@ -53,15 +51,19 @@ export default class main extends React.Component<IndexProps, IndexState>{
             )
         }
         else {
-            const create = (e:any) => this.create(e)
-            const doChange = (e:any)=> this.doChange(e)
+            const create_wiki = (e:any) => this.create_wiki(e)
+            const delete_wiki = (e:any) => this.delete_wiki(e)
             const html: any = this.printlist()
             return (
                 <div>
                     {html}
-                    <form onSubmit={create}>
-                        <input type='text' onChange={doChange} />
+                    <form onSubmit={create_wiki}>
+                        <Form/>
                         <input type='submit' value='create' />
+                    </form>
+                    <form onSubmit={delete_wiki}>
+                        <Form/>
+                        <input type='submit' value='delete' />
                     </form>
                 </div>
             )

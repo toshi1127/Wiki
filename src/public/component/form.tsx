@@ -8,7 +8,7 @@ interface IndexState {
     value: string
 }
 
-export class Form extends React.Component<IndexProps, IndexState> {
+export  default class Form extends React.Component<IndexProps, IndexState> {
     constructor(props: IndexProps) {
         super(props)
         this.state = {
@@ -16,7 +16,8 @@ export class Form extends React.Component<IndexProps, IndexState> {
         }
     }
     doChange(e:any) {
-        
+        const newValue = e.target.value
+        this.setState({value: newValue})
     }
     render() {
         const doChange = (e:any)=> this.doChange(e)
