@@ -3,6 +3,8 @@ import * as request from 'superagent'
 import * as nedb from 'nedb'
 import { Redirect } from 'react-router-dom'
 import Form from './form';
+import * as bootstrap from '../stylesheets/bootstrap.css'
+import * as styles from '../stylesheets/style.css';
 
 interface IndexProps {
 }
