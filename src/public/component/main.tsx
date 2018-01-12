@@ -112,6 +112,8 @@ export default class main extends React.Component<IndexProps, IndexState>{
                         <Form name='delete' filer={filtering} pattern={pattern} onChange={doChange} />
                         <input type='submit' value='delete' />
                     </form>
+                    <script src="javascript/jquery.min.js"></script>
+                    <script src="javascript/bootstrap.min.js"></script>
                 </div>
             )
         }
