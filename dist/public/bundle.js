@@ -29879,6 +29879,8 @@ class main extends React.Component {
             const html = this.printlist();
             return (React.createElement("div", null,
                 html,
+                React.createElement("link", { rel: "stylesheet", href: "./stylesheets/bootstrap.css" }),
+                React.createElement("link", { rel: "stylesheet", href: "./stylesheets/style.css" }),
                 React.createElement("form", { onSubmit: create_wiki },
                     React.createElement(form_1.default, { name: 'create', filer: filtering, pattern: pattern, onChange: doChange }),
                     React.createElement("input", { type: 'submit', value: 'create' })),

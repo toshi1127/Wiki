@@ -102,6 +102,8 @@ export default class main extends React.Component<IndexProps, IndexState>{
             return (
                 <div>
                     {html}
+                    <link rel="stylesheet" href="./stylesheets/bootstrap.css" />
+                    <link rel="stylesheet" href="./stylesheets/style.css" />
                     <form onSubmit={create_wiki}>
                         <Form name='create' filer={filtering} pattern={pattern} onChange={doChange} />
                         <input type='submit' value='create' />
