@@ -15,4 +15,25 @@ textarea {
   font-size: 1em;
   padding: 8px;
 }
+.fh5co-social-icons li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: -moz-inline-stack;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+}
+.fh5co-social-icons li a {
+  display: -moz-inline-stack;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  color: #F36363;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.fh5co-social-icons li a i {
+  font-size: 20px;
+}
 

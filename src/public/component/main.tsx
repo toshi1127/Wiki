@@ -99,16 +99,97 @@ export default class main extends React.Component<IndexProps, IndexState>{
             const html: any = this.printlist()
             return (
                 <div>
+                    <link rel="stylesheet" href="./stylesheets/bootstrap.css" />
+                    <link rel="stylesheet" href="./stylesheets/style.css" />
+                    <header id="fh5co-header" className="fh5co-cover fh5co-cover-sm" role="banner">
+                        <div className="container">
+                            <div className="display-tc animate-box" data-animate-effect="fadeIn">
+                                <h1>HUAC Blog</h1>
+                            </div>
+                        </div>
+                    </header>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-4 col-md-4">
+                                <div className="fh5co-blog animate-box">
+                                    <div className="blog-text">
+                                        <h3>
+                                            <a href=""> </a>
+                                        </h3>
+                                        <p> </p>
+                                        <a href="#" className="btn btn-primary">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-4 col-md-4">
+                                <div className="fh5co-blog animate-box">
+                                    <div className="blog-text">
+                                        <h3>
+                                            <a href=""> </a>
+                                        </h3>
+                                        <p> </p>
+                                        <a href="#" className="btn btn-primary">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-4 col-md-4">
+                                <div className="fh5co-blog animate-box">
+                                    <div className="blog-text">
+                                        <h3>
+                                            <a href=""> </a>
+                                        </h3>
+                                        <p> </p>
+                                        <a href="#" className="btn btn-primary">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-4 col-md-4">
+                                <div className="fh5co-blog animate-box">
+                                    <div className="blog-text">
+                                        <h3>
+                                            <a href=""> </a>
+                                        </h3>
+                                        <p> </p>
+                                        <a href="#" className="btn btn-primary">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-4 col-md-4">
+                                <div className="fh5co-blog animate-box">
+                                    <div className="blog-text">
+                                        <h3>
+                                            <a href=""> </a>
+                                        </h3>
+                                        <p> </p>
+                                        <a href="#" className="btn btn-primary">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-4 col-md-4">
+                                <div className="fh5co-blog animate-box">
+                                    <div className="blog-text">
+                                        <h3>
+                                            <a href=""> </a>
+                                        </h3>
+                                        <p> </p>
+                                        <a href="#" className="btn btn-primary">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {html}
-                    <form onSubmit={create_wiki}>
+                    < form onSubmit={create_wiki} >
                         <Form name='create' filer={filtering} pattern={pattern} onChange={doChange} />
                         <input type='submit' value='create' />
-                    </form>
+                    </form >
                     <form onSubmit={delete_wiki}>
                         <Form name='delete' filer={filtering} pattern={pattern} onChange={doChange} />
                         <input type='submit' value='delete' />
                     </form>
-                </div>
+                    <script src="javascript/jquery.min.js"></script>
+                    <script src="javascript/bootstrap.min.js"></script>
+                </div >
             )
         }
     }
