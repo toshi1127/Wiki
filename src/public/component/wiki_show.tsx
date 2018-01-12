@@ -44,9 +44,15 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                 <p>読み込み中</p>
             )
         }
+        var html:string
         const name = this.state.name
         const body = this.state.body
-        const html = this.convertText(body)
+        if(body==''){
+            html = this.convertText(body)
+        }
+        else{
+            html=''
+        }
         return (
             <div>
                 <h1>{this.state.name}</h1>
