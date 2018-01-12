@@ -28800,9 +28800,15 @@ class WikiShow extends React.Component {
         if (!this.state.loaded) {
             return (React.createElement("p", null, "\u8AAD\u307F\u8FBC\u307F\u4E2D"));
         }
+        var html;
         const name = this.state.name;
         const body = this.state.body;
-        const html = this.convertText(body);
+        if (body == '') {
+            html = this.convertText(body);
+        }
+        else {
+            html = '';
+        }
         return (React.createElement("div", null,
             React.createElement("h1", null, this.state.name),
             React.createElement("div", { style: styles.show }, html),
