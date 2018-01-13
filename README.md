@@ -10,4 +10,8 @@ https://huac-wiki.herokuapp.com/
 
 > 引用テキスト
 
-@　リンク
+@　リンク  
+  
+
+サンプルページ  
+https://huac-wiki.herokuapp.com/wiki/20180113sample
