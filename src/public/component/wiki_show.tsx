@@ -47,8 +47,7 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         var html: string
         const name = this.state.name
         const body = this.state.body
-        console.log(body)
-        if (body == '') {
+        if (body == undefined) {
             html = ''
         }
         else {
