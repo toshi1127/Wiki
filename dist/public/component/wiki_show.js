@@ -33,11 +33,12 @@ class WikiShow extends React.Component {
         var html;
         const name = this.state.name;
         const body = this.state.body;
+        console.log(body);
         if (body == '') {
-            html = this.convertText(body);
+            html = '';
         }
         else {
-            html = '';
+            html = this.convertText(body);
         }
         return (React.createElement("div", null,
             React.createElement("link", { rel: "stylesheet", href: "./stylesheets/default_wiki.css" }),
