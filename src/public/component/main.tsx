@@ -125,14 +125,18 @@ export default class main extends React.Component<IndexProps, IndexState>{
                             {html}
                         </div>
                     </div>
-                    < form onSubmit={create_wiki} >
-                        <Form name='create' filer={filtering} pattern={pattern} onChange={doChange} />
-                        <input type='submit' value='create' />
-                    </form >
-                    <form onSubmit={delete_wiki}>
-                        <Form name='delete' filer={filtering} pattern={pattern} onChange={doChange} />
-                        <input type='submit' value='delete' />
-                    </form>
+                    <div id="formlist">
+                        < form onSubmit={create_wiki} >
+                            <Form name='create' filer={filtering} pattern={pattern} onChange={doChange} />
+                            <input type='submit' value='create' />
+                        </form >
+                        <br>
+                        </br>
+                        <form onSubmit={delete_wiki}>
+                            <Form name='delete' filer={filtering} pattern={pattern} onChange={doChange} />
+                            <input type='submit' value='delete' />
+                        </form>
+                    </div>
                     <script src="javascript/jquery.min.js"></script>
                     <script src="javascript/bootstrap.min.js"></script>
                 </div >

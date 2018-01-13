@@ -44,22 +44,25 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                 <p>読み込み中</p>
             )
         }
-        var html:string
+        var html: string
         const name = this.state.name
         const body = this.state.body
-        if(body==''){
+        if (body == '') {
             html = this.convertText(body)
         }
-        else{
-            html=''
+        else {
+            html = ''
         }
         return (
             <div>
-                <h1>{this.state.name}</h1>
-                <div style={styles.show}>{html}</div>
-                <p style={styles.right}>
-                    <a href={`/edit/${name}`}>→このページを編集</a>
-                </p>
+                <link rel="stylesheet" href="./stylesheets/default_wiki.css" />
+                <div id="main">
+                    <h1 id="title">{this.state.name}</h1>
+                    <div style={styles.show}>{html}</div>
+                    <p style={styles.right}>
+                        <a href={`/edit/${name}`}>→このページを編集</a>
+                    </p>
+                </div>
             </div>
         )
     }

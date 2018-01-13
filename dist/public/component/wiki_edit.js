@@ -75,12 +75,14 @@ class WikiEdit extends React.Component {
             return React.createElement(react_router_dom_1.Redirect, { to: this.state.jump });
         }
         const name = this.state.name;
-        return (React.createElement("div", { style: styles.edit },
-            React.createElement("h1", null,
-                React.createElement("a", { href: `/wiki/${name}` }, name)),
-            React.createElement("textarea", { rows: 12, cols: 60, onChange: e => this.bodyChanged(e), value: this.state.body }),
-            React.createElement("br", null),
-            React.createElement("button", { onClick: e => this.save() }, "\u4FDD\u5B58")));
+        return (React.createElement("div", { id: "main" },
+            React.createElement("link", { rel: "stylesheet", href: "./stylesheets/default_wiki.css" }),
+            React.createElement("div", { id: "title", style: styles.edit },
+                React.createElement("h1", null,
+                    React.createElement("a", { href: `/wiki/${name}` }, name)),
+                React.createElement("textarea", { rows: 12, cols: 80, onChange: e => this.bodyChanged(e), value: this.state.body }),
+                React.createElement("br", null),
+                React.createElement("button", { onClick: e => this.save() }, "\u4FDD\u5B58"))));
     }
 }
 exports.default = WikiEdit;
