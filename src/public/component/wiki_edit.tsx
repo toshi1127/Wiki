@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as request from 'superagent'
 import { Redirect } from 'react-router-dom'
+import main from './main';
 
 interface IndexProps {
     match: {
@@ -89,14 +90,17 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
         }
         const name: string = this.state.name
         return (
-            <div style={styles.edit}>
-                <h1><a href={`/wiki/${name}`}>{name}</a></h1>
-                <textarea rows={12} cols={60}
-                    onChange={e => this.bodyChanged(e)}
-                    value={this.state.body}
-                />
-                <br />
-                <button onClick={e => this.save()}>保存</button>
+            <div id="main">
+            <link rel="stylesheet" href="./stylesheets/default_wiki.css" />
+                <div id="title" style={styles.edit}>
+                    <h1><a href={`/wiki/${name}`}>{name}</a></h1>
+                    <textarea rows={12} cols={80}
+                        onChange={e => this.bodyChanged(e)}
+                        value={this.state.body}
+                    />
+                    <br />
+                    <button onClick={e => this.save()}>保存</button>
+                </div>
             </div>
         )
     }

@@ -40,10 +40,12 @@ class WikiShow extends React.Component {
             html = '';
         }
         return (React.createElement("div", null,
-            React.createElement("h1", null, this.state.name),
-            React.createElement("div", { style: styles.show }, html),
-            React.createElement("p", { style: styles.right },
-                React.createElement("a", { href: `/edit/${name}` }, "\u2192\u3053\u306E\u30DA\u30FC\u30B8\u3092\u7DE8\u96C6"))));
+            React.createElement("link", { rel: "stylesheet", href: "./stylesheets/default_wiki.css" }),
+            React.createElement("div", { id: "main" },
+                React.createElement("h1", { id: "title" }, this.state.name),
+                React.createElement("div", { style: styles.show }, html),
+                React.createElement("p", { style: styles.right },
+                    React.createElement("a", { href: `/edit/${name}` }, "\u2192\u3053\u306E\u30DA\u30FC\u30B8\u3092\u7DE8\u96C6")))));
     }
     convertText(body) {
         const nodes = WikiParser.parse(body);
