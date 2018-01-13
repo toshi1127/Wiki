@@ -130,6 +130,8 @@ export default class main extends React.Component<IndexProps, IndexState>{
                             <Form name='create' filer={filtering} pattern={pattern} onChange={doChange} />
                             <input type='submit' value='create' />
                         </form >
+                        <br>
+                        </br>
                         <form onSubmit={delete_wiki}>
                             <Form name='delete' filer={filtering} pattern={pattern} onChange={doChange} />
                             <input type='submit' value='delete' />

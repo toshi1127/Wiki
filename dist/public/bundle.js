@@ -29905,6 +29905,7 @@ class main extends React.Component {
                     React.createElement("form", { onSubmit: create_wiki },
                         React.createElement(form_1.default, { name: 'create', filer: filtering, pattern: pattern, onChange: doChange }),
                         React.createElement("input", { type: 'submit', value: 'create' })),
+                    React.createElement("br", null),
                     React.createElement("form", { onSubmit: delete_wiki },
                         React.createElement(form_1.default, { name: 'delete', filer: filtering, pattern: pattern, onChange: doChange }),
                         React.createElement("input", { type: 'submit', value: 'delete' }))),
