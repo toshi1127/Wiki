@@ -48,10 +48,10 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         const name = this.state.name
         const body = this.state.body
         if (body == '') {
-            html = this.convertText(body)
+            html = ''
         }
         else {
-            html = ''
+            html = this.convertText(body)
         }
         return (
             <div>
