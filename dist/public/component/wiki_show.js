@@ -33,8 +33,7 @@ class WikiShow extends React.Component {
         var html;
         const name = this.state.name;
         const body = this.state.body;
-        console.log(body);
-        if (body == '') {
+        if (body == undefined) {
             html = '';
         }
         else {
