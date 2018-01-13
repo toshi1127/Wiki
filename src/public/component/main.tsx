@@ -78,9 +78,21 @@ export default class main extends React.Component<IndexProps, IndexState>{
                 })
         }
     }
-    printlist() {
+    printlist() {//ここを<div className="col-lg-4 col-md-4">で返すようにする。
         const lines = this.state.body.map((value: any, index: any, array: any[]) => {
-            return <div><a href={`/wiki/${value}`}>{value}</a></div>
+            return (
+                <div className="col-lg-4 col-md-4">
+                    <div className="fh5co-blog animate-box">
+                        <div className="blog-text">
+                            <h3>
+                                <a href={`/wiki/${value}`}>{value}</a>
+                            </h3>
+                            <p> </p>
+                            <a href={`/wiki/${value}`} className="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            )
         })
         return lines
     }
@@ -110,75 +122,9 @@ export default class main extends React.Component<IndexProps, IndexState>{
                     </header>
                     <div className="container">
                         <div className="row">
-                            <div className="col-lg-4 col-md-4">
-                                <div className="fh5co-blog animate-box">
-                                    <div className="blog-text">
-                                        <h3>
-                                            <a href=""> </a>
-                                        </h3>
-                                        <p> </p>
-                                        <a href="#" className="btn btn-primary">Read More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-4">
-                                <div className="fh5co-blog animate-box">
-                                    <div className="blog-text">
-                                        <h3>
-                                            <a href=""> </a>
-                                        </h3>
-                                        <p> </p>
-                                        <a href="#" className="btn btn-primary">Read More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-4">
-                                <div className="fh5co-blog animate-box">
-                                    <div className="blog-text">
-                                        <h3>
-                                            <a href=""> </a>
-                                        </h3>
-                                        <p> </p>
-                                        <a href="#" className="btn btn-primary">Read More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-4">
-                                <div className="fh5co-blog animate-box">
-                                    <div className="blog-text">
-                                        <h3>
-                                            <a href=""> </a>
-                                        </h3>
-                                        <p> </p>
-                                        <a href="#" className="btn btn-primary">Read More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-4">
-                                <div className="fh5co-blog animate-box">
-                                    <div className="blog-text">
-                                        <h3>
-                                            <a href=""> </a>
-                                        </h3>
-                                        <p> </p>
-                                        <a href="#" className="btn btn-primary">Read More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-4">
-                                <div className="fh5co-blog animate-box">
-                                    <div className="blog-text">
-                                        <h3>
-                                            <a href=""> </a>
-                                        </h3>
-                                        <p> </p>
-                                        <a href="#" className="btn btn-primary">Read More</a>
-                                    </div>
-                                </div>
-                            </div>
+                            {html}
                         </div>
                     </div>
-                    {html}
                     < form onSubmit={create_wiki} >
                         <Form name='create' filer={filtering} pattern={pattern} onChange={doChange} />
                         <input type='submit' value='create' />
