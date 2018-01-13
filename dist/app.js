@@ -10,8 +10,10 @@ const db = new Nedb({
 let app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 var port = '3000';
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
     console.log('起動しました', `http://localhost:${port}`);
+    console.log('Server listening at https://' + ':' + process.env.PORT);
+    console.log(process.env.IP);
 });
 app.use('/wiki/:wikiname', express.static(__dirname + '/public'));
 app.use('/edit/:wikiname', express.static(__dirname + '/public'));
