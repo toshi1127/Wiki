@@ -168,3 +168,7 @@ h1, h2, h3 {
   color: white;
   border: 2px solid black;
 }
+#formlist{
+  width: auto;
+  margin-left :20px
+}
