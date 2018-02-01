@@ -3,13 +3,39 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const Nedb = require("nedb");
+const passport = require('passport');
+const session = require('express-session');
+const auth = require('./routes/auth');
+const main = require('./routes/main');
+
 const db = new Nedb({
     filename: path.join(__dirname, 'wiki.db'),
     autoload: true
 });
 let app = express();
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 30,
+    },
+}));
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+    done(null, user);
+});
+app.use(passport.initialize());
+app.use(passport.session());
+// Routing
+app.use('/auth', auth);
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
-var port = '3000';
+var port = '8080';
 app.listen(process.env.PORT || port, () => {
     console.log('起動しました', `http://localhost:${port}`);
     console.log('Server listening at https://' + ':' + process.env.PORT);
@@ -17,9 +43,13 @@ app.listen(process.env.PORT || port, () => {
 });
 app.use('/wiki/:wikiname', express.static(__dirname + '/public'));
 app.use('/edit/:wikiname', express.static(__dirname + '/public'));
+//app.use('/main',main)
 app.use('/main', express.static(__dirname + '/public'));
 app.get('/', (req, res) => {
-    res.redirect(302, '/main');
+    if (!req.user) {
+        res.redirect('/auth/login');
+    }
+    res.redirect('/main');
 });
 // APIの定義
 // Wikiデータを返すAPI 
