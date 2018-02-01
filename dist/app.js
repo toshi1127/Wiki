@@ -3,13 +3,28 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const Nedb = require("nedb");
+const passport = require('passport');
+const auth = require('./routes/auth');
+
 const db = new Nedb({
     filename: path.join(__dirname, 'wiki.db'),
     autoload: true
 });
 let app = express();
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+    done(null, user);
+});
+app.use(passport.initialize());
+// Routing
+app.use('/auth', auth);
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
-var port = '3000';
+var port = '8080';
 app.listen(process.env.PORT || port, () => {
     console.log('起動しました', `http://localhost:${port}`);
     console.log('Server listening at https://' + ':' + process.env.PORT);
