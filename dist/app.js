@@ -13,6 +13,15 @@ const db = new Nedb({
     autoload: true
 });
 let app = express();
+app.get('/', (req, res) => {
+    console.log("aiueo")
+    if (!req.user) {
+        res.redirect('/auth/login');
+    }
+    else{
+        res.redirect(302, '/main');
+    }
+});
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
@@ -45,12 +54,6 @@ app.use('/wiki/:wikiname', express.static(__dirname + '/public'));
 app.use('/edit/:wikiname', express.static(__dirname + '/public'));
 //app.use('/main',main)
 app.use('/main', express.static(__dirname + '/public'));
-app.get('/', (req, res) => {
-    if (!req.user) {
-        res.redirect('/auth/login');
-    }
-    res.redirect(302, '/main');
-});
 // APIの定義
 // Wikiデータを返すAPI 
 app.get('/api/get/:wikiname', (req, res) => {
