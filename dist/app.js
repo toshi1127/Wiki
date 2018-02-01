@@ -49,7 +49,7 @@ app.get('/', (req, res) => {
     if (!req.user) {
         res.redirect('/auth/login');
     }
-    res.redirect('/main');
+    res.redirect(302, '/main');
 });
 // APIの定義
 // Wikiデータを返すAPI 
