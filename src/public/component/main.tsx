@@ -4,6 +4,8 @@ import * as nedb from 'nedb'
 import { Redirect } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Form from './form';
+import CircularProgress from 'material-ui/CircularProgress';
+import App_Bar from './AppBar';
 
 interface IndexProps {
 }
@@ -14,7 +16,9 @@ interface IndexState {
     create: boolean,
     delete: boolean,
     create_value: any,
-    delete_value: any
+    delete_value: any,
+    open: boolean,
+    value: string
 }
 
 export default class main extends React.Component<IndexProps, IndexState>{
@@ -26,7 +30,9 @@ export default class main extends React.Component<IndexProps, IndexState>{
             create: false,
             delete: false,
             create_value: '',
-            delete_value: ''
+            delete_value: '',
+            open: false,
+            value: ''
         }
     }
     componentWillMount() {
@@ -80,6 +86,19 @@ export default class main extends React.Component<IndexProps, IndexState>{
                 })
         }
     }
+    handleToggle(e: any) {
+        if (e.value) {
+            this.setState({
+                open: e.open,
+                value: e.value
+            })
+        }
+        else {
+            this.setState({
+                open: e.open,
+            })
+        }
+    }
     printlist() {//ここを<div className="col-lg-4 col-md-4">で返すようにする。
         const lines = this.state.body.map((value: any, index: any, array: any[]) => {
             return (
@@ -101,15 +120,25 @@ export default class main extends React.Component<IndexProps, IndexState>{
     render() {
         if (!this.state.loaded) {
             return (
-                <MuiThemeProvider>
-                    <div>
-                        <p>読み込み中</p>
-                    </div>
-                </MuiThemeProvider>
+                <div style={{
+                    position: 'absolute',
+                    top: '0px',
+                    right: '0px',
+                    bottom: '0px',
+                    left: '0px',
+                    margin: 'auto',
+                    width: '128px',
+                    height: '64px'
+                }}>
+                    <MuiThemeProvider>
+                        <CircularProgress size={80} thickness={5} />
+                    </MuiThemeProvider>
+                </div>
             )
         }
         else {
             console.log("描写します")
+            const onClick = (e: any) => this.handleToggle(e)
             const doChange = (e: any) => this.handleChange(e)
             const filtering = /^\d{8}.*/g
             const pattern = /^\d{8}.*$/
@@ -117,38 +146,37 @@ export default class main extends React.Component<IndexProps, IndexState>{
             const delete_wiki = (e: any) => this.delete_wiki(e)
             const html: any = this.printlist()
             return (
-                <MuiThemeProvider>
-                    <div>
-                        <link rel="stylesheet" href="./stylesheets/bootstrap.css" />
-                        <link rel="stylesheet" href="./stylesheets/style.css" />
-                        <header id="fh5co-header" className="fh5co-cover fh5co-cover-sm" role="banner">
-                            <div className="container">
-                                <div className="display-tc animate-box" data-animate-effect="fadeIn">
-                                    <h1>HUAC Blog</h1>
-                                </div>
-                            </div>
-                        </header>
+                <div>
+                    <App_Bar onClick={onClick} open={this.state.open} />
+                    <link rel="stylesheet" href="./stylesheets/bootstrap.css" />
+                    <link rel="stylesheet" href="./stylesheets/style.css" />
+                    <header id="fh5co-header" className="fh5co-cover fh5co-cover-sm" role="banner">
                         <div className="container">
-                            <div className="row">
-                                {html}
+                            <div className="display-tc animate-box" data-animate-effect="fadeIn">
+                                <h1>HUAC Blog</h1>
                             </div>
                         </div>
-                        <div id="formlist">
-                            < form onSubmit={create_wiki} >
-                                <Form name='create' onChange={doChange} />
-                                <input type='submit' value='create' />
-                            </form >
-                            <br>
-                            </br>
-                            <form onSubmit={delete_wiki}>
-                                <Form name='delete' onChange={doChange} />
-                                <input type='submit' value='delete' />
-                            </form>
+                    </header>
+                    <div className="container">
+                        <div className="row">
+                            {html}
                         </div>
-                        <script src="javascript/jquery.min.js"></script>
-                        <script src="javascript/bootstrap.min.js"></script>
-                    </div >
-                </MuiThemeProvider>
+                    </div>
+                    <div id="formlist">
+                        < form onSubmit={create_wiki} >
+                            <Form name='create' onChange={doChange} />
+                            <input type='submit' value='create' />
+                        </form >
+                        <br>
+                        </br>
+                        <form onSubmit={delete_wiki}>
+                            <Form name='delete' onChange={doChange} />
+                            <input type='submit' value='delete' />
+                        </form>
+                    </div>
+                    <script src="javascript/jquery.min.js"></script>
+                    <script src="javascript/bootstrap.min.js"></script>
+                </div >
             )
         }
     }
