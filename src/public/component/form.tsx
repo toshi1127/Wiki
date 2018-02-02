@@ -1,13 +1,13 @@
-import * as React from 'react'
-import * as request from 'superagent'
+import * as React from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import AutoComplete from 'material-ui/AutoComplete';
 
 interface IndexProps {
-    filer: any,
-    pattern: any,
     name: string,
     onChange: any
 }
 interface IndexState {
+    dataSource: string[]
     value: string,
     isOK: boolean
 }
@@ -16,16 +16,16 @@ export default class Form extends React.Component<IndexProps, IndexState> {
     constructor(props: IndexProps) {
         super(props)
         this.state = {
+            dataSource: [],
             value: '',
             isOK: false
         }
     }
-    checkValue(s: string) {
-        return this.props.pattern.test(s)
-    }
+
     doChange(e: any) {
-        const newValue = e.target.value
-        const newIsOK = this.checkValue(newValue)
+        const newValue = e
+        const filter = /^\d{8}.*$/
+        const newIsOK = this.filtering(newValue, filter)
         this.setState({
             value: newValue,
             isOK: newIsOK
@@ -38,12 +38,24 @@ export default class Form extends React.Component<IndexProps, IndexState> {
             })
         }
     }
+    filtering(value: string, filter: any) {
+        console.log(filter.test(value))
+        return filter.test(value)
+    }
     render() {
         const msg = this.renderStatusMessage()
         const doChange = (e: any) => this.doChange(e)
         return (
             <div>
-                <input type='text' name={this.props.name} value={this.state.value} onChange={doChange} />
+                <MuiThemeProvider>
+                    <AutoComplete
+                        hintText="日付8桁+名前"
+                        searchText={this.state.value}
+                        onUpdateInput={doChange}
+                        dataSource={this.state.dataSource}
+                        name={this.props.name}
+                    />
+                </MuiThemeProvider>
                 {msg}
             </div>
         )
