@@ -4,6 +4,8 @@ const React = require("react");
 const request = require("superagent");
 const MuiThemeProvider_1 = require("material-ui/styles/MuiThemeProvider");
 const form_1 = require("./form");
+const CircularProgress_1 = require("material-ui/CircularProgress");
+const AppBar_1 = require("./AppBar");
 class main extends React.Component {
     constructor(props) {
         super(props);
@@ -13,7 +15,9 @@ class main extends React.Component {
             create: false,
             delete: false,
             create_value: '',
-            delete_value: ''
+            delete_value: '',
+            open: false,
+            value: ''
         };
     }
     componentWillMount() {
@@ -67,6 +71,19 @@ class main extends React.Component {
             });
         }
     }
+    handleToggle(e) {
+        if (e.value) {
+            this.setState({
+                open: e.open,
+                value: e.value
+            });
+        }
+        else {
+            this.setState({
+                open: e.open,
+            });
+        }
+    }
     printlist() {
         const lines = this.state.body.map((value, index, array) => {
             return (React.createElement("div", { className: "col-lg-4 col-md-4" },
@@ -81,38 +98,48 @@ class main extends React.Component {
     }
     render() {
         if (!this.state.loaded) {
-            return (React.createElement(MuiThemeProvider_1.default, null,
-                React.createElement("div", null,
-                    React.createElement("p", null, "\u8AAD\u307F\u8FBC\u307F\u4E2D"))));
+            return (React.createElement("div", { style: {
+                    position: 'absolute',
+                    top: '0px',
+                    right: '0px',
+                    bottom: '0px',
+                    left: '0px',
+                    margin: 'auto',
+                    width: '128px',
+                    height: '64px'
+                } },
+                React.createElement(MuiThemeProvider_1.default, null,
+                    React.createElement(CircularProgress_1.default, { size: 80, thickness: 5 }))));
         }
         else {
             console.log("描写します");
+            const onClick = (e) => this.handleToggle(e);
             const doChange = (e) => this.handleChange(e);
             const filtering = /^\d{8}.*/g;
             const pattern = /^\d{8}.*$/;
             const create_wiki = (e) => this.create_wiki(e);
             const delete_wiki = (e) => this.delete_wiki(e);
             const html = this.printlist();
-            return (React.createElement(MuiThemeProvider_1.default, null,
-                React.createElement("div", null,
-                    React.createElement("link", { rel: "stylesheet", href: "./stylesheets/bootstrap.css" }),
-                    React.createElement("link", { rel: "stylesheet", href: "./stylesheets/style.css" }),
-                    React.createElement("header", { id: "fh5co-header", className: "fh5co-cover fh5co-cover-sm", role: "banner" },
-                        React.createElement("div", { className: "container" },
-                            React.createElement("div", { className: "display-tc animate-box", "data-animate-effect": "fadeIn" },
-                                React.createElement("h1", null, "HUAC Blog")))),
+            return (React.createElement("div", null,
+                React.createElement(AppBar_1.default, { onClick: onClick, open: this.state.open }),
+                React.createElement("link", { rel: "stylesheet", href: "./stylesheets/bootstrap.css" }),
+                React.createElement("link", { rel: "stylesheet", href: "./stylesheets/style.css" }),
+                React.createElement("header", { id: "fh5co-header", className: "fh5co-cover fh5co-cover-sm", role: "banner" },
                     React.createElement("div", { className: "container" },
-                        React.createElement("div", { className: "row" }, html)),
-                    React.createElement("div", { id: "formlist" },
-                        React.createElement("form", { onSubmit: create_wiki },
-                            React.createElement(form_1.default, { name: 'create', onChange: doChange }),
-                            React.createElement("input", { type: 'submit', value: 'create' })),
-                        React.createElement("br", null),
-                        React.createElement("form", { onSubmit: delete_wiki },
-                            React.createElement(form_1.default, { name: 'delete', onChange: doChange }),
-                            React.createElement("input", { type: 'submit', value: 'delete' }))),
-                    React.createElement("script", { src: "javascript/jquery.min.js" }),
-                    React.createElement("script", { src: "javascript/bootstrap.min.js" }))));
+                        React.createElement("div", { className: "display-tc animate-box", "data-animate-effect": "fadeIn" },
+                            React.createElement("h1", null, "HUAC Blog")))),
+                React.createElement("div", { className: "container" },
+                    React.createElement("div", { className: "row" }, html)),
+                React.createElement("div", { id: "formlist" },
+                    React.createElement("form", { onSubmit: create_wiki },
+                        React.createElement(form_1.default, { name: 'create', onChange: doChange }),
+                        React.createElement("input", { type: 'submit', value: 'create' })),
+                    React.createElement("br", null),
+                    React.createElement("form", { onSubmit: delete_wiki },
+                        React.createElement(form_1.default, { name: 'delete', onChange: doChange }),
+                        React.createElement("input", { type: 'submit', value: 'delete' }))),
+                React.createElement("script", { src: "javascript/jquery.min.js" }),
+                React.createElement("script", { src: "javascript/bootstrap.min.js" })));
         }
     }
 }

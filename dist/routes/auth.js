@@ -17,7 +17,7 @@ function extractProfile(profile) {
 passport.use(new GoogleStrategy({
     clientID: "981413818459-0pnh6j8bgmlq2vhvuochrj5o0pgm1aik.apps.googleusercontent.com",
     clientSecret: "JZ-U7sExCOkze3-j0cvQb3ul",
-    callbackURL: 'https://huac-wiki.herokuapp.com/auth/google/callback',
+    callbackURL: 'http://localhost:8080/auth/google/callback',
     accessType: 'offline',
 }, function (accessToken, refreshToken, profile, done) {
     if (profile) {
