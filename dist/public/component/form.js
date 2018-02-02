@@ -1,20 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
+const MuiThemeProvider_1 = require("material-ui/styles/MuiThemeProvider");
+const AutoComplete_1 = require("material-ui/AutoComplete");
 class Form extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            dataSource: [],
             value: '',
             isOK: false
         };
     }
-    checkValue(s) {
-        return this.props.pattern.test(s);
-    }
     doChange(e) {
-        const newValue = e.target.value;
-        const newIsOK = this.checkValue(newValue);
+        const newValue = e;
+        const filter = /^\d{8}.*$/;
+        const newIsOK = this.filtering(newValue, filter);
         this.setState({
             value: newValue,
             isOK: newIsOK
@@ -27,11 +28,16 @@ class Form extends React.Component {
             });
         }
     }
+    filtering(value, filter) {
+        console.log(filter.test(value));
+        return filter.test(value);
+    }
     render() {
         const msg = this.renderStatusMessage();
         const doChange = (e) => this.doChange(e);
         return (React.createElement("div", null,
-            React.createElement("input", { type: 'text', name: this.props.name, value: this.state.value, onChange: doChange }),
+            React.createElement(MuiThemeProvider_1.default, null,
+                React.createElement(AutoComplete_1.default, { hintText: "日付8桁+名前", searchText: this.state.value, onUpdateInput: doChange, dataSource: this.state.dataSource, name: this.props.name })),
             msg));
     }
     renderStatusMessage() {

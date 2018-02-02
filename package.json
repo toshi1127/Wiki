@@ -9,6 +9,8 @@
     "build:parser": "pegjs -o dist/public/javascript/wiki_parser.js src/public/javascript/wiki_parser.pegjs"
   },
   "devDependencies": {
+    "@types/material-ui": "^0.20.5",
+    "@types/react-tap-event-plugin": "0.0.30",
     "awesome-typescript-loader": "^3.4.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
@@ -38,6 +40,7 @@
     "express": "~4.15.5",
     "express-session": "^1.15.6",
     "jade": "~1.11.0",
+    "material-ui": "^0.20.0",
     "morgan": "~1.9.0",
     "nedb": "^1.8.0",
     "passport": "^0.4.0",

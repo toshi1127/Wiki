@@ -16,7 +16,7 @@ let app = express()
 
 app.use(bodyParser.urlencoded({ extended: true }))
 
-var port = '3000';
+var port = '8080';
 app.listen(process.env.PORT||port, () => {
   console.log('起動しました', `http://localhost:${port}`)
   console.log('Server listening at https://' + ':' + process.env.PORT);

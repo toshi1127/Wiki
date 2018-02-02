@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as request from 'superagent'
 import * as nedb from 'nedb'
 import { Redirect } from 'react-router-dom'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Form from './form';
 
 interface IndexProps {
@@ -29,6 +30,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
         }
     }
     componentWillMount() {
+        console.log("呼び出します")
         request
             .get(`/api/getting_list`)
             .end((err, res) => {
@@ -99,10 +101,15 @@ export default class main extends React.Component<IndexProps, IndexState>{
     render() {
         if (!this.state.loaded) {
             return (
-                <p>読み込み中</p>
+                <MuiThemeProvider>
+                    <div>
+                        <p>読み込み中</p>
+                    </div>
+                </MuiThemeProvider>
             )
         }
         else {
+            console.log("描写します")
             const doChange = (e: any) => this.handleChange(e)
             const filtering = /^\d{8}.*/g
             const pattern = /^\d{8}.*$/
@@ -110,36 +117,38 @@ export default class main extends React.Component<IndexProps, IndexState>{
             const delete_wiki = (e: any) => this.delete_wiki(e)
             const html: any = this.printlist()
             return (
-                <div>
-                    <link rel="stylesheet" href="./stylesheets/bootstrap.css" />
-                    <link rel="stylesheet" href="./stylesheets/style.css" />
-                    <header id="fh5co-header" className="fh5co-cover fh5co-cover-sm" role="banner">
+                <MuiThemeProvider>
+                    <div>
+                        <link rel="stylesheet" href="./stylesheets/bootstrap.css" />
+                        <link rel="stylesheet" href="./stylesheets/style.css" />
+                        <header id="fh5co-header" className="fh5co-cover fh5co-cover-sm" role="banner">
+                            <div className="container">
+                                <div className="display-tc animate-box" data-animate-effect="fadeIn">
+                                    <h1>HUAC Blog</h1>
+                                </div>
+                            </div>
+                        </header>
                         <div className="container">
-                            <div className="display-tc animate-box" data-animate-effect="fadeIn">
-                                <h1>HUAC Blog</h1>
+                            <div className="row">
+                                {html}
                             </div>
                         </div>
-                    </header>
-                    <div className="container">
-                        <div className="row">
-                            {html}
+                        <div id="formlist">
+                            < form onSubmit={create_wiki} >
+                                <Form name='create' onChange={doChange} />
+                                <input type='submit' value='create' />
+                            </form >
+                            <br>
+                            </br>
+                            <form onSubmit={delete_wiki}>
+                                <Form name='delete' onChange={doChange} />
+                                <input type='submit' value='delete' />
+                            </form>
                         </div>
-                    </div>
-                    <div id="formlist">
-                        < form onSubmit={create_wiki} >
-                            <Form name='create' filer={filtering} pattern={pattern} onChange={doChange} />
-                            <input type='submit' value='create' />
-                        </form >
-                        <br>
-                        </br>
-                        <form onSubmit={delete_wiki}>
-                            <Form name='delete' filer={filtering} pattern={pattern} onChange={doChange} />
-                            <input type='submit' value='delete' />
-                        </form>
-                    </div>
-                    <script src="javascript/jquery.min.js"></script>
-                    <script src="javascript/bootstrap.min.js"></script>
-                </div >
+                        <script src="javascript/jquery.min.js"></script>
+                        <script src="javascript/bootstrap.min.js"></script>
+                    </div >
+                </MuiThemeProvider>
             )
         }
     }
