@@ -36,6 +36,5 @@ router.get('/login',
 
 router.get('/google/callback', passport.authenticate('google'), (req, res) => {
     res.redirect("/main");
-},
-);
+});
 module.exports = router;
