@@ -51,7 +51,7 @@ class WikiShow extends React.Component {
                 React.createElement("p", { style: styles.right },
                     React.createElement("a", { href: `/edit/${name}` }, "\u2192\u3053\u306E\u30DA\u30FC\u30B8\u3092\u7DE8\u96C6"),
                     React.createElement("br", null),
-                    React.createElement("a", { href: `/main` }, "\u2192\u30DB\u30FC\u30E0\u3078\u623B\u308B")))));
+                    React.createElement("a", { href: `/main/${this.state.user}` }, "\u2192\u30DB\u30FC\u30E0\u3078\u623B\u308B")))));
     }
     convertText(body) {
         const nodes = WikiParser.parse(body);
