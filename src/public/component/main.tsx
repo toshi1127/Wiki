@@ -77,7 +77,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
         //取得後、bodyを上書きして、画面を再表示する。
         if (e.isOK) {
             request
-                .get(`/create/` + e.value)
+                .get(`/create/` + e.value+"/"+this.state.name)
                 .end((err, res) => {
                     if (err) {
                         return
