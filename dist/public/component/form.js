@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const MuiThemeProvider_1 = require("material-ui/styles/MuiThemeProvider");
-const AutoComplete_1 = require("material-ui/AutoComplete");
+const TextField_1 = require("material-ui/TextField");
 class Form extends React.Component {
     constructor(props) {
         super(props);
@@ -12,33 +12,52 @@ class Form extends React.Component {
             isOK: false
         };
     }
-    doChange(e) {
-        const newValue = e;
+    doChange(e, v) {
+        const newValue = v;
         const filter = /^\d{8}.*$/;
         const newIsOK = this.filtering(newValue, filter);
         this.setState({
             value: newValue,
             isOK: newIsOK
         });
-        if (this.props.onChange) {
-            this.props.onChange({
-                value: newValue,
-                isOK: newIsOK,
-                name: this.props.name
-            });
-        }
     }
     filtering(value, filter) {
         console.log(filter.test(value));
         return filter.test(value);
     }
+    doSubmit() {
+        if (this.state.isOK) {
+            if (this.props.name == 'create') {
+                if (this.props.onSubmit) {
+                    this.props.onSubmit({
+                        value: this.state.value,
+                        isOK: this.state.isOK,
+                        name: this.props.name
+                    });
+                }
+            }
+            else {
+                if (this.props.onSubmit) {
+                    this.props.onSubmit({
+                        value: this.state.value,
+                        isOK: this.state.isOK,
+                        name: this.props.name
+                    });
+                }
+            }
+        }
+    }
     render() {
+        const onSubmit = () => this.doSubmit();
         const msg = this.renderStatusMessage();
-        const doChange = (e) => this.doChange(e);
+        const doChange = (e, v) => this.doChange(e, v);
         return (React.createElement("div", null,
-            React.createElement(MuiThemeProvider_1.default, null,
-                React.createElement(AutoComplete_1.default, { hintText: "日付8桁+名前", searchText: this.state.value, onUpdateInput: doChange, dataSource: this.state.dataSource, name: this.props.name })),
-            msg));
+            React.createElement("form", { onSubmit: onSubmit },
+                React.createElement(MuiThemeProvider_1.default, null,
+                    React.createElement(TextField_1.default, { name: this.props.name, hintText: "日付8桁+名前", floatingLabelText: "日付8桁+名前", onChange: doChange, value: this.state.value })),
+                msg,
+                React.createElement("br", null),
+                React.createElement("input", { type: 'submit', value: this.props.name }))));
     }
     renderStatusMessage() {
         const so = {

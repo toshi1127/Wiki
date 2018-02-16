@@ -53,7 +53,7 @@ class App_Bar extends React.Component {
                             React.createElement(MenuItem_1.default, { value: "反省会議事録" }, "\u53CD\u7701\u4F1A\u8B70\u4E8B\u9332"),
                             React.createElement(MenuItem_1.default, { value: "車両整備状況" }, "\u8ECA\u4E21\u6574\u5099\u72B6\u6CC1"),
                             React.createElement(MenuItem_1.default, { value: "その他" }, "\u305D\u306E\u4ED6"))),
-                    React.createElement(AppBar_1.default, { title: "Menu", iconClassNameRight: "muidocs-icon-navigation-expand-more", onLeftIconButtonClick: this.handleToggle, onTitleClick: this.handleToggle, style: style })))));
+                    React.createElement(AppBar_1.default, { title: "Menu", iconClassNameRight: "muidocs-icon-navigation-expand-more", onLeftIconButtonTouchTap: this.handleToggle, onTitleTouchTap: this.handleToggle, style: style })))));
     }
 }
 exports.default = App_Bar;
