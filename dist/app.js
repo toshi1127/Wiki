@@ -53,7 +53,7 @@ app.listen(process.env.PORT || port, () => {
 app.use('/wiki/:wikiname', express.static(__dirname + '/public'));
 app.use('/edit/:wikiname', express.static(__dirname + '/public'));
 //app.use('/main',main)
-app.use('/main', express.static(__dirname + '/public'));
+app.use('/main/:name', express.static(__dirname + '/public'));
 // APIの定義
 // Wikiデータを返すAPI 
 app.get('/api/get/:wikiname', (req, res) => {
@@ -85,7 +85,7 @@ app.get('/api/getting_list', (req, res) => {
         }
     });
 });
-app.get('/create/:wikiname', (req, res) => {
+app.get('/create/:wikiname/:name', (req, res) => {
     const wikiname = req.params.wikiname;
     db.insert([
         { name: wikiname }

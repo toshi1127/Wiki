@@ -8,6 +8,11 @@ import CircularProgress from 'material-ui/CircularProgress';
 import App_Bar from './AppBar';
 
 interface IndexProps {
+    match: {
+        params: {
+            name: string;
+        }
+    }
 }
 
 interface IndexState {
@@ -18,12 +23,15 @@ interface IndexState {
     create_value: any,
     delete_value: any,
     open: boolean,
-    value: string
+    value: string,
+    name: string
 }
 
 export default class main extends React.Component<IndexProps, IndexState>{
     constructor(props: IndexProps) {
         super(props);
+        const { match } = this.props
+        const name = match.params.name
         this.state = {
             body: null,
             loaded: false,
@@ -32,7 +40,8 @@ export default class main extends React.Component<IndexProps, IndexState>{
             create_value: '',
             delete_value: '',
             open: false,
-            value: ''
+            value: '',
+            name: name
         }
     }
     componentWillMount() {
@@ -68,7 +77,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
         //取得後、bodyを上書きして、画面を再表示する。
         if (e.isOK) {
             request
-                .get(`/create/` + e.value)
+                .get(`/create/` + e.value+"/"+this.state.name)
                 .end((err, res) => {
                     if (err) {
                         return
@@ -164,10 +173,10 @@ export default class main extends React.Component<IndexProps, IndexState>{
                         </div>
                     </div>
                     <div id="formlist">
-                        <Form name='create' onChange={doChange} onSubmit={create_wiki}/>
+                        <Form name='create' onChange={doChange} onSubmit={create_wiki} />
                         <br>
                         </br>
-                        <Form name='delete' onChange={doChange} onSubmit={delete_wiki}/>
+                        <Form name='delete' onChange={doChange} onSubmit={delete_wiki} />
                     </div>
                     <script src="javascript/jquery.min.js"></script>
                     <script src="javascript/bootstrap.min.js"></script>

@@ -16567,7 +16567,7 @@ const WikiApp = () => (React.createElement(react_router_dom_1.BrowserRouter, nul
     React.createElement("div", null,
         React.createElement(react_router_dom_1.Route, { path: '/wiki/:name', component: wiki_show_1.default }),
         React.createElement(react_router_dom_1.Route, { path: '/edit/:name', component: wiki_edit_1.default }),
-        React.createElement(react_router_dom_1.Route, { path: '/main', component: main_1.default }))));
+        React.createElement(react_router_dom_1.Route, { path: '/main/:name', component: main_1.default }))));
 ReactDOM.render(React.createElement(WikiApp, null), document.getElementById('root'));
 
 
@@ -32845,7 +32845,9 @@ class WikiShow extends React.Component {
                 React.createElement("h1", { id: "title" }, this.state.name),
                 React.createElement("div", { style: styles.show }, html),
                 React.createElement("p", { style: styles.right },
-                    React.createElement("a", { href: `/edit/${name}` }, "\u2192\u3053\u306E\u30DA\u30FC\u30B8\u3092\u7DE8\u96C6")))));
+                    React.createElement("a", { href: `/edit/${name}` }, "\u2192\u3053\u306E\u30DA\u30FC\u30B8\u3092\u7DE8\u96C6"),
+                    React.createElement("br", null),
+                    React.createElement("a", { href: `/main` }, "\u2192\u30DB\u30FC\u30E0\u3078\u623B\u308B")))));
     }
     convertText(body) {
         const nodes = WikiParser.parse(body);
@@ -33841,6 +33843,8 @@ const AppBar_1 = __webpack_require__(423);
 class main extends React.Component {
     constructor(props) {
         super(props);
+        const { match } = this.props;
+        const name = match.params.name;
         this.state = {
             body: null,
             loaded: false,
@@ -33849,7 +33853,8 @@ class main extends React.Component {
             create_value: '',
             delete_value: '',
             open: false,
-            value: ''
+            value: '',
+            name: name
         };
     }
     componentWillMount() {
@@ -33885,7 +33890,7 @@ class main extends React.Component {
         //取得後、bodyを上書きして、画面を再表示する。
         if (e.isOK) {
             request
-                .get(`/create/` + e.value)
+                .get(`/create/` + e.value + "/" + this.state.name)
                 .end((err, res) => {
                 if (err) {
                     return;
