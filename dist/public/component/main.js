@@ -9,6 +9,8 @@ const AppBar_1 = require("./AppBar");
 class main extends React.Component {
     constructor(props) {
         super(props);
+        const { match } = this.props;
+        const name = match.params.name;
         this.state = {
             body: null,
             loaded: false,
@@ -17,7 +19,8 @@ class main extends React.Component {
             create_value: '',
             delete_value: '',
             open: false,
-            value: ''
+            value: '',
+            name: name
         };
     }
     componentWillMount() {

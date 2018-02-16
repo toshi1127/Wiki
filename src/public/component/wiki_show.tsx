@@ -61,6 +61,8 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                     <div style={styles.show}>{html}</div>
                     <p style={styles.right}>
                         <a href={`/edit/${name}`}>→このページを編集</a>
+                        <br/>
+                        <a href={`/main`}>→ホームへ戻る</a>
                     </p>
                 </div>
             </div>

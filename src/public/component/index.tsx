@@ -13,7 +13,7 @@ const WikiApp = () => (
         <div>
             <Route path='/wiki/:name' component={WikiShow} />
             <Route path='/edit/:name' component={WikiEdit} />
-            <Route path='/main' component={WikiIndex} />
+            <Route path='/main/:name' component={WikiIndex} />
         </div>
     </BrowserRouter>
 )

@@ -10,6 +10,6 @@ const WikiApp = () => (React.createElement(react_router_dom_1.BrowserRouter, nul
     React.createElement("div", null,
         React.createElement(react_router_dom_1.Route, { path: '/wiki/:name', component: wiki_show_1.default }),
         React.createElement(react_router_dom_1.Route, { path: '/edit/:name', component: wiki_edit_1.default }),
-        React.createElement(react_router_dom_1.Route, { path: '/main', component: main_1.default }))));
+        React.createElement(react_router_dom_1.Route, { path: '/main/:name', component: main_1.default }))));
 ReactDOM.render(React.createElement(WikiApp, null), document.getElementById('root'));
 //# sourceMappingURL=index.js.map
