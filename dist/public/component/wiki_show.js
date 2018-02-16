@@ -10,7 +10,8 @@ class WikiShow extends React.Component {
         this.state = {
             name: match.params.name,
             body: '',
-            loaded: false
+            loaded: false,
+            user: ''
         };
     }
     componentWillMount() {
@@ -22,7 +23,8 @@ class WikiShow extends React.Component {
             this.setState({
                 name: this.state.name,
                 body: res.body.data.body,
-                loaded: true
+                loaded: true,
+                user: res.body.data.user,
             });
         });
     }
@@ -43,6 +45,8 @@ class WikiShow extends React.Component {
             React.createElement("link", { rel: "stylesheet", href: "./stylesheets/default_wiki.css" }),
             React.createElement("div", { id: "main" },
                 React.createElement("h1", { id: "title" }, this.state.name),
+                "\u3000\u88FD\u4F5C\u8005:",
+                this.state.user,
                 React.createElement("div", { style: styles.show }, html),
                 React.createElement("p", { style: styles.right },
                     React.createElement("a", { href: `/edit/${name}` }, "\u2192\u3053\u306E\u30DA\u30FC\u30B8\u3092\u7DE8\u96C6"),

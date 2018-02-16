@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
     if (!req.user) {
         res.redirect('/auth/login');
     }
-    else{
+    else {
         res.redirect(302, '/main');
     }
 });
@@ -30,11 +30,11 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 * 30,
     },
 }));
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
     done(null, user);
 });
 
-passport.deserializeUser(function(user, done) {
+passport.deserializeUser(function (user, done) {
     done(null, user);
 });
 app.use(passport.initialize());
@@ -89,8 +89,9 @@ app.get('/create/:wikiname/:name', (req, res) => {
     const wikiname = req.params.wikiname;
     const name = req.params["name"]
     db.insert([
-        { name: wikiname,
-          user: name
+        {
+            name: wikiname,
+            user: name
         }
     ], function (err, newDoc) {
         console.log(newDoc);
@@ -102,21 +103,21 @@ app.get('/delete/:wikiname', (req, res) => {
         console.log(deleteDoc);
     });
 });
-app.post('/api/put/:wikiname', (req, res) => {
+app.post('/api/put/:wikiname/:name', (req, res) => {
     const wikiname = req.params.wikiname;
+    const user = req.params["name"]
     // 既存のエントリがあるか確認
-    db.find({ 'name': wikiname }, (err, docs) => {
+    db.find({ 'name': wikiname, 'user': user }, (err, docs) => {
         if (err) {
             res.json({ status: false, msg: err });
             return;
         }
         const body = req.body.body;
-        if (docs.length === 0) {
-            db.insert({ name: wikiname, body });
-        }
-        else {
-            db.update({ name: wikiname }, { name: wikiname, body });
-        }
+        console.log(body)
+        console.log(wikiname)
+        console.log(user)
+        db.update({ name: wikiname, user: user }, { name: wikiname, user: user, body });
+
         res.json({ status: true });
     });
 });

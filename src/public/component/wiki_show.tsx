@@ -13,7 +13,8 @@ interface IndexProps {
 interface IndexState {
     name: string,
     body: string,
-    loaded: boolean
+    loaded: boolean,
+    user: string
 }
 
 export default class WikiShow extends React.Component<IndexProps, IndexState>  {
@@ -23,7 +24,8 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         this.state = {
             name: match.params.name,
             body: '',
-            loaded: false
+            loaded: false,
+            user: ''
         }
     }
     componentWillMount() {
@@ -34,7 +36,8 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                 this.setState({
                     name: this.state.name,
                     body: res.body.data.body,
-                    loaded: true
+                    loaded: true,
+                    user:res.body.data.user,
                 })
             })
     }
@@ -57,11 +60,11 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
             <div>
                 <link rel="stylesheet" href="./stylesheets/default_wiki.css" />
                 <div id="main">
-                    <h1 id="title">{this.state.name}</h1>
+                    <h1 id="title">{this.state.name}</h1>　製作者:{this.state.user}
                     <div style={styles.show}>{html}</div>
                     <p style={styles.right}>
                         <a href={`/edit/${name}`}>→このページを編集</a>
-                        <br/>
+                        <br />
                         <a href={`/main`}>→ホームへ戻る</a>
                     </p>
                 </div>
