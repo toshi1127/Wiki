@@ -14,7 +14,8 @@ interface IndexState {
     name: any,
     body: string,
     loaded: boolean,
-    jump: string
+    jump: string,
+    user: string
 }
 
 export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
@@ -27,7 +28,8 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
             name: name,
             body: '',
             loaded: false,
-            jump: ''
+            jump: '',
+            user: ''
         }
     }
     componentWillMount() {
@@ -44,16 +46,19 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
                     //読み込みが終わったのでtrueにしている。
                     loaded: true,
                     jump: this.state.jump,
+                    user: res.body.data.user,
                 })
             })
     }
     save() {
         const wikiname: string = this.state.name
+        console.log(this.state.user)
         request
-            .post('/api/put/' + wikiname)
+            .post('/api/put/' + wikiname + '/' + this.state.user)
             .type('form')
             .send({
                 name: wikiname,
+                user: this.state.user,
                 body: this.state.body
             })
             .end((err, data) => {
@@ -91,7 +96,7 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
         const name: string = this.state.name
         return (
             <div id="main">
-            <link rel="stylesheet" href="./stylesheets/default_wiki.css" />
+                <link rel="stylesheet" href="./stylesheets/default_wiki.css" />
                 <div id="title" style={styles.edit}>
                     <h1><a href={`/wiki/${name}`}>{name}</a></h1>
                     <textarea rows={12} cols={80}

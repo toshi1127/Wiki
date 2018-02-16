@@ -13,7 +13,8 @@ class WikiEdit extends React.Component {
             name: name,
             body: '',
             loaded: false,
-            jump: ''
+            jump: '',
+            user: ''
         };
     }
     componentWillMount() {
@@ -30,16 +31,19 @@ class WikiEdit extends React.Component {
                 //読み込みが終わったのでtrueにしている。
                 loaded: true,
                 jump: this.state.jump,
+                user: res.body.data.user,
             });
         });
     }
     save() {
         const wikiname = this.state.name;
+        console.log(this.state.user);
         request
-            .post('/api/put/' + wikiname)
+            .post('/api/put/' + wikiname + '/' + this.state.user)
             .type('form')
             .send({
             name: wikiname,
+            user: this.state.user,
             body: this.state.body
         })
             .end((err, data) => {
