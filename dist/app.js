@@ -87,8 +87,11 @@ app.get('/api/getting_list', (req, res) => {
 });
 app.get('/create/:wikiname/:name', (req, res) => {
     const wikiname = req.params.wikiname;
+    const name = req.params["name"]
     db.insert([
-        { name: wikiname }
+        { name: wikiname,
+          user: name
+        }
     ], function (err, newDoc) {
         console.log(newDoc);
     });
