@@ -50,6 +50,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
             })
     }
     handleChange(e: any) {
+        console.log(e.name)
         if (e.name === 'create') {
             this.setState({
                 [e.name]: e.isOK,
@@ -65,9 +66,9 @@ export default class main extends React.Component<IndexProps, IndexState>{
     }
     create_wiki(e: any) {//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
         //取得後、bodyを上書きして、画面を再表示する。
-        if (this.state.create) {
+        if (e.isOK) {
             request
-                .get(`/create/` + this.state.create_value)
+                .get(`/create/` + e.value)
                 .end((err, res) => {
                     if (err) {
                         return
@@ -76,9 +77,9 @@ export default class main extends React.Component<IndexProps, IndexState>{
         }
     }
     delete_wiki(e: any) {
-        if (this.state.delete) {
+        if (e.isOK) {
             request
-                .get(`/delete/` + this.state.delete_value)
+                .get(`/delete/` + e.value)
                 .end((err, res) => {
                     if (err) {
                         return
@@ -163,16 +164,10 @@ export default class main extends React.Component<IndexProps, IndexState>{
                         </div>
                     </div>
                     <div id="formlist">
-                        < form onSubmit={create_wiki} >
-                            <Form name='create' onChange={doChange} />
-                            <input type='submit' value='create' />
-                        </form >
+                        <Form name='create' onChange={doChange} onSubmit={create_wiki}/>
                         <br>
                         </br>
-                        <form onSubmit={delete_wiki}>
-                            <Form name='delete' onChange={doChange} />
-                            <input type='submit' value='delete' />
-                        </form>
+                        <Form name='delete' onChange={doChange} onSubmit={delete_wiki}/>
                     </div>
                     <script src="javascript/jquery.min.js"></script>
                     <script src="javascript/bootstrap.min.js"></script>

@@ -1,10 +1,12 @@
 import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AutoComplete from 'material-ui/AutoComplete';
+import TextField from 'material-ui/TextField';
 
 interface IndexProps {
     name: string,
-    onChange: any
+    onChange: any,
+    onSubmit:any
 }
 interface IndexState {
     dataSource: string[]
@@ -22,41 +24,61 @@ export default class Form extends React.Component<IndexProps, IndexState> {
         }
     }
 
-    doChange(e: any) {
-        const newValue = e
+    doChange(e: any, v: any) {
+        const newValue = v
         const filter = /^\d{8}.*$/
         const newIsOK = this.filtering(newValue, filter)
         this.setState({
             value: newValue,
             isOK: newIsOK
         })
-        if (this.props.onChange) {
-            this.props.onChange({
-                value: newValue,
-                isOK: newIsOK,
-                name: this.props.name
-            })
-        }
     }
     filtering(value: string, filter: any) {
         console.log(filter.test(value))
         return filter.test(value)
     }
+    doSubmit(){
+        if(this.state.isOK){
+            if(this.props.name=='create'){
+                if (this.props.onSubmit) {
+                    this.props.onSubmit({
+                        value: this.state.value,
+                        isOK: this.state.isOK,
+                        name: this.props.name
+                    })
+                }
+            }
+            else{
+                if (this.props.onSubmit) {
+                    this.props.onSubmit({
+                        value: this.state.value,
+                        isOK: this.state.isOK,
+                        name: this.props.name
+                    })
+                }
+            }
+        }
+    }
     render() {
+        const onSubmit = () => this.doSubmit()        
         const msg = this.renderStatusMessage()
-        const doChange = (e: any) => this.doChange(e)
+        const doChange = (e: any, v: any) => this.doChange(e, v)
         return (
             <div>
+                <form onSubmit={onSubmit}>
                 <MuiThemeProvider>
-                    <AutoComplete
-                        hintText="日付8桁+名前"
-                        searchText={this.state.value}
-                        onUpdateInput={doChange}
-                        dataSource={this.state.dataSource}
+                    <TextField
                         name={this.props.name}
+                        hintText="日付8桁+名前"
+                        floatingLabelText="日付8桁+名前"
+                        onChange={doChange}
+                        value={this.state.value}
                     />
                 </MuiThemeProvider>
                 {msg}
+                <br/>
+                <input type='submit' value={this.props.name} />
+                </form>
             </div>
         )
     }

@@ -35,6 +35,7 @@ class main extends React.Component {
         });
     }
     handleChange(e) {
+        console.log(e.name);
         if (e.name === 'create') {
             this.setState({
                 [e.name]: e.isOK,
@@ -50,9 +51,9 @@ class main extends React.Component {
     }
     create_wiki(e) {
         //取得後、bodyを上書きして、画面を再表示する。
-        if (this.state.create) {
+        if (e.isOK) {
             request
-                .get(`/create/` + this.state.create_value)
+                .get(`/create/` + e.value)
                 .end((err, res) => {
                 if (err) {
                     return;
@@ -61,9 +62,9 @@ class main extends React.Component {
         }
     }
     delete_wiki(e) {
-        if (this.state.delete) {
+        if (e.isOK) {
             request
-                .get(`/delete/` + this.state.delete_value)
+                .get(`/delete/` + e.value)
                 .end((err, res) => {
                 if (err) {
                     return;
@@ -131,13 +132,9 @@ class main extends React.Component {
                 React.createElement("div", { className: "container" },
                     React.createElement("div", { className: "row" }, html)),
                 React.createElement("div", { id: "formlist" },
-                    React.createElement("form", { onSubmit: create_wiki },
-                        React.createElement(form_1.default, { name: 'create', onChange: doChange }),
-                        React.createElement("input", { type: 'submit', value: 'create' })),
+                    React.createElement(form_1.default, { name: 'create', onChange: doChange, onSubmit: create_wiki }),
                     React.createElement("br", null),
-                    React.createElement("form", { onSubmit: delete_wiki },
-                        React.createElement(form_1.default, { name: 'delete', onChange: doChange }),
-                        React.createElement("input", { type: 'submit', value: 'delete' }))),
+                    React.createElement(form_1.default, { name: 'delete', onChange: doChange, onSubmit: delete_wiki })),
                 React.createElement("script", { src: "javascript/jquery.min.js" }),
                 React.createElement("script", { src: "javascript/bootstrap.min.js" })));
         }
