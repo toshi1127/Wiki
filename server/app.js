@@ -8,12 +8,9 @@ import connectMongo from 'connect-mongo';
 import WikiDate from './models/wikidata';
 
 const auth = require('./routes/auth');
-const main = require('./routes/main');
 
-var MongoClient = require("mongodb").MongoClient;
-
-var url = "mongodb://localhost/HuacWiki";
-MongoClient.connect(url, (err, db) => {
+var url = "mongodb://heroku_qq1252mp:1qg8n9f2fsslseanuomigsu7vt@ds129670.mlab.com:29670/heroku_qq1252mp";
+mongoose.connect(url, (err, db) => {
     if (err) {
         console.log('ERROR connecting to: ' + url + '. ' + err);
     } else {
@@ -21,12 +18,7 @@ MongoClient.connect(url, (err, db) => {
     }
 });
 const MongoStore = connectMongo(session);
-/*
-const db = new Nedb({
-    filename: path.join(__dirname, 'wiki.db'),
-    autoload: true
-});
-*/
+
 let app = express();
 app.get('/', (req, res) => {
     if (!req.user) {
@@ -40,23 +32,16 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 30,
     },
 }));
-passport.serializeUser(function (user, done) {
-    done(null, user);
-});
-
-passport.deserializeUser(function (user, done) {
-    done(null, user);
-});
 app.use(passport.initialize());
 app.use(passport.session());
 // Routing
 app.use('/auth', auth);
 // Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 var port = '8080';
 app.listen(process.env.PORT || port, () => {
@@ -66,7 +51,6 @@ app.listen(process.env.PORT || port, () => {
 });
 app.use('/wiki/:wikiname', express.static(__dirname + '/public'));
 app.use('/edit/:wikiname', express.static(__dirname + '/public'));
-//app.use('/main',main)
 app.use('/main/:name', express.static(__dirname + '/public'));
 // APIの定義
 // Wikiデータを返すAPI 
