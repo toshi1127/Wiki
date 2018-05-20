@@ -19,27 +19,23 @@ function extractProfile(profile) {
 }
 
 passport.use(new GoogleStrategy({
-    clientID: "981413818459-0pnh6j8bgmlq2vhvuochrj5o0pgm1aik.apps.googleusercontent.com",
-    clientSecret: "JZ-U7sExCOkze3-j0cvQb3ul",
+    clientID: "134812553393-6huph2g2q6fvdb7v00sdoclh5esuii06.apps.googleusercontent.com",
+    clientSecret: "xdEe3RQATvYRY5tXp1TLPEVo",
     callbackURL: 'http://localhost:8080/auth/google/callback',
     accessType: 'offline',
 }, function (accessToken, refreshToken, profile, done) {
-    if (profile) {
-        User.findByIdAndUpdate(profile.id, extractProfile(profile), {
-            upsert: true,
-            new: true,
-        }, (err, user) => {
-            return done(null, profile);
-        })
-    }
-    else {
-        return done(null, false);
-    }
+    User.findByIdAndUpdate(profile.id, extractProfile(profile), {
+        upsert: true,
+        new: true,
+    }, (err, user) => {
+        return done(null, user);
+    })
 }));
 
 passport.serializeUser((user, done) => {
     done(null, user.id)
 });
+
 passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => {
         if (err || !user) {
@@ -52,7 +48,7 @@ passport.deserializeUser((id, done) => {
 const router = express.Router();
 
 router.get('/login',
-    passport.authenticate('google', { scope: ['email', 'profile'] }),
+passport.authenticate('google', { scope: ['email', 'profile'] }),
 );
 
 router.get('/google/callback', passport.authenticate('google'), (req, res) => {
