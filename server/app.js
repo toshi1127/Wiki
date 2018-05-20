@@ -14,7 +14,6 @@ const db = new Nedb({
 });
 let app = express();
 app.get('/', (req, res) => {
-    console.log("aiueo")
     if (!req.user) {
         res.redirect('/auth/login');
     }
@@ -113,9 +112,6 @@ app.post('/api/put/:wikiname/:name', (req, res) => {
             return;
         }
         const body = req.body.body;
-        console.log(body)
-        console.log(wikiname)
-        console.log(user)
         db.update({ name: wikiname, user: user }, { name: wikiname, user: user, body });
 
         res.json({ status: true });

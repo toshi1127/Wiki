@@ -52,7 +52,6 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
     }
     save() {
         const wikiname: string = this.state.name
-        console.log(this.state.user)
         request
             .post('/api/put/' + wikiname + '/' + this.state.user)
             .type('form')

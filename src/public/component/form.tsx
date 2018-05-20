@@ -34,7 +34,6 @@ export default class Form extends React.Component<IndexProps, IndexState> {
         })
     }
     filtering(value: string, filter: any) {
-        console.log(filter.test(value))
         return filter.test(value)
     }
     doSubmit(){

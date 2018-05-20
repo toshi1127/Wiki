@@ -45,7 +45,6 @@ export default class main extends React.Component<IndexProps, IndexState>{
         }
     }
     componentWillMount() {
-        console.log("呼び出します")
         request
             .get(`/api/getting_list`)
             .end((err, res) => {
@@ -59,7 +58,6 @@ export default class main extends React.Component<IndexProps, IndexState>{
             })
     }
     handleChange(e: any) {
-        console.log(e.name)
         if (e.name === 'create') {
             this.setState({
                 [e.name]: e.isOK,
@@ -147,7 +145,6 @@ export default class main extends React.Component<IndexProps, IndexState>{
             )
         }
         else {
-            console.log("描写します")
             const onClick = (e: any) => this.handleToggle(e)
             const doChange = (e: any) => this.handleChange(e)
             const filtering = /^\d{8}.*/g

@@ -25,7 +25,6 @@ export default class App_Bar extends React.Component<IndexProps, IndexState>{
         }
     }
     onClick(e: any, v: any) {
-        console.log(v)
         this.setState({ open: !this.state.open })
         if (this.props.onClick) {
             this.props.onClick({
@@ -43,7 +42,6 @@ export default class App_Bar extends React.Component<IndexProps, IndexState>{
         }
     }
     onTouch() {
-        console.log("クリックされました")
         this.setState({ open: !this.state.open })
     }
     handleToggle = () => this.onTouch()
