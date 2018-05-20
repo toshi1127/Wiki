@@ -1,5 +1,9 @@
-const express = require("express");
-const passport = require('passport');
+import express from 'express'
+import passport from 'passport'
+import mongoose from 'mongoose';
+
+import User from '../models/users'
+
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 function extractProfile(profile) {
@@ -21,12 +25,29 @@ passport.use(new GoogleStrategy({
     accessType: 'offline',
 }, function (accessToken, refreshToken, profile, done) {
     if (profile) {
-        return done(null, profile);
+        User.findByIdAndUpdate(profile.id, extractProfile(profile), {
+            upsert: true,
+            new: true,
+        }, (err, user) => {
+            return done(null, profile);
+        })
     }
     else {
         return done(null, false);
     }
 }));
+
+passport.serializeUser((user, done) => {
+    done(null, user.id)
+});
+passport.deserializeUser((id, done) => {
+    User.findById(id, (err, user) => {
+        if (err || !user) {
+            return done(err);
+        }
+        done(null, user);
+    });
+});
 
 const router = express.Router();
 
@@ -35,6 +56,6 @@ router.get('/login',
 );
 
 router.get('/google/callback', passport.authenticate('google'), (req, res) => {
-    res.redirect("/main/"+res["req"]["user"]["displayName"]);
+    res.redirect("/main/" + res["req"]["user"]["displayName"]);
 });
 module.exports = router;
