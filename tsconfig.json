@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "jsx": "react",
+      "target": "es2017",
+      "sourceMap": true,
+      "types" : ["node"],
+      "outDir": "./dist",
+      "noImplicitAny": true,
+      "noEmitOnError": true,
+      "removeComments": false
+    },
+    "exclude": [
+      "node_modules",
+      "wwwroot"
+    ]
+  }
+  
