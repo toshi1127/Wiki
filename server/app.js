@@ -1,28 +1,32 @@
-"use strict";
-const express = require("express");
-const path = require("path");
-const bodyParser = require("body-parser");
-const Nedb = require("nedb");
-const passport = require('passport');
-const session = require('express-session');
+import express from 'express'
+import path from 'path'
+import bodyParser from 'body-parser'
+import passport from 'passport'
+import session from 'express-session'
+import mongoose from 'mongoose';
+import connectMongo from 'connect-mongo';
+import WikiDate from './models/wikidata';
+
 const auth = require('./routes/auth');
 const main = require('./routes/main');
+
 var MongoClient = require("mongodb").MongoClient;
 
-// 接続文字列
-var url = "mongodb://localhost:8080/HuacWiki";
-
-// MongoDB へ 接続
-MongoClient.connect(url, (error, db) => {
-   // 接続メッセージを表示
-   console.log("MongoDB へ 接続中...")
+var url = "mongodb://localhost/HuacWiki";
+MongoClient.connect(url, (err, db) => {
+    if (err) {
+        console.log('ERROR connecting to: ' + url + '. ' + err);
+    } else {
+        console.log('Succeeded connected to: ' + url);
+    }
 });
-
-
+const MongoStore = connectMongo(session);
+/*
 const db = new Nedb({
     filename: path.join(__dirname, 'wiki.db'),
     autoload: true
 });
+*/
 let app = express();
 app.get('/', (req, res) => {
     if (!req.user) {
@@ -69,7 +73,7 @@ app.use('/main/:name', express.static(__dirname + '/public'));
 app.get('/api/get/:wikiname', (req, res) => {
     const wikiname = req.params.wikiname;
     //この時点でundifindなので、componentWillMountの時点でstate.nameに値が入っていない。
-    db.find({ name: wikiname }, (err, docs) => {
+    WikiDate.find({ name: wikiname }, (err, docs) => {
         if (err) {
             res.json({ status: false, msg: err });
             return;
@@ -81,7 +85,7 @@ app.get('/api/get/:wikiname', (req, res) => {
     });
 });
 app.get('/api/getting_list', (req, res) => {
-    db.find({}, (err, docs) => {
+    WikiDate.find({}, (err, docs) => {
         if (err) {
             res.json({ status: false, msg: err });
             return;
@@ -98,18 +102,16 @@ app.get('/api/getting_list', (req, res) => {
 app.get('/create/:wikiname/:name', (req, res) => {
     const wikiname = req.params.wikiname;
     const name = req.params["name"]
-    db.insert([
-        {
-            name: wikiname,
-            user: name
-        }
-    ], function (err, newDoc) {
+    WikiDate.findByIdAndUpdate(wikiname, {
+        upsert: true,
+        new: true,
+    }, (err, newDoc)  => {
         console.log(newDoc);
     });
 });
 app.get('/delete/:wikiname', (req, res) => {
     const wikiname = req.params.wikiname;
-    db.remove({ name: wikiname }, function (err, deleteDoc) {
+    WikiDate.remove({ name: wikiname }, function (err, deleteDoc) {
         console.log(deleteDoc);
     });
 });
@@ -117,13 +119,13 @@ app.post('/api/put/:wikiname/:name', (req, res) => {
     const wikiname = req.params.wikiname;
     const user = req.params["name"]
     // 既存のエントリがあるか確認
-    db.find({ 'name': wikiname, 'user': user }, (err, docs) => {
+    WikiDate.find({ 'name': wikiname, 'user': user }, (err, docs) => {
         if (err) {
             res.json({ status: false, msg: err });
             return;
         }
         const body = req.body.body;
-        db.update({ name: wikiname, user: user }, { name: wikiname, user: user, body });
+        WikiDate.update({ name: wikiname, user: user }, { name: wikiname, user: user, body });
 
         res.json({ status: true });
     });
