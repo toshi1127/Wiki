@@ -7,6 +7,17 @@ const passport = require('passport');
 const session = require('express-session');
 const auth = require('./routes/auth');
 const main = require('./routes/main');
+var MongoClient = require("mongodb").MongoClient;
+
+// 接続文字列
+var url = "mongodb://localhost:8080/HuacWiki";
+
+// MongoDB へ 接続
+MongoClient.connect(url, (error, db) => {
+   // 接続メッセージを表示
+   console.log("MongoDB へ 接続中...")
+});
+
 
 const db = new Nedb({
     filename: path.join(__dirname, 'wiki.db'),
