@@ -10,22 +10,6 @@ import WikiList from './models/wikidata'
 const auth = require('./routes/auth')
 var url = "mongodb://heroku_qq1252mp:1qg8n9f2fsslseanuomigsu7vt@ds129670.mlab.com:29670/heroku_qq1252mp"
 var start = true
-var Schema = mongoose.Schema
-
-var elementSchema = new Schema({
-    _id: String,
-    name: String,
-    body: String,
-    user: String
-})
-
-var wikiListSchema = new Schema({
-    _id: String,
-    work: [elementSchema],
-    evaluation: [elementSchema],
-    result: [elementSchema]
-})
-mongoose.model('WikiList', wikiListSchema)
 
 mongoose.connect(url, (err, db) => {
     if (err) {
