@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "node ./dist/app.js",
     "build": "webpack",
     "babel": "babel server -d dist",
     "watch": "tsc --watch",
