@@ -14,4 +14,4 @@ const wikiListSchema = mongoose.Schema({
     result: [elementSchema]
 });
 
-//export default mongoose.model('WikiList', wikiListSchema);
+export default mongoose.model('WikiList', wikiListSchema);
