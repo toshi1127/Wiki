@@ -77,6 +77,25 @@ app.get('/api/get/:wikiname', (req, res) => {
         }
     })
 })
+
+app.get('/api/getting_comment/:wikiname', (res, req) => {
+    const wikiname = req.params.wikiname
+    WikiList.find({ _id: '19961127' }, (err, Schema) => {
+        if (err) {
+            res.json({ status: false, msg: err })
+            return
+        }
+        else {
+            for (var x = 0; x < Schema[0].work.length; x++) {
+                if (Schema[0].work[x].name == wikiname) {
+                    const commentList = Schema[0].work[x].commentList
+                    resjson({ status: true, wikilist })
+                }
+            }
+        }
+    })
+})
+
 app.get('/api/getting_list', (req, res) => {
     const wikilist = mongoose.model('WikiList')
     if (start) {
@@ -107,6 +126,7 @@ app.get('/api/getting_list', (req, res) => {
         }
     })
 })
+
 app.get('/create/:wikiname/:name', (req, res) => {
     console.log('wikiを作ります。')
     const wikiname = req.params.wikiname
@@ -133,6 +153,7 @@ app.get('/create/:wikiname/:name', (req, res) => {
         })
     })
 })
+
 app.get('/delete/:wikiname', (req, res) => {
     const wikiname = req.params.wikiname
     var WikiList = mongoose.model('WikiList')
@@ -154,6 +175,7 @@ app.get('/delete/:wikiname', (req, res) => {
         }
     })
 })
+
 app.post('/api/put/:wikiname/:name', (req, res) => {
     const wikiname = req.params.wikiname
     const user = req.params["name"]
@@ -169,6 +191,31 @@ app.post('/api/put/:wikiname/:name', (req, res) => {
                 if (Schema[0].work[x].name == wikiname) {
                     Schema[0].work[x].body = req.body.body
                     Schema[0].work[x].user = user
+                    Schema[0].save(function (err) {
+                        res.json({ status: true });
+                    });
+                }
+            }
+        }
+    })
+})
+
+app.post('/api/putComment/', (req, res) => {
+    const name = req.params.name
+    const comment = req.params.comment
+    WikiList.find({ _id: '19961127' }, (err, Schema) => {
+        if (err) {
+            res.json({ status: false, msg: err })
+            return
+        }
+        else {
+            for (var x = 0; x < Schema[0].work.length; x++) {
+                if (Schema[0].work[x].name == wikiname) {
+                    const element = {
+                        user: name,
+                        body: comment
+                    }
+                    Schema[0].work[x].commentList.push(element)
                     Schema[0].save(function (err) {
                         res.json({ status: true });
                     });
