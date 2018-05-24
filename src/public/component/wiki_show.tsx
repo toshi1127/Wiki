@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as request from 'superagent'
 import { Redirect } from 'react-router-dom'
 import * as WikiParser from '../javascript/wiki_parser'
+import CommentInput from './TextField';
 
 interface IndexProps {
     match: {
@@ -11,6 +12,7 @@ interface IndexProps {
     }
 }
 interface IndexState {
+    commemts: string[],
     name: string,
     body: string,
     loaded: boolean,
@@ -22,10 +24,12 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         super(props);
         const { match } = this.props
         this.state = {
+            commemts: null,
             name: match.params.name,
             body: '',
             loaded: false,
-            user: ''
+            user: '',
+
         }
     }
     componentWillMount() {
@@ -36,8 +40,22 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                 this.setState({
                     name: this.state.name,
                     body: res.body.data.body,
+                    loaded: false,
+                    user: res.body.data.user,
+                })
+            })
+    }
+    componentDidMount() {
+        //コメントを取得する。
+        request
+            .get(`/api/getting_comment/${this.state.name}`)
+            .end((err, res) => {
+                if(err){
+                    return
+                }
+                this.setState({
                     loaded: true,
-                    user:res.body.data.user,
+                    commemts: res.body.data
                 })
             })
     }
@@ -68,6 +86,7 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                         <a href={`/main/${this.state.user}`}>→ホームへ戻る</a>
                     </p>
                 </div>
+                <CommentInput />
             </div>
         )
     }
