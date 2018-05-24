@@ -1,10 +1,16 @@
 import mongoose from 'mongoose';
 
+var comment = mongoose.Schema({
+    user: String,
+    body: String
+})
+
 var elementSchema = mongoose.Schema({
     _id: String,
     name: String,
     body: String,
-    user: String
+    user: String,
+    commentList: [comment]
 })
 
 const wikiListSchema = mongoose.Schema({
