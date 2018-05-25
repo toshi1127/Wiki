@@ -103,19 +103,23 @@ app.get('/api/get/:wikiname', function (req, res) {
     });
 });
 
-app.get('/api/getting_comment/:wikiname', function (res, req) {
+app.get('/api/comment/:wikiname', function (req, res) {
     var wikiname = req.params.wikiname;
     _wikidata2.default.find({ _id: '19961127' }, function (err, Schema) {
         if (err) {
-            res.json({ status: false, msg: err });
             return;
         } else {
-            for (var x = 0; x < Schema[0].work.length; x++) {
-                if (Schema[0].work[x].name == wikiname) {
-                    var commentList = Schema[0].work[x].commentList;
-                    resjson({ status: true, wikilist: wikilist });
+            return new Promise(function (resolve, reject) {
+                for (var x = 0; x < Schema[0].work.length; x++) {
+                    if (Schema[0].work[x].name == wikiname) {
+                        var commentList = Schema[0].work[x].commentList;
+                        console.log(commentList);
+                        res.json({ status: true, commentList: commentList });
+                    }
                 }
-            }
+            }).then(function () {
+                return;
+            });
         }
     });
 });
@@ -126,29 +130,33 @@ app.get('/api/getting_list', function (req, res) {
         var _WikiList = new wikilist();
         _WikiList._id = '19961127';
         _WikiList.save(function (err) {
-            if (err) {} else {}
+            if (err) {
+                res.json({ status: false, msg: err });
+            } else {
+                res.json({ status: true, data: null });
+            }
         });
         start = false;
-    }
-    wikilist.find({ _id: '19961127' }, function (err, Schema) {
-        if (err) {
-            res.json({ status: false, msg: err });
-            return;
-        } else {
-            if (Schema[0].work.length !== 0) {
-                Schema[0].work.map(function (value, index, array) {
-                    array[index] = value.name;
-                });
-                res.json({ status: true, data: Schema[0].work });
+    } else {
+        wikilist.find({ _id: '19961127' }, function (err, Schema) {
+            if (err) {
+                res.json({ status: false, msg: err });
+                return;
             } else {
-                res.json({ status: true, data: Schema[0].work });
+                if (Schema[0].work.length !== 0) {
+                    Schema[0].work.map(function (value, index, array) {
+                        array[index] = value.name;
+                    });
+                    res.json({ status: true, data: Schema[0].work });
+                } else {
+                    res.json({ status: true, data: Schema[0].work });
+                }
             }
-        }
-    });
+        });
+    }
 });
 
 app.get('/create/:wikiname/:name', function (req, res) {
-    console.log('wikiを作ります。');
     var wikiname = req.params.wikiname;
     var name = req.params["name"];
     var WikiList = _mongoose2.default.model('WikiList');
@@ -184,7 +192,6 @@ app.get('/delete/:wikiname', function (req, res) {
         } else {
             for (var x = 0; x < Schema[0].work.length; x++) {
                 if (Schema[0].work[x].name == wikiname) {
-                    console.log('消します');
                     Schema[0].work.splice(x, 1);
                     Schema[0].save(function (err) {
                         res.json({ status: true });
@@ -218,9 +225,10 @@ app.post('/api/put/:wikiname/:name', function (req, res) {
     });
 });
 
-app.post('/api/putComment/', function (req, res) {
-    var name = req.params.name;
-    var comment = req.params.comment;
+app.post('/api/putComment/:wikiname', function (req, res) {
+    var wikiname = req.params.wikiname;
+    var name = req.body.user;
+    var comment = req.body.comment;
     _wikidata2.default.find({ _id: '19961127' }, function (err, Schema) {
         if (err) {
             res.json({ status: false, msg: err });

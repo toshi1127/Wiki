@@ -35,7 +35,7 @@ function extractProfile(profile) {
 _passport2.default.use(new GoogleStrategy({
     clientID: "134812553393-6huph2g2q6fvdb7v00sdoclh5esuii06.apps.googleusercontent.com",
     clientSecret: "xdEe3RQATvYRY5tXp1TLPEVo",
-    callbackURL: 'https://huac-wiki.herokuapp.com/auth/google/callback',
+    callbackURL: 'http://localhost:8080/auth/google/callback',
     accessType: 'offline'
 }, function (accessToken, refreshToken, profile, done) {
     _users2.default.findByIdAndUpdate(profile.id, extractProfile(profile), {
