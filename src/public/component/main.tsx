@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as request from 'superagent'
 import * as nedb from 'nedb'
-import { Redirect,Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Form from './form';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -75,7 +75,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
         //取得後、bodyを上書きして、画面を再表示する。
         if (e.isOK) {
             request
-                .get(`/create/` + e.value+"/"+this.state.name)
+                .get(`/create/` + e.value + "/" + this.state.name)
                 .end((err, res) => {
                     if (err) {
                         return
@@ -114,9 +114,9 @@ export default class main extends React.Component<IndexProps, IndexState>{
                     <div className="fh5co-blog animate-box">
                         <div className="blog-text">
                             <h3>
-                                <a href={`/wiki/${value}`}>{value}</a>
+                                <Link to={`/wiki/${value}`}>{value}</Link>
                             </h3>
-                            <Link to={`/wiki/${value}`}>Home</Link>
+                            <Link to={`/wiki/${value}`}>Read More</Link>
                         </div>
                     </div>
                 </div>
