@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as request from 'superagent'
 import * as nedb from 'nedb'
-import { Redirect } from 'react-router-dom'
+import { Redirect,Link } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Form from './form';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -116,8 +116,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
                             <h3>
                                 <a href={`/wiki/${value}`}>{value}</a>
                             </h3>
-                            <p> </p>
-                            <a href={`/wiki/${value}`} className="btn btn-primary">Read More</a>
+                            <Link to={`/wiki/${value}`}>Home</Link>
                         </div>
                     </div>
                 </div>
