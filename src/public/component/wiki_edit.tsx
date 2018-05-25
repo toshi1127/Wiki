@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as request from 'superagent'
 import { Redirect } from 'react-router-dom'
 import main from './main';
+import styled from 'styled-components';
 
 interface IndexProps {
     match: {
@@ -17,6 +18,20 @@ interface IndexState {
     jump: string,
     user: string
 }
+
+const Wiki = styled.div`
+    width: 75%;
+    margin-right: auto;
+    margin-left : auto;
+    display: flex; /* 子要素をflexboxで揃える */
+    flex-direction: column; /* 子要素をflexboxにより縦方向に揃える */
+    justify-content: center; /* 子要素をflexboxにより中央に配置する */
+    align-items: center;  /* 子要素をflexboxにより中央に配置する */
+`
+const Title = styled.h1`
+    width: auto;
+    text-align : center;
+`
 
 export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
     constructor(props: IndexProps) {
@@ -94,31 +109,23 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
         }
         const name: string = this.state.name
         return (
-            <div id="main">
-                <link rel="stylesheet" href="./stylesheets/default_wiki.css" />
+            <Wiki>
                 <div id="title" style={styles.edit}>
-                    <h1><a href={`/wiki/${name}`}>{name}</a></h1>
-                    <textarea rows={12} cols={80}
+                    <Title>{name}</Title>
+                    <textarea rows={15} cols={110}
                         onChange={e => this.bodyChanged(e)}
                         value={this.state.body}
                     />
                     <br />
                     <button onClick={e => this.save()}>保存</button>
                 </div>
-            </div>
+            </Wiki>
         )
     }
 }
 const styles = {
-    show: {
-        border: '1px solid gray',
-        padding: 12
-    },
     edit: {
         padding: 12,
         backgroundColor: 'silver'
-    },
-    right: {
-        textAlign: 'right'
     }
 }
