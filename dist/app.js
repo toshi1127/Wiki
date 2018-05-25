@@ -102,6 +102,24 @@ app.get('/api/get/:wikiname', function (req, res) {
         }
     });
 });
+
+app.get('/api/getting_comment/:wikiname', function (res, req) {
+    var wikiname = req.params.wikiname;
+    _wikidata2.default.find({ _id: '19961127' }, function (err, Schema) {
+        if (err) {
+            res.json({ status: false, msg: err });
+            return;
+        } else {
+            for (var x = 0; x < Schema[0].work.length; x++) {
+                if (Schema[0].work[x].name == wikiname) {
+                    var commentList = Schema[0].work[x].commentList;
+                    resjson({ status: true, wikilist: wikilist });
+                }
+            }
+        }
+    });
+});
+
 app.get('/api/getting_list', function (req, res) {
     var wikilist = _mongoose2.default.model('WikiList');
     if (start) {
@@ -128,6 +146,7 @@ app.get('/api/getting_list', function (req, res) {
         }
     });
 });
+
 app.get('/create/:wikiname/:name', function (req, res) {
     console.log('wikiを作ります。');
     var wikiname = req.params.wikiname;
@@ -154,6 +173,7 @@ app.get('/create/:wikiname/:name', function (req, res) {
         });
     });
 });
+
 app.get('/delete/:wikiname', function (req, res) {
     var wikiname = req.params.wikiname;
     var WikiList = _mongoose2.default.model('WikiList');
@@ -174,6 +194,7 @@ app.get('/delete/:wikiname', function (req, res) {
         }
     });
 });
+
 app.post('/api/put/:wikiname/:name', function (req, res) {
     var wikiname = req.params.wikiname;
     var user = req.params["name"];
@@ -188,6 +209,30 @@ app.post('/api/put/:wikiname/:name', function (req, res) {
                 if (Schema[0].work[x].name == wikiname) {
                     Schema[0].work[x].body = req.body.body;
                     Schema[0].work[x].user = user;
+                    Schema[0].save(function (err) {
+                        res.json({ status: true });
+                    });
+                }
+            }
+        }
+    });
+});
+
+app.post('/api/putComment/', function (req, res) {
+    var name = req.params.name;
+    var comment = req.params.comment;
+    _wikidata2.default.find({ _id: '19961127' }, function (err, Schema) {
+        if (err) {
+            res.json({ status: false, msg: err });
+            return;
+        } else {
+            for (var x = 0; x < Schema[0].work.length; x++) {
+                if (Schema[0].work[x].name == wikiname) {
+                    var element = {
+                        user: name,
+                        body: comment
+                    };
+                    Schema[0].work[x].commentList.push(element);
                     Schema[0].save(function (err) {
                         res.json({ status: true });
                     });
