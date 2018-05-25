@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./dist/app.js",
-    "build": "webpack",
+    "build": "webpack && babel server -d dist",
     "babel": "babel server -d dist",
     "watch": "tsc --watch",
     "build:parser": "pegjs -o dist/public/javascript/wiki_parser.js src/public/javascript/wiki_parser.pegjs"
