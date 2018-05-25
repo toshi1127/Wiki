@@ -24,7 +24,18 @@ export default class CommentInput extends React.Component<IndexProps, IndexState
             body: null
         }
     }
+    onClick(e: any) {
+        console.log(this.state.body)
+        //ここでinputするAPIを発火させる
+    }
+    onChange(e: any, v: any) {
+        this.setState({
+            body: v
+        })
+    }
     render() {
+        const onChange = (e: any, v: any) => this.onChange(e, v)
+        const onSubmit = (e: any) => this.onClick(e)
         return (
             <ComponetForm>
                 <MuiThemeProvider>
@@ -32,8 +43,9 @@ export default class CommentInput extends React.Component<IndexProps, IndexState
                         hintText="Message Field"
                         floatingLabelText="Send Message"
                         multiLine={true}
-                        rows={1} />
-                    <RaisedButton label="送信"/>
+                        rows={1}
+                        onChange={onChange} />
+                    <RaisedButton label="送信" onClick={onSubmit} />
                 </MuiThemeProvider>
             </ComponetForm>
         )
