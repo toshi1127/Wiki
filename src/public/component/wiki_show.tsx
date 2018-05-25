@@ -1,7 +1,10 @@
 import * as React from 'react'
 import * as request from 'superagent'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import * as WikiParser from '../javascript/wiki_parser'
+import CommentInput from './TextField';
+import CommentList from './commentList';
+import styled from 'styled-components';
 
 interface IndexProps {
     match: {
@@ -11,21 +14,34 @@ interface IndexProps {
     }
 }
 interface IndexState {
+    commemts: string[],
     name: string,
     body: string,
     loaded: boolean,
     user: string
 }
 
+const Wiki = styled.div`
+    width: 70%;
+    margin-right: auto;
+    margin-left : auto;
+`
+const Title = styled.h1`
+    width: auto;
+    text-align : center;
+`
+
 export default class WikiShow extends React.Component<IndexProps, IndexState>  {
     constructor(props: IndexProps) {
         super(props);
         const { match } = this.props
         this.state = {
+            commemts: null,
             name: match.params.name,
             body: '',
             loaded: false,
-            user: ''
+            user: '',
+
         }
     }
     componentWillMount() {
@@ -34,13 +50,24 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
             .end((err, res) => {
                 if (err) return
                 this.setState({
-                    name: this.state.name,
                     body: res.body.data.body,
                     loaded: true,
-                    user:res.body.data.user,
+                    user: res.body.data.user,
+                })
+            })
+        request
+            .get(`/api/comment/${this.state.name}`)
+            .end((err, res) => {
+                if (err) {
+                    return
+                }
+                this.setState({
+                    loaded: true,
+                    commemts: res.body.data
                 })
             })
     }
+    
     render() {
         if (!this.state.loaded) {
             return (
@@ -58,16 +85,19 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         }
         return (
             <div>
-                <link rel="stylesheet" href="./stylesheets/default_wiki.css" />
-                <div id="main">
-                    <h1 id="title">{this.state.name}</h1>　製作者:{this.state.user}
+                <Wiki>
+                    <Title>{this.state.name}</Title>　製作者:{this.state.user}
                     <div style={styles.show}>{html}</div>
                     <p style={styles.right}>
-                        <a href={`/edit/${name}`}>→このページを編集</a>
+                        <Link to={`/edit/${name}`}>→このページを編集</Link>
                         <br />
-                        <a href={`/main/${this.state.user}`}>→ホームへ戻る</a>
+                        <Link to={`/main/${this.state.user}`}>→ホームへ戻る</Link>
                     </p>
-                </div>
+                    <div>
+                        <CommentList name={this.state.name} />
+                        <CommentInput name={this.state.name} user={this.state.user} />
+                    </div>
+                </Wiki>
             </div>
         )
     }
@@ -98,10 +128,6 @@ const styles = {
     show: {
         border: '1px solid gray',
         padding: 12
-    },
-    edit: {
-        padding: 12,
-        backgroundColor: 'silver'
     },
     right: {
         textAlign: 'right'

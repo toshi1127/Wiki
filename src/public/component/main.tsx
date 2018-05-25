@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as request from 'superagent'
 import * as nedb from 'nedb'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Form from './form';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -51,10 +51,17 @@ export default class main extends React.Component<IndexProps, IndexState>{
                 if (err) {
                     return
                 }
-                this.setState({
-                    body: res.body.data,
-                    loaded: true
-                })
+                if (res.body == null) {
+                    this.setState({
+                        loaded: true
+                    })
+                }
+                else {
+                    this.setState({
+                        body: res.body.data,
+                        loaded: true
+                    })
+                }
             })
     }
     handleChange(e: any) {
@@ -75,7 +82,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
         //取得後、bodyを上書きして、画面を再表示する。
         if (e.isOK) {
             request
-                .get(`/create/` + e.value+"/"+this.state.name)
+                .get(`/create/` + e.value + "/" + this.state.name)
                 .end((err, res) => {
                     if (err) {
                         return
@@ -114,10 +121,9 @@ export default class main extends React.Component<IndexProps, IndexState>{
                     <div className="fh5co-blog animate-box">
                         <div className="blog-text">
                             <h3>
-                                <a href={`/wiki/${value}`}>{value}</a>
+                                <Link to={`/wiki/${value}`}>{value}</Link>
                             </h3>
-                            <p> </p>
-                            <a href={`/wiki/${value}`} className="btn btn-primary">Read More</a>
+                            <Link to={`/wiki/${value}`}>Read More</Link>
                         </div>
                     </div>
                 </div>
@@ -145,18 +151,21 @@ export default class main extends React.Component<IndexProps, IndexState>{
             )
         }
         else {
+            var html: any
             const onClick = (e: any) => this.handleToggle(e)
             const doChange = (e: any) => this.handleChange(e)
             const filtering = /^\d{8}.*/g
             const pattern = /^\d{8}.*$/
             const create_wiki = (e: any) => this.create_wiki(e)
             const delete_wiki = (e: any) => this.delete_wiki(e)
-            const html: any = this.printlist()
+            if(this.state.body){
+                html = this.printlist()
+            }
             return (
                 <div>
                     <App_Bar onClick={onClick} open={this.state.open} />
-                    <link rel="stylesheet" href="./stylesheets/bootstrap.css" />
-                    <link rel="stylesheet" href="./stylesheets/style.css" />
+                    <link rel="stylesheet" href={"/main/"+this.state.name+"/stylesheets/bootstrap.css"} />
+                    <link rel="stylesheet" href={"/main/"+this.state.name+"/stylesheets/style.css"} />
                     <header id="fh5co-header" className="fh5co-cover fh5co-cover-sm" role="banner">
                         <div className="container">
                             <div className="display-tc animate-box" data-animate-effect="fadeIn">

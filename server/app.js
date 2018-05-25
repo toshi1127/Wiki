@@ -77,6 +77,29 @@ app.get('/api/get/:wikiname', (req, res) => {
         }
     })
 })
+
+app.get('/api/comment/:wikiname', (req, res) => {
+    const wikiname = req.params.wikiname
+    WikiList.find({ _id: '19961127' }, (err, Schema) => {
+        if (err) {
+            return
+        }
+        else {
+            return new Promise((resolve, reject) => {
+                for (var x = 0; x < Schema[0].work.length; x++) {
+                    if (Schema[0].work[x].name == wikiname) {
+                        const commentList = Schema[0].work[x].commentList
+                        console.log(commentList)
+                        res.json({ status: true, commentList })
+                    }
+                }
+            }).then(() => {
+                return
+            })
+        }
+    })
+})
+
 app.get('/api/getting_list', (req, res) => {
     const wikilist = mongoose.model('WikiList')
     if (start) {
@@ -84,31 +107,35 @@ app.get('/api/getting_list', (req, res) => {
         WikiList._id = '19961127'
         WikiList.save(function (err) {
             if (err) {
+                res.json({ status: false, msg: err })
             } else {
+                res.json({ status: true, data: null })
             }
         })
         start = false
     }
-    wikilist.find({ _id: '19961127' }, (err, Schema) => {
-        if (err) {
-            res.json({ status: false, msg: err })
-            return
-        }
-        else {
-            if (Schema[0].work.length !== 0) {
-                Schema[0].work.map((value, index, array) => {
-                    array[index] = value.name
-                })
-                res.json({ status: true, data: Schema[0].work })
+    else {
+        wikilist.find({ _id: '19961127' }, (err, Schema) => {
+            if (err) {
+                res.json({ status: false, msg: err })
+                return
             }
             else {
-                res.json({ status: true, data: Schema[0].work })
+                if (Schema[0].work.length !== 0) {
+                    Schema[0].work.map((value, index, array) => {
+                        array[index] = value.name
+                    })
+                    res.json({ status: true, data: Schema[0].work })
+                }
+                else {
+                    res.json({ status: true, data: Schema[0].work })
+                }
             }
-        }
-    })
+        })
+    }
 })
+
 app.get('/create/:wikiname/:name', (req, res) => {
-    console.log('wikiを作ります。')
     const wikiname = req.params.wikiname
     const name = req.params["name"]
     var WikiList = mongoose.model('WikiList')
@@ -133,6 +160,7 @@ app.get('/create/:wikiname/:name', (req, res) => {
         })
     })
 })
+
 app.get('/delete/:wikiname', (req, res) => {
     const wikiname = req.params.wikiname
     var WikiList = mongoose.model('WikiList')
@@ -144,7 +172,6 @@ app.get('/delete/:wikiname', (req, res) => {
         else {
             for (var x = 0; x < Schema[0].work.length; x++) {
                 if (Schema[0].work[x].name == wikiname) {
-                    console.log('消します')
                     Schema[0].work.splice(x, 1);
                     Schema[0].save(function (err) {
                         res.json({ status: true });
@@ -154,6 +181,7 @@ app.get('/delete/:wikiname', (req, res) => {
         }
     })
 })
+
 app.post('/api/put/:wikiname/:name', (req, res) => {
     const wikiname = req.params.wikiname
     const user = req.params["name"]
@@ -169,6 +197,32 @@ app.post('/api/put/:wikiname/:name', (req, res) => {
                 if (Schema[0].work[x].name == wikiname) {
                     Schema[0].work[x].body = req.body.body
                     Schema[0].work[x].user = user
+                    Schema[0].save(function (err) {
+                        res.json({ status: true });
+                    });
+                }
+            }
+        }
+    })
+})
+
+app.post('/api/putComment/:wikiname', (req, res) => {
+    const wikiname = req.params.wikiname
+    const name = req.body.user
+    const comment = req.body.comment
+    WikiList.find({ _id: '19961127' }, (err, Schema) => {
+        if (err) {
+            res.json({ status: false, msg: err })
+            return
+        }
+        else {
+            for (var x = 0; x < Schema[0].work.length; x++) {
+                if (Schema[0].work[x].name == wikiname) {
+                    const element = {
+                        user: name,
+                        body: comment
+                    }
+                    Schema[0].work[x].commentList.push(element)
                     Schema[0].save(function (err) {
                         res.json({ status: true });
                     });
