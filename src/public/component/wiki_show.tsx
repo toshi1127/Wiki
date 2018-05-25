@@ -3,6 +3,7 @@ import * as request from 'superagent'
 import { Redirect } from 'react-router-dom'
 import * as WikiParser from '../javascript/wiki_parser'
 import CommentInput from './TextField';
+import CommentList from './commentList';
 
 interface IndexProps {
     match: {
@@ -88,6 +89,7 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                         <a href={`/main/${this.state.user}`}>→ホームへ戻る</a>
                     </p>
                     <div>
+                        <CommentList />
                         <CommentInput />
                     </div>
                 </div>
