@@ -40,17 +40,18 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                 this.setState({
                     name: this.state.name,
                     body: res.body.data.body,
-                    loaded: false,
+                    loaded: true,
                     user: res.body.data.user,
                 })
             })
     }
-    componentDidMount() {
+    /*componentDidMount() {
         //コメントを取得する。
+        /*
         request
             .get(`/api/getting_comment/${this.state.name}`)
             .end((err, res) => {
-                if(err){
+                if (err) {
                     return
                 }
                 this.setState({
@@ -58,7 +59,8 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                     commemts: res.body.data
                 })
             })
-    }
+            */
+    //}
     render() {
         if (!this.state.loaded) {
             return (
@@ -85,8 +87,10 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                         <br />
                         <a href={`/main/${this.state.user}`}>→ホームへ戻る</a>
                     </p>
+                    <div>
+                        <CommentInput />
+                    </div>
                 </div>
-                <CommentInput />
             </div>
         )
     }
