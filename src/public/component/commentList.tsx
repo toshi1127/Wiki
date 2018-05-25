@@ -3,8 +3,17 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { List, ListItem } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar';
 
+interface IndexProps {
+    name: string
+}
 
-export default class CommentList extends React.Component {
+export default class CommentList extends React.Component<IndexProps> {
+    constructor(props: IndexProps) {
+        super(props)
+        this.state = {
+            name: props.name
+        }
+    }
     render() {
         return (
             <MuiThemeProvider>
@@ -12,7 +21,7 @@ export default class CommentList extends React.Component {
                     <ListItem
                         disabled={true}
                         leftAvatar={
-                            <Avatar src='./images/huac.png' />
+                            <Avatar src={'/wiki/'+this.props.name+'/images/huac.png'} />
                         }
                     >
                         Image Avatar
@@ -21,7 +30,7 @@ export default class CommentList extends React.Component {
                         disabled={true}
                         leftAvatar={
                             <Avatar
-                                src='./images/huac.png' />
+                                src={'/wiki/'+this.props.name+'/images/huac.png'} />
                         }
                     >
                         Image Avatar
