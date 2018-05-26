@@ -14,7 +14,7 @@ interface IndexProps {
     }
 }
 interface IndexState {
-    commemts: string[],
+    comments: string[],
     name: string,
     body: string,
     loaded: boolean,
@@ -36,7 +36,7 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         super(props);
         const { match } = this.props
         this.state = {
-            commemts: null,
+            comments: null,
             name: match.params.name,
             body: '',
             loaded: false,
@@ -45,15 +45,19 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         }
     }
     componentWillMount() {
+        var getBody: any
+        var getUser: any
         request
             .get(`/api/get/${this.state.name}`)
             .end((err, res) => {
-                if (err) return
-                this.setState({
-                    body: res.body.data.body,
-                    loaded: true,
-                    user: res.body.data.user,
-                })
+                if (err) {
+                    console.log(err)
+                    return
+                }
+                else {
+                    getBody = res.body.data.body,
+                    getUser = res.body.data.user
+                }
             })
         request
             .get(`/api/comment/${this.state.name}`)
@@ -62,13 +66,50 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                     return
                 }
                 this.setState({
+                    body: getBody,
+                    user: getUser,
                     loaded: true,
-                    commemts: res.body.data
+                    comments: res.body.commentList
                 })
             })
     }
-    
+    componentWillUpdate() {
+        if (!this.state.loaded) {
+            request
+                .get(`/api/comment/${this.state.name}`)
+                .end((err, res) => {
+                    if (err) {
+                        return
+                    }
+                    this.setState({
+                        loaded: true,
+                        comments: res.body.commentList
+                    })
+                })
+        }
+    }
+    componentDidUpdate(){
+        if (!this.state.loaded) {
+            request
+                .get(`/api/comment/${this.state.name}`)
+                .end((err, res) => {
+                    if (err) {
+                        return
+                    }
+                    this.setState({
+                        loaded: true,
+                        comments: res.body.commentList
+                    })
+                })
+        }
+    }
+    onClick(e: any) {
+        this.setState({
+            loaded: e.loaded
+        })
+    }
     render() {
+        const onSubmit = (e: any) => this.onClick(e)
         if (!this.state.loaded) {
             return (
                 <p>読み込み中</p>
@@ -94,8 +135,8 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                         <Link to={`/main/${this.state.user}`}>→ホームへ戻る</Link>
                     </p>
                     <div>
-                        <CommentList name={this.state.name} />
-                        <CommentInput name={this.state.name} user={this.state.user} />
+                        <CommentList name={this.state.name} comments={this.state.comments} />
+                        <CommentInput name={this.state.name} user={this.state.user} onClick={onSubmit} />
                     </div>
                 </Wiki>
             </div>
