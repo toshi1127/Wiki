@@ -89,7 +89,6 @@ app.get('/api/comment/:wikiname', (req, res) => {
                 for (var x = 0; x < Schema[0].work.length; x++) {
                     if (Schema[0].work[x].name == wikiname) {
                         const commentList = Schema[0].work[x].commentList
-                        console.log(commentList)
                         res.json({ status: true, commentList })
                     }
                 }

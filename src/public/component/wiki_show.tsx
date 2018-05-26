@@ -58,37 +58,22 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                     getBody = res.body.data.body,
                     getUser = res.body.data.user
                 }
-            })
-        request
-            .get(`/api/comment/${this.state.name}`)
-            .end((err, res) => {
-                if (err) {
-                    return
-                }
-                this.setState({
-                    body: getBody,
-                    user: getUser,
-                    loaded: true,
-                    comments: res.body.commentList
-                })
-            })
-    }
-    componentWillUpdate() {
-        if (!this.state.loaded) {
-            request
-                .get(`/api/comment/${this.state.name}`)
-                .end((err, res) => {
-                    if (err) {
-                        return
-                    }
-                    this.setState({
-                        loaded: true,
-                        comments: res.body.commentList
+                request
+                    .get(`/api/comment/${this.state.name}`)
+                    .end((err, res) => {
+                        if (err) {
+                            return
+                        }
+                        this.setState({
+                            body: getBody,
+                            user: getUser,
+                            loaded: true,
+                            comments: res.body.commentList
+                        })
                     })
-                })
-        }
+            })
     }
-    componentDidUpdate(){
+    componentDidUpdate() {
         if (!this.state.loaded) {
             request
                 .get(`/api/comment/${this.state.name}`)
