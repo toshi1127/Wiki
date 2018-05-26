@@ -13,7 +13,8 @@ interface IndexState {
 
 interface IndexProps {
     name: string,
-    user: string
+    user: string,
+    onClick: any
 }
 
 const ComponetForm = styled.div`
@@ -42,13 +43,18 @@ export default class CommentInput extends React.Component<IndexProps, IndexState
             .end((err, data) => {
                 if (err) {
                     this.setState({
-                        body: null
+                        body: ''
                     })
                     return
                 }
                 this.setState({
-                    body: null
+                    body: ''
                 })
+                if(this.props.onClick){
+                    this.props.onClick({
+                        loaded: false
+                    })
+                }
             })
     }
     onChange(e: any, v: any) {
@@ -67,7 +73,9 @@ export default class CommentInput extends React.Component<IndexProps, IndexState
                         floatingLabelText="Send Message"
                         multiLine={true}
                         rows={1}
-                        onChange={onChange} />
+                        onChange={onChange}
+                        value={this.state.body}
+                    />
                     <RaisedButton label="送信" onClick={onSubmit} />
                 </MuiThemeProvider>
             </ComponetForm>
