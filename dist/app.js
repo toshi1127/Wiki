@@ -113,7 +113,6 @@ app.get('/api/comment/:wikiname', function (req, res) {
                 for (var x = 0; x < Schema[0].work.length; x++) {
                     if (Schema[0].work[x].name == wikiname) {
                         var commentList = Schema[0].work[x].commentList;
-                        console.log(commentList);
                         res.json({ status: true, commentList: commentList });
                     }
                 }
