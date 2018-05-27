@@ -50,16 +50,6 @@ h1, h2, h3 {
     height: 600px;
   }
 }
-.fh5co-cover.fh5co-cover-sm {
-  height: 600px;
-  background-image:url(../images/img_bg_2.jpg);
-}
-@media screen and (max-width: 768px) {
-  .fh5co-cover.fh5co-cover-sm {
-    height: 400px;
-    background-image:url(../images/img_bg_2.jpg);
-  }
-}
 .fh5co-cover.fh5co-cover-sm .display-t,
 .fh5co-cover.fh5co-cover-sm .display-tc {
   height: 600px;
@@ -130,15 +120,16 @@ h1, h2, h3 {
 }
 @media screen and (max-width: 768px) {
   .fh5co-blog {
-    width: 100%;
+    width: 90%;
   }
 }
 .fh5co-blog .blog-text {
   margin-bottom: 30px;
   position: relative;
   background: white;
-  width: 100%;
+  width: 90%;
   padding: 30px;
+  margin-left: 30px;
   float: left;
   margin-top: 0em;
   box-shadow: 0px 10px 20px -12px black;
