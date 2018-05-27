@@ -1,78 +1,62 @@
 import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
+import FontIcon from 'material-ui/FontIcon';
+import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import MenuItem from 'material-ui/MenuItem';
-import Drawer from 'material-ui/Drawer';
-import Menu from 'material-ui/Menu';
-import { grey900 } from 'material-ui/styles/colors';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import RaisedButton from 'material-ui/RaisedButton';
+import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
 
-const style = {
-    color: "grey900"
-}
 interface IndexProps {
-    onClick: any,
-    open: boolean
+    onloaded: any
 }
 interface IndexState {
-    open: boolean
+    loaded: boolean
 }
 
-export default class App_Bar extends React.Component<IndexProps, IndexState>{
+export default class ToolBar extends React.Component<IndexProps, IndexState> {
+
     constructor(props: IndexProps) {
-        super(props)
+        super(props);
         this.state = {
-            open: false
-        }
+            loaded: true
+        };
     }
-    onClick(e: any, v: any) {
-        this.setState({ open: !this.state.open })
-        if (this.props.onClick) {
-            this.props.onClick({
-                open: this.props.open,
-                value: v
+
+    onClick(e: any) {
+        this.setState({
+            loaded: !this.state.loaded
+        })
+        if (this.props.onloaded) {
+            this.props.onloaded({
+                loaded: this.state.loaded
             })
         }
     }
-    onClick2(e: any, v: any) {
-        this.setState({ open: !this.state.open })
-        if (this.props.onClick) {
-            this.props.onClick({
-                open: this.props.open,
-            })
-        }
-    }
-    onTouch() {
-        this.setState({ open: !this.state.open })
-    }
-    handleToggle = () => this.onTouch()
+
     render() {
-        const onClick = (e: any, v: any) => this.onClick(e, v)
-        const onClick2 = (e: any, v: any) => this.onClick2(e, v)
+        const onClick = (e: any) => this.onClick(e)
         return (
-            <div>
-                <MuiThemeProvider>
-                    <div>
-                        <Drawer docked={false} width={200} open={this.state.open} onRequestChange={onClick2}>
-                            <Menu multiple={true} style={{ color: grey900 }} onItemTouchTap={onClick} onChange={onClick}>
-                                <MenuItem value="大会タイム一覧">大会タイム一覧</MenuItem>
-                                <MenuItem value="練習会タイム一覧">練習会タイム一覧</MenuItem>
-                                <MenuItem value="反省会議事録">反省会議事録</MenuItem>
-                                <MenuItem value="車両整備状況">車両整備状況</MenuItem>
-                                <MenuItem value="その他">その他</MenuItem>
-                            </Menu>
-                        </Drawer>
-                        <AppBar
-                            title="Menu"
-                            iconClassNameRight="muidocs-icon-navigation-expand-more"
-                            onLeftIconButtonTouchTap={this.handleToggle}
-                            onTitleTouchTap={this.handleToggle}
-                            style={style}
-                        />
-                    </div>
-                </MuiThemeProvider>
-            </div>
-        )
+            <MuiThemeProvider>
+                <Toolbar>
+                    <ToolbarGroup>
+                        <ToolbarTitle text="Options" />
+                        <ToolbarSeparator />
+                        <RaisedButton label="編集" primary={true} onClick={onClick} />
+                        <IconMenu
+                            iconButtonElement={
+                                <IconButton touch={true}>
+                                    <NavigationExpandMoreIcon />
+                                </IconButton>
+                            }
+                        >
+                        </IconMenu>
+                    </ToolbarGroup>
+                </Toolbar>
+            </MuiThemeProvider>
+        );
     }
 }
-
 
