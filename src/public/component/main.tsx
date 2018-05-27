@@ -5,7 +5,9 @@ import { Redirect, Link } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Form from './form';
 import CircularProgress from 'material-ui/CircularProgress';
-import App_Bar from './AppBar';
+import ToolBar from './AppBar';
+import SideBar from './sidebar';
+import styled from 'styled-components';
 
 interface IndexProps {
     match: {
@@ -24,8 +26,25 @@ interface IndexState {
     delete_value: any,
     open: boolean,
     value: string,
-    name: string
+    name: string,
+    loadedform: boolean
 }
+
+const ComponentList = styled.div`
+    margin-right: auto;
+    margin-left : auto;
+    display: flex; /* 子要素をflexboxで揃える */
+    flex-direction: column; /* 子要素をflexboxにより縦方向に揃える */
+    justify-content: center; /* 子要素をflexboxにより中央に配置する */
+    align-items: center;  /* 子要素をflexboxにより中央に配置する */
+`
+const FormList = styled.div`
+    margin-left: 9%;
+    width: 100%;
+`
+const Display = styled.div`
+    top: 5%;
+`
 
 export default class main extends React.Component<IndexProps, IndexState>{
     constructor(props: IndexProps) {
@@ -41,7 +60,8 @@ export default class main extends React.Component<IndexProps, IndexState>{
             delete_value: '',
             open: false,
             value: '',
-            name: name
+            name: name,
+            loadedform: false
         }
     }
     componentWillMount() {
@@ -101,6 +121,12 @@ export default class main extends React.Component<IndexProps, IndexState>{
                 })
         }
     }
+    onloaded(e: any) {
+        this.setState({
+            loadedform: e.loaded
+        })
+    }
+    /*
     handleToggle(e: any) {
         if (e.value) {
             this.setState({
@@ -113,7 +139,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
                 open: e.open,
             })
         }
-    }
+    }*/
     printlist() {//ここを<div className="col-lg-4 col-md-4">で返すようにする。
         const lines = this.state.body.map((value: any, index: any, array: any[]) => {
             return (
@@ -130,6 +156,21 @@ export default class main extends React.Component<IndexProps, IndexState>{
             )
         })
         return lines
+    }
+    createForm() {
+        const create_wiki = (e: any) => this.create_wiki(e)
+        const delete_wiki = (e: any) => this.delete_wiki(e)
+        const doChange = (e: any) => this.handleChange(e)
+        if (this.state.loadedform) {
+            return (
+                <FormList>
+                    <Form name='create' onChange={doChange} onSubmit={create_wiki} />
+                    <br>
+                    </br>
+                    <Form name='delete' onChange={doChange} onSubmit={delete_wiki} />
+                </FormList>
+            )
+        }
     }
     render() {
         if (!this.state.loaded) {
@@ -152,41 +193,34 @@ export default class main extends React.Component<IndexProps, IndexState>{
         }
         else {
             var html: any
-            const onClick = (e: any) => this.handleToggle(e)
+            //const onClick = (e: any) => this.handleToggle(e)
+            const onloaded = (e: any) => this.onloaded(e)
             const doChange = (e: any) => this.handleChange(e)
             const filtering = /^\d{8}.*/g
             const pattern = /^\d{8}.*$/
             const create_wiki = (e: any) => this.create_wiki(e)
             const delete_wiki = (e: any) => this.delete_wiki(e)
-            if(this.state.body){
+            const form = this.createForm()
+            if (this.state.body) {
                 html = this.printlist()
             }
             return (
-                <div>
-                    <App_Bar onClick={onClick} open={this.state.open} />
-                    <link rel="stylesheet" href={"/main/"+this.state.name+"/stylesheets/bootstrap.css"} />
-                    <link rel="stylesheet" href={"/main/"+this.state.name+"/stylesheets/style.css"} />
-                    <header id="fh5co-header" className="fh5co-cover fh5co-cover-sm" role="banner">
-                        <div className="container">
-                            <div className="display-tc animate-box" data-animate-effect="fadeIn">
-                                <h1>HUAC Blog</h1>
-                            </div>
-                        </div>
-                    </header>
+                <Display>
+                    <ToolBar onloaded={onloaded} />
+                    <SideBar />
+                    <link rel="stylesheet" href={"/main/" + this.state.name + "/stylesheets/bootstrap.css"} />
+                    <link rel="stylesheet" href={"/main/" + this.state.name + "/stylesheets/style.css"} />
                     <div className="container">
-                        <div className="row">
-                            {html}
-                        </div>
-                    </div>
-                    <div id="formlist">
-                        <Form name='create' onChange={doChange} onSubmit={create_wiki} />
-                        <br>
-                        </br>
-                        <Form name='delete' onChange={doChange} onSubmit={delete_wiki} />
+                        <ComponentList>
+                            <div className="row">
+                                {html}
+                                {form}
+                            </div>
+                        </ComponentList>
                     </div>
                     <script src="javascript/jquery.min.js"></script>
                     <script src="javascript/bootstrap.min.js"></script>
-                </div >
+                </Display >
             )
         }
     }
