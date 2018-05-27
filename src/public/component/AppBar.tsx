@@ -41,6 +41,11 @@ export default class ToolBar extends React.Component<IndexProps, IndexState> {
         return (
             <MuiThemeProvider>
                 <Toolbar>
+                    <ToolbarGroup firstChild={true}>
+                        <DropDownMenu value={1} >
+                        <MenuItem value={1} primaryText="法政大学部内システム"  />
+                        </DropDownMenu>
+                    </ToolbarGroup>
                     <ToolbarGroup>
                         <ToolbarTitle text="Options" />
                         <ToolbarSeparator />
