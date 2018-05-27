@@ -23,10 +23,10 @@ const Wiki = styled.div`
     width: 75%;
     margin-right: auto;
     margin-left : auto;
-    display: flex; /* 子要素をflexboxで揃える */
-    flex-direction: column; /* 子要素をflexboxにより縦方向に揃える */
-    justify-content: center; /* 子要素をflexboxにより中央に配置する */
-    align-items: center;  /* 子要素をflexboxにより中央に配置する */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `
 const Title = styled.h1`
     width: auto;
