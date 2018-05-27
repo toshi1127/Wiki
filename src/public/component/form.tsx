@@ -75,7 +75,6 @@ export default class Form extends React.Component<IndexProps, IndexState> {
                     />
                 </MuiThemeProvider>
                 {msg}
-                <br/>
                 <input type='submit' value={this.props.name} />
                 </form>
             </div>
