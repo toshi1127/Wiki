@@ -34,10 +34,10 @@ interface IndexState {
 const ComponentList = styled.div`
     margin-right: auto;
     margin-left : auto;
-    display: flex; /* 子要素をflexboxで揃える */
-    flex-direction: column; /* 子要素をflexboxにより縦方向に揃える */
-    justify-content: center; /* 子要素をflexboxにより中央に配置する */
-    align-items: center;  /* 子要素をflexboxにより中央に配置する */
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
 `
 const FormList = styled.div`
     margin-left: 9%;
@@ -100,8 +100,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
             })
         }
     }
-    create_wiki(e: any) {//掲示板を作成する時に、データベースに新しい掲示板を登録し、掲示板の一覧を取得する。
-        //取得後、bodyを上書きして、画面を再表示する。
+    create_wiki(e: any) {
         if (e.isOK) {
             request
                 .get(`/create/` + e.value + "/" + this.state.name)
@@ -150,7 +149,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
                 })
         }
     }
-    printlist() {//ここを<div className="col-lg-4 col-md-4">で返すようにする。
+    printlist() {
         const lines = this.state.body.map((value: any, index: any, array: any[]) => {
             return (
                 <div className="col-lg-4 col-md-4">

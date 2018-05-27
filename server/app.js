@@ -101,37 +101,23 @@ app.get('/api/comment/:wikiname', (req, res) => {
 
 app.get('/api/getting_list', (req, res) => {
     const wikilist = mongoose.model('WikiList')
-    if (start) {
-        let WikiList = new wikilist()
-        WikiList._id = '19961127'
-        WikiList.save(function (err) {
-            if (err) {
-                res.json({ status: false, msg: err })
-            } else {
-                res.json({ status: true, data: null })
-            }
-        })
-        start = false
-    }
-    else {
-        wikilist.find({ _id: '19961127' }, (err, Schema) => {
-            if (err) {
-                res.json({ status: false, msg: err })
-                return
+    wikilist.find({ _id: '19961127' }, (err, Schema) => {
+        if (err) {
+            res.json({ status: false, msg: err })
+            return
+        }
+        else {
+            if (Schema[0].work.length !== 0) {
+                Schema[0].work.map((value, index, array) => {
+                    array[index] = value.name
+                })
+                res.json({ status: true, data: Schema[0].work })
             }
             else {
-                if (Schema[0].work.length !== 0) {
-                    Schema[0].work.map((value, index, array) => {
-                        array[index] = value.name
-                    })
-                    res.json({ status: true, data: Schema[0].work })
-                }
-                else {
-                    res.json({ status: true, data: Schema[0].work })
-                }
+                res.json({ status: true, data: Schema[0].work })
             }
-        })
-    }
+        }
+    })
 })
 
 app.get('/create/:wikiname/:name', (req, res) => {

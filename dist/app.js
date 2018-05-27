@@ -125,34 +125,21 @@ app.get('/api/comment/:wikiname', function (req, res) {
 
 app.get('/api/getting_list', function (req, res) {
     var wikilist = _mongoose2.default.model('WikiList');
-    if (start) {
-        var _WikiList = new wikilist();
-        _WikiList._id = '19961127';
-        _WikiList.save(function (err) {
-            if (err) {
-                res.json({ status: false, msg: err });
+    wikilist.find({ _id: '19961127' }, function (err, Schema) {
+        if (err) {
+            res.json({ status: false, msg: err });
+            return;
+        } else {
+            if (Schema[0].work.length !== 0) {
+                Schema[0].work.map(function (value, index, array) {
+                    array[index] = value.name;
+                });
+                res.json({ status: true, data: Schema[0].work });
             } else {
-                res.json({ status: true, data: null });
+                res.json({ status: true, data: Schema[0].work });
             }
-        });
-        start = false;
-    } else {
-        wikilist.find({ _id: '19961127' }, function (err, Schema) {
-            if (err) {
-                res.json({ status: false, msg: err });
-                return;
-            } else {
-                if (Schema[0].work.length !== 0) {
-                    Schema[0].work.map(function (value, index, array) {
-                        array[index] = value.name;
-                    });
-                    res.json({ status: true, data: Schema[0].work });
-                } else {
-                    res.json({ status: true, data: Schema[0].work });
-                }
-            }
-        });
-    }
+        }
+    });
 });
 
 app.get('/create/:wikiname/:name', function (req, res) {
