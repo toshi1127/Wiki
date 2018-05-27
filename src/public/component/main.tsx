@@ -27,7 +27,8 @@ interface IndexState {
     open: boolean,
     value: string,
     name: string,
-    loadedform: boolean
+    loadedform: boolean,
+    selectValue: string
 }
 
 const ComponentList = styled.div`
@@ -61,7 +62,8 @@ export default class main extends React.Component<IndexProps, IndexState>{
             open: false,
             value: '',
             name: name,
-            loadedform: false
+            loadedform: false,
+            selectValue: null
         }
     }
     componentWillMount() {
@@ -126,20 +128,28 @@ export default class main extends React.Component<IndexProps, IndexState>{
             loadedform: e.loaded
         })
     }
-    /*
-    handleToggle(e: any) {
-        if (e.value) {
-            this.setState({
-                open: e.open,
-                value: e.value
-            })
+    onClick(e: any) {
+        this.setState({
+            selectValue: e.value,
+            body: null
+        })
+    }
+    componentDidUpdate() {
+        if (this.state.selectValue != null && this.state.body == null) {
+            request
+                .get(`/api/getting_list`)
+                .end((err, res) => {
+                    if (err) {
+                        return
+                    }
+                    else {
+                        this.setState({
+                            body: res.body.data,
+                        })
+                    }
+                })
         }
-        else {
-            this.setState({
-                open: e.open,
-            })
-        }
-    }*/
+    }
     printlist() {//ここを<div className="col-lg-4 col-md-4">で返すようにする。
         const lines = this.state.body.map((value: any, index: any, array: any[]) => {
             return (
@@ -165,8 +175,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
             return (
                 <FormList>
                     <Form name='create' onChange={doChange} onSubmit={create_wiki} />
-                    <br>
-                    </br>
+                    <br />
                     <Form name='delete' onChange={doChange} onSubmit={delete_wiki} />
                 </FormList>
             )
@@ -193,7 +202,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
         }
         else {
             var html: any
-            //const onClick = (e: any) => this.handleToggle(e)
+            const onClick = (e: any) => this.onClick(e)
             const onloaded = (e: any) => this.onloaded(e)
             const doChange = (e: any) => this.handleChange(e)
             const filtering = /^\d{8}.*/g
@@ -207,7 +216,7 @@ export default class main extends React.Component<IndexProps, IndexState>{
             return (
                 <Display>
                     <ToolBar onloaded={onloaded} />
-                    <SideBar />
+                    <SideBar onClick={onClick} />
                     <link rel="stylesheet" href={"/main/" + this.state.name + "/stylesheets/bootstrap.css"} />
                     <link rel="stylesheet" href={"/main/" + this.state.name + "/stylesheets/style.css"} />
                     <div className="container">
