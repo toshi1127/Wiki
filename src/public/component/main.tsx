@@ -45,7 +45,22 @@ const FormList = styled.div`
 `
 const Display = styled.div`
     top: 5%;
+    height: 100%;
 `
+const Loading = styled('section') `
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    margin: auto;
+    width:100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
 
 export default class main extends React.Component<IndexProps, IndexState>{
     constructor(props: IndexProps) {
@@ -183,20 +198,11 @@ export default class main extends React.Component<IndexProps, IndexState>{
     render() {
         if (!this.state.loaded) {
             return (
-                <div style={{
-                    position: 'absolute',
-                    top: '0px',
-                    right: '0px',
-                    bottom: '0px',
-                    left: '0px',
-                    margin: 'auto',
-                    width: '128px',
-                    height: '64px'
-                }}>
-                    <MuiThemeProvider>
+                <MuiThemeProvider>
+                    <Loading>
                         <CircularProgress size={80} thickness={5} />
-                    </MuiThemeProvider>
-                </div>
+                    </Loading>
+                </MuiThemeProvider>
             )
         }
         else {
