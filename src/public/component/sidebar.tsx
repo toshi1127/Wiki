@@ -14,13 +14,9 @@ interface IndexState {
 }
 
 injectGlobal`
-body {
-    background-color: #fff;
-    height: 100%;
-}
-`
-const SideBarStyle = styled.div`
-    height: 100%;
+    html,body {
+        height: 100%;
+    }
 `
 
 const SideBarComponent = styled('section') `
@@ -29,15 +25,21 @@ const SideBarComponent = styled('section') `
     ${media.phone`width: 20%;`}
     float: left;
     height: 100%;
+    min-height: 100%;
+    height: 100%;
 `;
 
 const Liststyle = {
     color: 'white',
-    width: '95%'
+    width: '95%',
+    fontSize: '17px',
+    height: '100%',
+    minHeight: '100%'
 };
 
 const style = {
-    backgroundColor: '#00bcd4'
+    backgroundColor: '#00bcd4',
+    height: '100%'
 };
 
 export default class SideBar extends React.Component<IndexProps, IndexState> {
@@ -55,20 +57,18 @@ export default class SideBar extends React.Component<IndexProps, IndexState> {
         const onClick = (e: any, v: any) => this.onClick(e, v)
         return (
             <MuiThemeProvider>
-                <SideBarStyle>
-                    <SideBarComponent>
-                        <Paper zDepth={2} style={style} >
-                            <Menu onChange={onClick}>
-                                <MenuItem value="練習記録" primaryText="練習記録" style={Liststyle} />
-                                <MenuItem value="反省会議事録" primaryText="反省会議事録" style={Liststyle} />
-                                <MenuItem value="過去の戦歴" primaryText="過去の戦歴" style={Liststyle} />
-                                <MenuItem value="運行記録簿" primaryText="運行記録簿" style={Liststyle} />
-                                <MenuItem value="車両点検表" primaryText="車両点検表" style={Liststyle} />
-                                <MenuItem value="部内規則" primaryText="部内規則" style={Liststyle} />
-                            </Menu>
-                        </Paper>
-                    </SideBarComponent>
-                </SideBarStyle>
+                <SideBarComponent>
+                    <Paper zDepth={2} style={style} >
+                        <Menu onChange={onClick}>
+                            <MenuItem value="練習記録" primaryText="練習記録" style={Liststyle} />
+                            <MenuItem value="反省会議事録" primaryText="反省会議事録" style={Liststyle} />
+                            <MenuItem value="過去の戦歴" primaryText="過去の戦歴" style={Liststyle} />
+                            <MenuItem value="運行記録簿" primaryText="運行記録簿" style={Liststyle} />
+                            <MenuItem value="車両点検表" primaryText="車両点検表" style={Liststyle} />
+                            <MenuItem value="部内規則" primaryText="部内規則" style={Liststyle} />
+                        </Menu>
+                    </Paper>
+                </SideBarComponent>
             </MuiThemeProvider>
         )
     }

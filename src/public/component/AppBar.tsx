@@ -16,6 +16,10 @@ interface IndexState {
     loaded: boolean
 }
 
+const Liststyle = {
+    fontSize: '17px'
+};
+
 export default class ToolBar extends React.Component<IndexProps, IndexState> {
 
     constructor(props: IndexProps) {
@@ -42,8 +46,8 @@ export default class ToolBar extends React.Component<IndexProps, IndexState> {
             <MuiThemeProvider>
                 <Toolbar>
                     <ToolbarGroup firstChild={true}>
-                        <DropDownMenu value={1} >
-                        <MenuItem value={1} primaryText="法政大学部内システム"  />
+                        <DropDownMenu value={1} style={Liststyle} >
+                        <MenuItem value={1} primaryText="法政大学部内システム"/>
                         </DropDownMenu>
                     </ToolbarGroup>
                     <ToolbarGroup>
