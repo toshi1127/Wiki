@@ -10,7 +10,7 @@ import WikiIndex from './main'
 
 const WikiApp = () => (
     <BrowserRouter>
-        <div>
+        <div id='route'>
             <Route path='/wiki/:name' component={WikiShow} />
             <Route path='/edit/:name' component={WikiEdit} />
             <Route path='/main/:name' component={WikiIndex} />
