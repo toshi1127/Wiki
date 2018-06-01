@@ -1,23 +1,24 @@
 import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
-var comment = mongoose.Schema({
+var comment = new Schema({
     user: String,
     body: String
 })
 
-var elementSchema = mongoose.Schema({
-    _id: String,
+var elementSchema = new Schema({
     name: String,
     body: String,
     user: String,
     commentList: [comment]
 })
 
-const wikiListSchema = mongoose.Schema({
-    _id: String,
-    work: [elementSchema],
-    evaluation: [elementSchema],
-    result: [elementSchema]
+const wikiListSchema = new Schema({
+    practice: [elementSchema],
+    history: [elementSchema],
+    Operation: [elementSchema],
+    inspection: [elementSchema],
+    rule: [elementSchema]
 });
 
 export default mongoose.model('WikiList', wikiListSchema);
