@@ -2,11 +2,12 @@ import * as React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AutoComplete from 'material-ui/AutoComplete';
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/FlatButton';
 
 interface IndexProps {
     name: string,
     onChange: any,
-    onSubmit:any
+    onSubmit: any
 }
 interface IndexState {
     dataSource: string[]
@@ -36,35 +37,40 @@ export default class Form extends React.Component<IndexProps, IndexState> {
     filtering(value: string, filter: any) {
         return filter.test(value)
     }
-    doSubmit(){
-        if(this.state.isOK){
-            if(this.props.name=='create'){
+    doSubmit(e: any) {
+        if (this.state.isOK) {
+            if (this.props.name == 'create') {
                 if (this.props.onSubmit) {
                     this.props.onSubmit({
                         value: this.state.value,
                         isOK: this.state.isOK,
                         name: this.props.name
                     })
+                    this.setState({
+                        value: ''
+                    })
                 }
             }
-            else{
+            else {
                 if (this.props.onSubmit) {
                     this.props.onSubmit({
                         value: this.state.value,
                         isOK: this.state.isOK,
                         name: this.props.name
+                    })
+                    this.setState({
+                        value: ''
                     })
                 }
             }
         }
     }
     render() {
-        const onSubmit = () => this.doSubmit()        
+        const onSubmit = (e: any) => this.doSubmit(e)
         const msg = this.renderStatusMessage()
         const doChange = (e: any, v: any) => this.doChange(e, v)
         return (
             <div>
-                <form onSubmit={onSubmit}>
                 <MuiThemeProvider>
                     <TextField
                         name={this.props.name}
@@ -73,10 +79,12 @@ export default class Form extends React.Component<IndexProps, IndexState> {
                         onChange={doChange}
                         value={this.state.value}
                     />
+                    <RaisedButton
+                        label={this.props.name}
+                        onClick={onSubmit}
+                    />
                 </MuiThemeProvider>
                 {msg}
-                <input type='submit' value={this.props.name} />
-                </form>
             </div>
         )
     }
