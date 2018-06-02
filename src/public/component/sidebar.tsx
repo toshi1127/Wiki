@@ -62,7 +62,8 @@ export default class SideBar extends React.Component<IndexProps, IndexState> {
                         <Menu onChange={onClick}>
                             <MenuItem value="practice" primaryText="練習記録" style={Liststyle} />
                             <MenuItem value="evaluation" primaryText="反省会議事録" style={Liststyle} />
-                            <MenuItem value="history" primaryText="過去の戦歴" style={Liststyle} />
+                            <MenuItem value="history" primaryText="大会記録" style={Liststyle} />
+                            <MenuItem value="setting" primaryText="車両セッティング詳細" style={Liststyle} />
                             <MenuItem value="Operation" primaryText="運行記録簿" style={Liststyle} />
                             <MenuItem value="inspection" primaryText="車両点検表" style={Liststyle} />
                             <MenuItem value="rule" primaryText="部内規則" style={Liststyle} />
