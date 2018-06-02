@@ -47,7 +47,8 @@ export default class Form extends React.Component<IndexProps, IndexState> {
                         name: this.props.name
                     })
                     this.setState({
-                        value: ''
+                        value: '',
+                        isOK: false
                     })
                 }
             }
@@ -59,7 +60,8 @@ export default class Form extends React.Component<IndexProps, IndexState> {
                         name: this.props.name
                     })
                     this.setState({
-                        value: ''
+                        value: '',
+                        isOK: false
                     })
                 }
             }
