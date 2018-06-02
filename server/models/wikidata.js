@@ -17,6 +17,7 @@ const wikiListSchema = new Schema({
     practice: [elementSchema],
     evaluation: [elementSchema],
     history: [elementSchema],
+    setting: [elementSchema],
     Operation: [elementSchema],
     inspection: [elementSchema],
     rule: [elementSchema]
