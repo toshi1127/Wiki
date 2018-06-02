@@ -7,7 +7,8 @@ import styled from 'styled-components';
 interface IndexProps {
     match: {
         params: {
-            name: string;
+            name: string,
+            selectValue: string
         }
     }
 }
@@ -16,7 +17,8 @@ interface IndexState {
     body: string,
     loaded: boolean,
     jump: string,
-    user: string
+    user: string,
+    selectValue: string
 }
 
 const Wiki = styled.div`
@@ -37,28 +39,26 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
     constructor(props: IndexProps) {
         super(props);
         const { match } = this.props
-        //URLのパラメーターを受け取っている。
-        const name = match.params.name
+
         this.state = {
-            name: name,
+            name: match.params.name,
             body: '',
             loaded: false,
             jump: '',
-            user: ''
+            user: '',
+            selectValue: match.params.selectValue
         }
     }
     componentWillMount() {
         request
-            .get(`/api/get/${this.state.name}`)
+            .get(`/api/get/${this.state.name}/${this.state.selectValue}`)
             .end((err, res) => {
                 if (err) {
                     return
                 }
                 this.setState({
                     name: this.state.name,
-                    //res.bodyで連想配列全体。data=docsの中のbodyにアクセスしている。
                     body: res.body.data.body,
-                    //読み込みが終わったのでtrueにしている。
                     loaded: true,
                     jump: this.state.jump,
                     user: res.body.data.user,
@@ -66,12 +66,13 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
             })
     }
     save() {
-        const wikiname: string = this.state.name
+        const wikiname = this.state.name
+        const selectValue = this.state.selectValue
         request
-            .post('/api/put/' + wikiname + '/' + this.state.user)
+            .post(`/api/put/${wikiname}`)
             .type('form')
             .send({
-                name: wikiname,
+                selectValue: this.state.selectValue,
                 user: this.state.user,
                 body: this.state.body
             })
@@ -81,12 +82,10 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
                     return
                 }
                 this.setState({
-                    name: this.state.name,
-                    //res.bodyで連想配列全体。data=docsの中のbodyにアクセスしている。
+                    name: wikiname,
                     body: this.state.body,
-                    //読み込みが終わったのでtrueにしている。
                     loaded: this.state.loaded,
-                    jump: '/wiki/' + wikiname
+                    jump: `/wiki/${wikiname}/${selectValue}`
                 })
             })
     }
@@ -103,8 +102,6 @@ export default class WikiEdit extends React.Component<IndexProps, IndexState>  {
             return (<p>読み込み中</p>)
         }
         if (this.state.jump !== '') {
-            //メイン画面にリダイレクト
-            //保存したんだから、編集画面から閲覧する画面に推移させる。
             return <Redirect to={this.state.jump} />
         }
         const name: string = this.state.name

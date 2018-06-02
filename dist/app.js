@@ -47,9 +47,22 @@ _mongoose2.default.connect(url, function (err, db) {
 });
 var MongoStore = (0, _connectMongo2.default)(_expressSession2.default);
 
+var WikiModele = new _wikidata2.default();
+WikiModele.practice = [];
+WikiModele.history = [];
+WikiModele.Operation = [];
+WikiModele.inspection = [];
+WikiModele.rule = [];
+WikiModele.save(function (err) {
+    if (err) {
+        console.log(err);
+    }
+});
+//const WikiModele = WikiList
+
 var app = (0, _express2.default)();
 app.get('/', function (req, res) {
-    if (!req.user) {
+    if (!req.session) {
         res.redirect('/auth/login');
     } else {
         res.redirect(302, '/main');
@@ -76,25 +89,27 @@ app.listen(process.env.PORT || port, function () {
     console.log('Server listening at https://' + ':' + process.env.PORT);
     console.log(process.env.IP);
 });
-app.use('/wiki/:wikiname', _express2.default.static(__dirname + '/public'));
-app.use('/edit/:wikiname', _express2.default.static(__dirname + '/public'));
+app.use('/wiki/:wikiname/:selectValue', _express2.default.static(__dirname + '/public'));
+app.use('/edit/:wikiname/:selectValue', _express2.default.static(__dirname + '/public'));
 app.use('/main/:name', _express2.default.static(__dirname + '/public'));
 // APIの定義
 // Wikiデータを返すAPI 
-app.get('/api/get/:wikiname', function (req, res) {
+app.get('/api/get/:wikiname/:selectValue', function (req, res) {
     var wikiname = req.params.wikiname;
-    var WikiList = _mongoose2.default.model('WikiList');
-    WikiList.find({ _id: '19961127' }, function (err, Schema) {
+    var selectValue = req.params.selectValue;
+    var wikilist = _mongoose2.default.model('WikiList');
+
+    wikilist.find({}, function (err, Schema) {
         if (err) {
             res.json({ status: false, msg: err });
             return;
         } else {
-            for (var x = 0; x < Schema[0].work.length; x++) {
-                if (Schema[0].work[x].name == wikiname) {
+            for (var x = 0; x < Schema[0][selectValue].length; x++) {
+                if (Schema[0][selectValue][x].name == wikiname) {
                     var docs = {
                         name: wikiname,
-                        body: Schema[0].work[x].body,
-                        user: Schema[0].work[x].user
+                        body: Schema[0][selectValue][x].body,
+                        user: Schema[0][selectValue][x].user
                     };
                     res.json({ status: true, data: docs });
                 }
@@ -103,16 +118,19 @@ app.get('/api/get/:wikiname', function (req, res) {
     });
 });
 
-app.get('/api/comment/:wikiname', function (req, res) {
+app.get('/api/comment/:wikiname/:selectValue', function (req, res) {
     var wikiname = req.params.wikiname;
-    _wikidata2.default.find({ _id: '19961127' }, function (err, Schema) {
+    var selectValue = req.params.selectValue;
+    var wikilist = _mongoose2.default.model('WikiList');
+
+    wikilist.find({}, function (err, Schema) {
         if (err) {
             return;
         } else {
             return new Promise(function (resolve, reject) {
-                for (var x = 0; x < Schema[0].work.length; x++) {
-                    if (Schema[0].work[x].name == wikiname) {
-                        var commentList = Schema[0].work[x].commentList;
+                for (var x = 0; x < Schema[0][selectValue].length; x++) {
+                    if (Schema[0][selectValue][x].name == wikiname) {
+                        var commentList = Schema[0][selectValue][x].commentList;
                         res.json({ status: true, commentList: commentList });
                     }
                 }
@@ -123,62 +141,68 @@ app.get('/api/comment/:wikiname', function (req, res) {
     });
 });
 
-app.get('/api/getting_list', function (req, res) {
+app.get('/api/getting_list/:selectValue', function (req, res) {
+    var selectValue = req.params.selectValue;
     var wikilist = _mongoose2.default.model('WikiList');
-    wikilist.find({ _id: '19961127' }, function (err, Schema) {
+
+    wikilist.find({}, function (err, Schema) {
         if (err) {
             res.json({ status: false, msg: err });
             return;
         } else {
-            if (Schema[0].work.length !== 0) {
-                Schema[0].work.map(function (value, index, array) {
+            if (Schema[0][selectValue].length !== 0) {
+                Schema[0][selectValue].map(function (value, index, array) {
                     array[index] = value.name;
                 });
-                res.json({ status: true, data: Schema[0].work });
+                res.json({ status: true, data: Schema[0][selectValue] });
             } else {
-                res.json({ status: true, data: Schema[0].work });
+                res.json({ status: true, data: Schema[0][selectValue] });
             }
         }
     });
 });
 
-app.get('/create/:wikiname/:name', function (req, res) {
-    var wikiname = req.params.wikiname;
-    var name = req.params["name"];
-    var WikiList = _mongoose2.default.model('WikiList');
-    WikiList.findById({ _id: '19961127' }, function (err, Schema) {
+app.post('/create', function (req, res) {
+    var wikiname = req.body.wikiname;
+    var user = req.body.name;
+    var selectValue = req.body.selectValue;
+    var wikilist = _mongoose2.default.model('WikiList');
+
+    wikilist.find({}, function (err, Schema) {
         return new Promise(function (resolve, reject) {
-            for (var x = 0; x < Schema.work.length; x++) {
-                if (Schema.work[x].name == wikiname) {
-                    res.json({ status: true });
+            for (var x = 0; x < Schema[0][selectValue].length; x++) {
+                if (Schema[0][selectValue][x].name == wikiname) {
+                    res.json({ status: false, msg: err });
+                    return;
                 }
             }
             resolve(wikiname);
         }).then(function (wikiname) {
             var element = {
-                _id: '19961127',
                 name: wikiname,
-                user: name
+                user: user
             };
-            Schema.work.push(element);
-            Schema.save(function (err) {
+            Schema[0][selectValue].push(element);
+            Schema[0].save(function (err) {
                 res.json({ status: true });
             });
         });
     });
 });
 
-app.get('/delete/:wikiname', function (req, res) {
-    var wikiname = req.params.wikiname;
-    var WikiList = _mongoose2.default.model('WikiList');
-    WikiList.find({ _id: '19961127' }, function (err, Schema) {
+app.post('/delete', function (req, res) {
+    var wikiname = req.body.wikiname;
+    var selectValue = req.body.selectValue;
+    var wikilist = _mongoose2.default.model('WikiList');
+
+    wikilist.find({}, function (err, Schema) {
         if (err) {
             res.json({ status: false, msg: err });
             return;
         } else {
-            for (var x = 0; x < Schema[0].work.length; x++) {
-                if (Schema[0].work[x].name == wikiname) {
-                    Schema[0].work.splice(x, 1);
+            for (var x = 0; x < Schema[0][selectValue].length; x++) {
+                if (Schema[0][selectValue][x].name == wikiname) {
+                    Schema[0][selectValue].splice(x, 1);
                     Schema[0].save(function (err) {
                         res.json({ status: true });
                     });
@@ -188,20 +212,22 @@ app.get('/delete/:wikiname', function (req, res) {
     });
 });
 
-app.post('/api/put/:wikiname/:name', function (req, res) {
+app.post('/api/put/:wikiname', function (req, res) {
     var wikiname = req.params.wikiname;
-    var user = req.params["name"];
-    var WikiList = _mongoose2.default.model('WikiList');
-    // 既存のエントリがあるか確認
-    WikiList.find({ _id: '19961127' }, function (err, Schema) {
+    var user = req.body.user;
+    var selectValue = req.body.selectValue;
+    var body = req.body.body;
+    var wikilist = _mongoose2.default.model('WikiList');
+
+    wikilist.find({}, function (err, Schema) {
         if (err) {
             res.json({ status: false, msg: err });
             return;
         } else {
-            for (var x = 0; x < Schema[0].work.length; x++) {
-                if (Schema[0].work[x].name == wikiname) {
-                    Schema[0].work[x].body = req.body.body;
-                    Schema[0].work[x].user = user;
+            for (var x = 0; x < Schema[0][selectValue].length; x++) {
+                if (Schema[0][selectValue][x].name == wikiname) {
+                    Schema[0][selectValue][x].body = body;
+                    Schema[0][selectValue][x].user = user;
                     Schema[0].save(function (err) {
                         res.json({ status: true });
                     });
@@ -215,18 +241,21 @@ app.post('/api/putComment/:wikiname', function (req, res) {
     var wikiname = req.params.wikiname;
     var name = req.body.user;
     var comment = req.body.comment;
-    _wikidata2.default.find({ _id: '19961127' }, function (err, Schema) {
+    var selectValue = req.body.selectValue;
+    var wikilist = _mongoose2.default.model('WikiList');
+
+    wikilist.find({}, function (err, Schema) {
         if (err) {
             res.json({ status: false, msg: err });
             return;
         } else {
-            for (var x = 0; x < Schema[0].work.length; x++) {
-                if (Schema[0].work[x].name == wikiname) {
+            for (var x = 0; x < Schema[0][selectValue].length; x++) {
+                if (Schema[0][selectValue][x].name == wikiname) {
                     var element = {
                         user: name,
                         body: comment
                     };
-                    Schema[0].work[x].commentList.push(element);
+                    Schema[0][selectValue][x].commentList.push(element);
                     Schema[0].save(function (err) {
                         res.json({ status: true });
                     });
