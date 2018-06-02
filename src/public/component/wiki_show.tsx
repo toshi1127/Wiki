@@ -9,7 +9,8 @@ import styled from 'styled-components';
 interface IndexProps {
     match: {
         params: {
-            name: string;
+            name: string,
+            selectValue: string
         }
     }
 }
@@ -18,7 +19,8 @@ interface IndexState {
     name: string,
     body: string,
     loaded: boolean,
-    user: string
+    user: string,
+    selectValue: string
 }
 
 const Wiki = styled.div`
@@ -41,14 +43,14 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
             body: '',
             loaded: false,
             user: '',
-
+            selectValue: match.params.selectValue
         }
     }
     componentWillMount() {
         var getBody: any
         var getUser: any
         request
-            .get(`/api/get/${this.state.name}`)
+            .get(`/api/get/${this.state.name}/${this.state.selectValue}`)
             .end((err, res) => {
                 if (err) {
                     console.log(err)
@@ -59,7 +61,7 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                     getUser = res.body.data.user
                 }
                 request
-                    .get(`/api/comment/${this.state.name}`)
+                    .get(`/api/comment/${this.state.name}/${this.state.selectValue}`)
                     .end((err, res) => {
                         if (err) {
                             return
@@ -76,7 +78,7 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
     componentDidUpdate() {
         if (!this.state.loaded) {
             request
-                .get(`/api/comment/${this.state.name}`)
+                .get(`/api/comment/${this.state.name}/${this.state.selectValue}`)
                 .end((err, res) => {
                     if (err) {
                         return
@@ -103,6 +105,7 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
         var html: string
         const name = this.state.name
         const body = this.state.body
+        const selectValue = this.state.selectValue
         if (body == undefined) {
             html = ''
         }
@@ -115,13 +118,13 @@ export default class WikiShow extends React.Component<IndexProps, IndexState>  {
                     <Title>{this.state.name}</Title>　製作者:{this.state.user}
                     <div style={styles.show}>{html}</div>
                     <p style={styles.right}>
-                        <Link to={`/edit/${name}`}>→このページを編集</Link>
+                        <Link to={`/edit/${name}/${selectValue}`}>→このページを編集</Link>
                         <br />
                         <Link to={`/main/${this.state.user}`}>→ホームへ戻る</Link>
                     </p>
                     <div>
-                        <CommentList name={this.state.name} comments={this.state.comments} />
-                        <CommentInput name={this.state.name} user={this.state.user} onClick={onSubmit} />
+                        <CommentList name={this.state.name} comments={this.state.comments} selectValue={this.state.selectValue} />
+                        <CommentInput name={this.state.name} user={this.state.user} onClick={onSubmit} selectValue={this.state.selectValue}/>
                     </div>
                 </Wiki>
             </div>

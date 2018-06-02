@@ -4,12 +4,14 @@ import { List, ListItem } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar';
 
 interface IndexProps {
-    name: string
+    name: string,
+    selectValue: string,
     comments: string[]
 }
 interface IndexState {
     comments: string[],
     name: string,
+    selectValue: string
 }
 
 export default class CommentList extends React.Component<IndexProps, IndexState> {
@@ -17,7 +19,8 @@ export default class CommentList extends React.Component<IndexProps, IndexState>
         super(props)
         this.state = {
             name: props.name,
-            comments: props.comments
+            comments: props.comments,
+            selectValue: props.selectValue
         }
     }
     convertComment(comments: string[]) {
@@ -26,7 +29,7 @@ export default class CommentList extends React.Component<IndexProps, IndexState>
                 <ListItem
                     disabled={true}
                     leftAvatar={
-                        <Avatar src={'/wiki/' + this.props.name + '/images/huac.png'} />
+                        <Avatar src={`/wiki/${this.props.name}/${this.state.selectValue}/images/huac.png`} />
                     }
                 >
                     {value.user}:　{value.body}

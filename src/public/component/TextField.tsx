@@ -8,12 +8,14 @@ import styled from 'styled-components';
 interface IndexState {
     body: string,
     name: string,
-    user: string
+    user: string,
+    selectValue: string
 }
 
 interface IndexProps {
     name: string,
     user: string,
+    selectValue: string,
     onClick: any
 }
 
@@ -28,17 +30,19 @@ export default class CommentInput extends React.Component<IndexProps, IndexState
         this.state = {
             body: null,
             name: this.props.name,
-            user: this.props.user
+            user: this.props.user,
+            selectValue: this.props.selectValue
         }
     }
     onClick(e: any) {
         request
-            .post('/api/putComment/' + this.state.name)
+            .post(`/api/putComment/${this.state.name}`)
             .type('form')
             .send({
                 name: this.state.name,
                 user: this.state.user,
-                comment: this.state.body
+                comment: this.state.body,
+                selectValue: this.state.selectValue
             })
             .end((err, data) => {
                 if (err) {

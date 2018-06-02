@@ -78,12 +78,12 @@ export default class main extends React.Component<IndexProps, IndexState>{
             value: '',
             name: name,
             loadedform: false,
-            selectValue: null
+            selectValue: 'practice'
         }
     }
     componentWillMount() {
         request
-            .get(`/api/getting_list`)
+            .get(`/api/getting_list/` + this.state.selectValue)
             .end((err, res) => {
                 if (err) {
                     return
@@ -118,22 +118,39 @@ export default class main extends React.Component<IndexProps, IndexState>{
     create_wiki(e: any) {
         if (e.isOK) {
             request
-                .get(`/create/` + e.value + "/" + this.state.name)
+                .post(`/create`)
+                .type('form')
+                .send({
+                    wikiname: e.value,
+                    name: this.state.name,
+                    selectValue: this.state.selectValue
+                })
                 .end((err, res) => {
                     if (err) {
                         return
                     }
+                    this.setState({
+                        body: null,
+                    })
                 })
         }
     }
     delete_wiki(e: any) {
         if (e.isOK) {
             request
-                .get(`/delete/` + e.value)
+                .post(`/delete`)
+                .type('form')
+                .send({
+                    wikiname: e.value,
+                    selectValue: this.state.selectValue
+                })
                 .end((err, res) => {
                     if (err) {
                         return
                     }
+                    this.setState({
+                        body: null,
+                    })
                 })
         }
     }
@@ -145,13 +162,14 @@ export default class main extends React.Component<IndexProps, IndexState>{
     onClick(e: any) {
         this.setState({
             selectValue: e.value,
-            body: null
+            body: null,
+            loadedform: false
         })
     }
     componentDidUpdate() {
         if (this.state.selectValue != null && this.state.body == null) {
             request
-                .get(`/api/getting_list`)
+                .get(`/api/getting_list/` + this.state.selectValue)
                 .end((err, res) => {
                     if (err) {
                         return
@@ -165,15 +183,16 @@ export default class main extends React.Component<IndexProps, IndexState>{
         }
     }
     printlist() {
+        const selectValue = this.state.selectValue
         const lines = this.state.body.map((value: any, index: any, array: any[]) => {
             return (
                 <div className="col-lg-4 col-md-4">
                     <div className="fh5co-blog animate-box">
                         <div className="blog-text">
                             <h3>
-                                <Link to={`/wiki/${value}`}>{value}</Link>
+                                <Link to={`/wiki/${value}/${selectValue}`}>{value}</Link>
                             </h3>
-                            <Link to={`/wiki/${value}`}>Read More</Link>
+                            <Link to={`/wiki/${value}/${selectValue}`}>Read More</Link>
                         </div>
                     </div>
                 </div>

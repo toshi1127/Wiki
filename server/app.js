@@ -20,9 +20,20 @@ mongoose.connect(url, (err, db) => {
 })
 const MongoStore = connectMongo(session)
 
+const WikiModele = new WikiList()
+WikiModele.practice = []
+WikiModele.history = []
+WikiModele.Operation = []
+WikiModele.inspection = []
+WikiModele.rule = []
+WikiModele.save(function (err) {
+    if (err) { console.log(err); }
+});
+//const WikiModele = WikiList
+
 let app = express()
 app.get('/', (req, res) => {
-    if (!req.user) {
+    if (!req.session) {
         res.redirect('/auth/login')
     }
     else {
@@ -50,26 +61,28 @@ app.listen(process.env.PORT || port, () => {
     console.log('Server listening at https://' + ':' + process.env.PORT)
     console.log(process.env.IP)
 })
-app.use('/wiki/:wikiname', express.static(__dirname + '/public'))
-app.use('/edit/:wikiname', express.static(__dirname + '/public'))
+app.use('/wiki/:wikiname/:selectValue', express.static(__dirname + '/public'))
+app.use('/edit/:wikiname/:selectValue', express.static(__dirname + '/public'))
 app.use('/main/:name', express.static(__dirname + '/public'))
 // APIの定義
 // Wikiデータを返すAPI 
-app.get('/api/get/:wikiname', (req, res) => {
+app.get('/api/get/:wikiname/:selectValue', (req, res) => {
     const wikiname = req.params.wikiname
-    var WikiList = mongoose.model('WikiList')
-    WikiList.find({ _id: '19961127' }, (err, Schema) => {
+    const selectValue = req.params.selectValue
+    const wikilist = mongoose.model('WikiList')
+
+    wikilist.find({}, (err, Schema) => {
         if (err) {
             res.json({ status: false, msg: err })
             return
         }
         else {
-            for (var x = 0; x < Schema[0].work.length; x++) {
-                if (Schema[0].work[x].name == wikiname) {
+            for (var x = 0; x < Schema[0][selectValue].length; x++) {
+                if (Schema[0][selectValue][x].name == wikiname) {
                     const docs = {
                         name: wikiname,
-                        body: Schema[0].work[x].body,
-                        user: Schema[0].work[x].user
+                        body: Schema[0][selectValue][x].body,
+                        user: Schema[0][selectValue][x].user
                     }
                     res.json({ status: true, data: docs })
                 }
@@ -78,17 +91,20 @@ app.get('/api/get/:wikiname', (req, res) => {
     })
 })
 
-app.get('/api/comment/:wikiname', (req, res) => {
+app.get('/api/comment/:wikiname/:selectValue', (req, res) => {
     const wikiname = req.params.wikiname
-    WikiList.find({ _id: '19961127' }, (err, Schema) => {
+    const selectValue = req.params.selectValue
+    const wikilist = mongoose.model('WikiList')
+
+    wikilist.find({}, (err, Schema) => {
         if (err) {
             return
         }
         else {
             return new Promise((resolve, reject) => {
-                for (var x = 0; x < Schema[0].work.length; x++) {
-                    if (Schema[0].work[x].name == wikiname) {
-                        const commentList = Schema[0].work[x].commentList
+                for (var x = 0; x < Schema[0][selectValue].length; x++) {
+                    if (Schema[0][selectValue][x].name == wikiname) {
+                        const commentList = Schema[0][selectValue][x].commentList
                         res.json({ status: true, commentList })
                     }
                 }
@@ -99,65 +115,71 @@ app.get('/api/comment/:wikiname', (req, res) => {
     })
 })
 
-app.get('/api/getting_list', (req, res) => {
+app.get('/api/getting_list/:selectValue', (req, res) => {
+    const selectValue = req.params.selectValue
     const wikilist = mongoose.model('WikiList')
-    wikilist.find({ _id: '19961127' }, (err, Schema) => {
+
+    wikilist.find({}, (err, Schema) => {
         if (err) {
             res.json({ status: false, msg: err })
             return
         }
         else {
-            if (Schema[0].work.length !== 0) {
-                Schema[0].work.map((value, index, array) => {
+            if (Schema[0][selectValue].length !== 0) {
+                Schema[0][selectValue].map((value, index, array) => {
                     array[index] = value.name
                 })
-                res.json({ status: true, data: Schema[0].work })
+                res.json({ status: true, data: Schema[0][selectValue] })
             }
             else {
-                res.json({ status: true, data: Schema[0].work })
+                res.json({ status: true, data: Schema[0][selectValue] })
             }
         }
     })
 })
 
-app.get('/create/:wikiname/:name', (req, res) => {
-    const wikiname = req.params.wikiname
-    const name = req.params["name"]
-    var WikiList = mongoose.model('WikiList')
-    WikiList.findById({ _id: '19961127' }, function (err, Schema) {
+app.post('/create', (req, res) => {
+    const wikiname = req.body.wikiname
+    const user = req.body.name
+    const selectValue = req.body.selectValue
+    const wikilist = mongoose.model('WikiList')
+
+    wikilist.find({}, function (err, Schema) {
         return new Promise((resolve, reject) => {
-            for (var x = 0; x < Schema.work.length; x++) {
-                if (Schema.work[x].name == wikiname) {
-                    res.json({ status: true });
+            for (var x = 0; x < Schema[0][selectValue].length; x++) {
+                if (Schema[0][selectValue][x].name == wikiname) {
+                    res.json({ status: false, msg: err })
+                    return
                 }
             }
             resolve(wikiname)
         }).then((wikiname) => {
             var element = {
-                _id: '19961127',
                 name: wikiname,
-                user: name
+                user: user
             };
-            Schema.work.push(element)
-            Schema.save(function (err) {
+            Schema[0][selectValue].push(element)
+            Schema[0].save(function (err) {
                 res.json({ status: true });
             })
         })
     })
 })
 
-app.get('/delete/:wikiname', (req, res) => {
-    const wikiname = req.params.wikiname
-    var WikiList = mongoose.model('WikiList')
-    WikiList.find({ _id: '19961127' }, (err, Schema) => {
+app.post('/delete', (req, res) => {
+    const wikiname = req.body.wikiname
+    const selectValue = req.body.selectValue
+    const wikilist = mongoose.model('WikiList')
+
+    wikilist.find({}, (err, Schema) => {
         if (err) {
             res.json({ status: false, msg: err })
             return
         }
         else {
-            for (var x = 0; x < Schema[0].work.length; x++) {
-                if (Schema[0].work[x].name == wikiname) {
-                    Schema[0].work.splice(x, 1);
+            for (var x = 0; x < Schema[0][selectValue].length; x++) {
+                if (Schema[0][selectValue][x].name == wikiname) {
+                    Schema[0][selectValue].splice(x, 1);
                     Schema[0].save(function (err) {
                         res.json({ status: true });
                     });
@@ -167,21 +189,23 @@ app.get('/delete/:wikiname', (req, res) => {
     })
 })
 
-app.post('/api/put/:wikiname/:name', (req, res) => {
+app.post('/api/put/:wikiname', (req, res) => {
     const wikiname = req.params.wikiname
-    const user = req.params["name"]
-    var WikiList = mongoose.model('WikiList')
-    // 既存のエントリがあるか確認
-    WikiList.find({ _id: '19961127' }, (err, Schema) => {
+    const user = req.body.user
+    const selectValue = req.body.selectValue
+    const body = req.body.body
+    const wikilist = mongoose.model('WikiList')
+
+    wikilist.find({}, (err, Schema) => {
         if (err) {
             res.json({ status: false, msg: err })
             return
         }
         else {
-            for (var x = 0; x < Schema[0].work.length; x++) {
-                if (Schema[0].work[x].name == wikiname) {
-                    Schema[0].work[x].body = req.body.body
-                    Schema[0].work[x].user = user
+            for (var x = 0; x < Schema[0][selectValue].length; x++) {
+                if (Schema[0][selectValue][x].name == wikiname) {
+                    Schema[0][selectValue][x].body = body
+                    Schema[0][selectValue][x].user = user
                     Schema[0].save(function (err) {
                         res.json({ status: true });
                     });
@@ -195,19 +219,22 @@ app.post('/api/putComment/:wikiname', (req, res) => {
     const wikiname = req.params.wikiname
     const name = req.body.user
     const comment = req.body.comment
-    WikiList.find({ _id: '19961127' }, (err, Schema) => {
+    const selectValue = req.body.selectValue
+    const wikilist = mongoose.model('WikiList')
+    
+    wikilist.find({}, (err, Schema) => {
         if (err) {
             res.json({ status: false, msg: err })
             return
         }
         else {
-            for (var x = 0; x < Schema[0].work.length; x++) {
-                if (Schema[0].work[x].name == wikiname) {
+            for (var x = 0; x < Schema[0][selectValue].length; x++) {
+                if (Schema[0][selectValue][x].name == wikiname) {
                     const element = {
                         user: name,
                         body: comment
                     }
-                    Schema[0].work[x].commentList.push(element)
+                    Schema[0][selectValue][x].commentList.push(element)
                     Schema[0].save(function (err) {
                         res.json({ status: true });
                     });
